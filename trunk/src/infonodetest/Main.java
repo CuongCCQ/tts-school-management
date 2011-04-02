@@ -34,7 +34,7 @@ public class Main {
         View view0 = new View("view 0 ", null, null);
         View rightPanel = new View("view 1", null, null);
         View leftPanel = new View("view 2                                                 ", null, null);
-
+        System.out.println("tu cho");
         ViewMap viewMap = new ViewMap();
         //viewMap.addView(0, view0);
         RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
