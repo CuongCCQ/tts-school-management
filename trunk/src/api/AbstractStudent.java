@@ -1,0 +1,175 @@
+package api;
+
+import java.sql.Timestamp;
+
+/**
+ * AbstractStudent entity provides the base persistence definition of the
+ * Student entity. @author MyEclipse Persistence Tools
+ */
+
+public abstract class AbstractStudent implements java.io.Serializable {
+
+	// Fields
+
+	private Integer studentId;
+	private Timestamp dateOfBirth;
+	private String studentCode;
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String address;
+	private String phoneNumber;
+	private Boolean sex;
+	private String email;
+	private String photo;
+	private String name;
+	private Integer age;
+	private Short status;
+
+	// Constructors
+
+	/** default constructor */
+	public AbstractStudent() {
+	}
+
+	/** minimal constructor */
+	public AbstractStudent(Integer studentId) {
+		this.studentId = studentId;
+	}
+
+	/** full constructor */
+	public AbstractStudent(Integer studentId, Timestamp dateOfBirth,
+			String studentCode, String firstName, String middleName,
+			String lastName, String address, String phoneNumber, Boolean sex,
+			String email, String photo, String name, Integer age, Short status) {
+		this.studentId = studentId;
+		this.dateOfBirth = dateOfBirth;
+		this.studentCode = studentCode;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.sex = sex;
+		this.email = email;
+		this.photo = photo;
+		this.name = name;
+		this.age = age;
+		this.status = status;
+	}
+
+	// Property accessors
+
+	public Integer getStudentId() {
+		return this.studentId;
+	}
+
+	public void setStudentId(Integer studentId) {
+		this.studentId = studentId;
+	}
+
+	public Timestamp getDateOfBirth() {
+		return this.dateOfBirth;
+	}
+
+	public void setDateOfBirth(Timestamp dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getStudentCode() {
+		return this.studentCode;
+	}
+
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
+	}
+
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return this.middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Boolean getSex() {
+		return this.sex;
+	}
+
+	public void setSex(Boolean sex) {
+		this.sex = sex;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoto() {
+		return this.photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getAge() {
+		return this.age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public Short getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(Short status) {
+		this.status = status;
+	}
+
+}
