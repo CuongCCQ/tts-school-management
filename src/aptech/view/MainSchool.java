@@ -10,10 +10,14 @@
  */
 package aptech.view;
 
+import aptech.util.Constant;
 import aptech.view.student.StudentView;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -34,6 +38,8 @@ import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.ShapedGradientDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.ViewMap;
+import net.infonode.gui.colorprovider.ColorProvider;
+import net.infonode.gui.componentpainter.SolidColorComponentPainter;
 import net.infonode.util.Direction;
 
 /**
@@ -53,6 +59,15 @@ public class MainSchool extends javax.swing.JFrame {
     JMenuBar menuBar;
     JToolBar toolBar;
     JList lstMenu;
+    String appPath;
+
+    public String getAppPath() {
+        return appPath;
+    }
+
+    public void setAppPath(String appPath) {
+        this.appPath = appPath;
+    }
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -78,7 +93,6 @@ public class MainSchool extends javax.swing.JFrame {
         this.rightPanel = rightPanel;
     }
 
-    
     /** Creates new form MainSchool */
     public MainSchool() {
         //initComponents();
@@ -120,14 +134,17 @@ public class MainSchool extends javax.swing.JFrame {
         leftPanel = new View("Action                                                ", null, null);
 
         // create root window
+
         ViewMap viewMap = new ViewMap();
         rootWindow = DockingUtil.createRootWindow(viewMap, true);
         SplitWindow spl1 = new SplitWindow(true, 0.2f, leftPanel, rightPanel);
 
         // init theme
         DockingWindowsTheme xxTheme = new ShapedGradientDockingTheme();
-        rootWindow.getRootWindowProperties().addSuperObject(xxTheme.getRootWindowProperties());
+        xxTheme.getRootWindowProperties().getComponentProperties().setBackgroundColor(Color.yellow);
 
+        rootWindow.getRootWindowProperties().addSuperObject(xxTheme.getRootWindowProperties());
+        rootWindow.setPopupMenuFactory(null);
         // init title control buttons
         rootWindow.getRootWindowProperties().getDockingWindowProperties().setCloseEnabled(false);
         rootWindow.getRootWindowProperties().getDockingWindowProperties().setUndockEnabled(false);
@@ -135,25 +152,47 @@ public class MainSchool extends javax.swing.JFrame {
         leftPanel.getWindowProperties().setUndockEnabled(false);
         leftPanel.getWindowProperties().setMaximizeEnabled(false);
         leftPanel.getWindowProperties().setDockEnabled(false);
+
+        rightPanel.setLayout(new CardLayout());
+
+
+        this.getContentPane().setBackground(new Color(171, 171, 171));
         bottomPanel.getWindowProperties().setMinimizeEnabled(true);
         rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
+        spl1.setEnabled(false);
         spl1.getWindowProperties().setMaximizeEnabled(false);
         spl1.getWindowProperties().setMinimizeEnabled(false);
         spl1.getWindowProperties().setDockEnabled(false);
         spl0 = new SplitWindow(false, 0.8f, spl1, bottomPanel);
+
+        rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(
+                new SolidColorComponentPainter(new ColorProvider() {
+
+            public Color getColor() {
+                return Color.WHITE;
+            }
+
+            public Color getColor(Component component) {
+                return Color.WHITE;
+            }
+        }));
 
         // init maximize
         this.setExtendedState(this.getExtendedState() | MAXIMIZED_BOTH);
         rootWindow.setWindow(spl0);
         // init layout panel
         toolbarJPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        contentpanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        toolbarJPanel.setSize(rootWindow.getWidth(), 40);
+        toolbarJPanel.setBackground(new Color(240, 240, 240));
+
         this.getContentPane().setLayout(new BorderLayout(0, 5));
         this.getContentPane().add(toolbarJPanel, BorderLayout.NORTH);
         this.getContentPane().add(rootWindow, BorderLayout.CENTER);
+        rootWindow.setVisible(false);
         setTitle("School Management");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        this.setResizable(false);
 
     }
 
@@ -171,16 +210,16 @@ public class MainSchool extends javax.swing.JFrame {
     // init tool bar
     private void initToolBar() {
         toolBar = new JToolBar(JToolBar.HORIZONTAL);
-        String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        initStudentButton(path);
-        initTeacherButton(path);
+        appPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        initStudentButton(appPath);
+        initTeacherButton(appPath);
         this.toolbarJPanel.add(toolBar);
     }
 
     // <editor-fold defaultstate="collapsed" desc="init toolbar buttons">
     private void initStudentButton(String path) {
         JButton btnStudent = new JButton();
-        ImageIcon studentIcon = new ImageIcon(path + "/resources/images/student.png");
+        ImageIcon studentIcon = new ImageIcon(path + Constant.RESOURCE_PATH + "student.png");
         btnStudent.setIcon(studentIcon);
         btnStudent.setText("Student");
         btnStudent.addActionListener(new ActionListener() {
@@ -194,7 +233,7 @@ public class MainSchool extends javax.swing.JFrame {
 
     private void initTeacherButton(String path) {
         JButton btnTeacher = new JButton();
-        ImageIcon studentIcon = new ImageIcon(path + "/resources/images/teacher.png");
+        ImageIcon studentIcon = new ImageIcon(path + Constant.RESOURCE_PATH + "teacher.png");
         btnTeacher.setIcon(studentIcon);
         btnTeacher.setText("Staff");
         toolBar.add(btnTeacher);
@@ -246,15 +285,12 @@ public class MainSchool extends javax.swing.JFrame {
     }
 
 // </editor-fold>
+
     private void loadStudentView(ActionEvent eventData) {
+        //this.getContentPane().setBackground(new Color(240,240,240));
         StudentView studentView = new StudentView(this);
-        leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        leftPanel.removeAll();
-        leftPanel.add(studentView.getLstAction());
-
-        
-        this.repaint();
-
+        studentView.initSubView();
+        this.rootWindow.setVisible(true);
     }
 
     // terminate program
@@ -267,6 +303,7 @@ public class MainSchool extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
                 new MainSchool();
             }

@@ -4,16 +4,29 @@
  */
 package aptech.view.student;
 
+import aptech.util.Constant;
+import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -21,50 +34,38 @@ import javax.swing.ListSelectionModel;
  * @date Apr 2, 2011
  * @
  */
-public class StudentView {
+public class StudentView extends BaseSubContentView {
 
-    JList lstAction;
-    JPanel pnContent;
-    MainSchool mainSchool;
+    private JButton btnNewStudent;
+    private JButton btnStudentDetail;
 
     public StudentView(MainSchool ms) {
-        String[] data = {"input new student", "search a student", "report"};
-        DefaultListModel model = new DefaultListModel();
-        this.mainSchool = ms;
-        lstAction = new JList(data);
-        lstAction.setSize(new Dimension(200,300));
-        lstAction.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lstAction.addMouseListener(new MouseAdapter() {
+        super(ms);
+        initButtons();
+    }
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(pnContent, lstAction.getSelectedValue());
-                changeGui(e);
+    private void initButtons() {
+        btnNewStudent = new JButton("Create new Student");
+        this.lstButtons.add(btnNewStudent);
+        btnNewStudent.addActionListener(new ActionListener() {
 
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(mainSchool, "raise");
             }
         });
 
+        btnStudentDetail = new JButton("Show Student Detail");
+        this.lstButtons.add(btnStudentDetail);
+
     }
 
-    public JPanel getPnContent() {
-        return pnContent;
-    }
-
-    public void setPnContent(JPanel pnContent) {
-        this.pnContent = pnContent;
-    }
-
-    public JList getLstAction() {
-        return lstAction;
-    }
-
-    public void setLstAction(JList lstAction) {
-        this.lstAction = lstAction;
-    }
-
-    private void changeGui(MouseEvent e) {
-        pnContent = new InputStudent();
-        mainSchool.getRightPanel().removeAll();
-        mainSchool.getRightPanel().add(pnContent);
+    @Override
+    protected JPanel initStartPanel() {
+        try {
+            return new InputStudent();
+        } catch (Exception ex) {
+            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
