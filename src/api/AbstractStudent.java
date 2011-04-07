@@ -14,20 +14,25 @@ public abstract class AbstractStudent implements java.io.Serializable {
 	private Integer studentId;
 	private Timestamp dateOfBirth;
 	private String studentCode;
-	private String firstName;
-	private String middleName;
-	private String lastName;
 	private String address;
 	private String phoneNumber;
 	private Boolean sex;
 	private String email;
-	private String photo;
+	private byte[] photo;
 	private String name;
 	private Integer age;
 	private Short status;
 
-	// Constructors
+    public byte[] getPhoto() {
+        return photo;
+    }
 
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+	// Constructors
+        
 	/** default constructor */
 	public AbstractStudent() {
 	}
@@ -37,26 +42,6 @@ public abstract class AbstractStudent implements java.io.Serializable {
 		this.studentId = studentId;
 	}
 
-	/** full constructor */
-	public AbstractStudent(Integer studentId, Timestamp dateOfBirth,
-			String studentCode, String firstName, String middleName,
-			String lastName, String address, String phoneNumber, Boolean sex,
-			String email, String photo, String name, Integer age, Short status) {
-		this.studentId = studentId;
-		this.dateOfBirth = dateOfBirth;
-		this.studentCode = studentCode;
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-		this.sex = sex;
-		this.email = email;
-		this.photo = photo;
-		this.name = name;
-		this.age = age;
-		this.status = status;
-	}
 
 	// Property accessors
 
@@ -82,30 +67,6 @@ public abstract class AbstractStudent implements java.io.Serializable {
 
 	public void setStudentCode(String studentCode) {
 		this.studentCode = studentCode;
-	}
-
-	public String getFirstName() {
-		return this.firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return this.middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getAddress() {
@@ -140,13 +101,7 @@ public abstract class AbstractStudent implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public String getPhoto() {
-		return this.photo;
-	}
-
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
+	
 
 	public String getName() {
 		return this.name;
