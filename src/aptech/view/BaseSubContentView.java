@@ -4,6 +4,7 @@
  */
 package aptech.view;
 
+import aptech.util.AppUtil;
 import aptech.util.Constant;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -40,7 +41,7 @@ public abstract class BaseSubContentView {
             btn.setIconTextGap(10);
             btn.setFocusPainted(false);
             btn.setContentAreaFilled(false);
-            ImageIcon icon = new ImageIcon(this.mainSchool.getAppPath() + Constant.RESOURCE_PATH + "setting.png");
+            ImageIcon icon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "setting.png");
             btn.setIcon(icon);
             btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
             mainSchool.getLeftPanel().add(btn);
