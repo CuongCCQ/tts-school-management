@@ -10,6 +10,7 @@
  */
 package aptech.view;
 
+import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.view.student.StudentView;
 import java.awt.BorderLayout;
@@ -28,6 +29,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -59,15 +61,9 @@ public class MainSchool extends javax.swing.JFrame {
     JMenuBar menuBar;
     JToolBar toolBar;
     JList lstMenu;
-    String appPath;
+    
 
-    public String getAppPath() {
-        return appPath;
-    }
-
-    public void setAppPath(String appPath) {
-        this.appPath = appPath;
-    }
+    
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -210,16 +206,15 @@ public class MainSchool extends javax.swing.JFrame {
     // init tool bar
     private void initToolBar() {
         toolBar = new JToolBar(JToolBar.HORIZONTAL);
-        appPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        initStudentButton(appPath);
-        initTeacherButton(appPath);
+        initStudentButton();
+        initTeacherButton();
         this.toolbarJPanel.add(toolBar);
     }
 
     // <editor-fold defaultstate="collapsed" desc="init toolbar buttons">
-    private void initStudentButton(String path) {
+    private void initStudentButton() {
         JButton btnStudent = new JButton();
-        ImageIcon studentIcon = new ImageIcon(path + Constant.RESOURCE_PATH + "student.png");
+        ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "student.png");
         btnStudent.setIcon(studentIcon);
         btnStudent.setText("Student");
         btnStudent.addActionListener(new ActionListener() {
@@ -231,9 +226,9 @@ public class MainSchool extends javax.swing.JFrame {
         toolBar.add(btnStudent);
     }
 
-    private void initTeacherButton(String path) {
+    private void initTeacherButton() {
         JButton btnTeacher = new JButton();
-        ImageIcon studentIcon = new ImageIcon(path + Constant.RESOURCE_PATH + "teacher.png");
+        ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "teacher.png");
         btnTeacher.setIcon(studentIcon);
         btnTeacher.setText("Staff");
         toolBar.add(btnTeacher);

@@ -7,22 +7,13 @@
   <class catalog="tts" name="api.Student" schema="dbo" table="Student">
     <id name="studentId" type="java.lang.Integer">
       <column name="StudentId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="dateOfBirth" type="java.sql.Timestamp">
       <column length="23" name="DateOfBirth"/>
     </property>
     <property name="studentCode" type="java.lang.String">
       <column name="StudentCode"/>
-    </property>
-    <property name="firstName" type="java.lang.String">
-      <column name="FirstName"/>
-    </property>
-    <property name="middleName" type="java.lang.String">
-      <column name="MiddleName"/>
-    </property>
-    <property name="lastName" type="java.lang.String">
-      <column name="LastName"/>
     </property>
     <property name="address" type="java.lang.String">
       <column name="Address"/>
@@ -36,7 +27,7 @@
     <property name="email" type="java.lang.String">
       <column length="100" name="Email"/>
     </property>
-    <property name="photo" type="java.lang.String">
+    <property name="photo"  type="binary">
       <column name="Photo"/>
     </property>
     <property name="name" type="java.lang.String">

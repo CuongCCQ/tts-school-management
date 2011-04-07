@@ -11,4 +11,6 @@ package aptech.util;
  */
 public interface Constant {
     final String RESOURCE_PATH="/resources/images/";
+    final String DEFAULT_IMG_NAME="default-photo.png";
+
 }
