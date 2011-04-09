@@ -11,11 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -37,48 +35,8 @@ public class StaffView extends BaseSubContentView {
     private void initButtons() {
         btnNewStaff = new JButton("Create new Staff");
         this.lstButtons.add(btnNewStaff);
-        btnNewStaff.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                btnNewStaff.setForeground(Color.red);
-                btnStaffDetail.setForeground(Color.black);
-            }
-        });
-        btnStaffDetail= new JButton("Staff Detail");
-        this.lstButtons.add(btnStaffDetail);
-       
-        btnStaffDetail.addMouseListener(new MouseAdapter() {
-             boolean isPress= true;
-
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if(btnStaffDetail.getForeground()==Color.black){isPress=true;}
-                if(isPress){btnStaffDetail.setForeground(Color.BLUE);}
-                
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                 btnStaffDetail.setForeground(Color.red);
-                 isPress=false;
-
-            }
-
-
-          
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-              if(isPress){btnStaffDetail.setForeground(Color.BLACK);}
-
-            }
-
-        });
-
-//        btnStaffDetail = new JButton("Show Staff Detail");
-//        this.lstButtons.add(btnStaffDetail);
+     btnStaffDetail = new JButton("Show Staff Detail");
+       this.lstButtons.add(btnStaffDetail);
 
     }
 
