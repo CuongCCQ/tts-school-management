@@ -12,6 +12,7 @@ package aptech.view;
 
 import aptech.util.AppUtil;
 import aptech.util.Constant;
+import aptech.view.semester.semesterView;
 import aptech.view.staff.StaffView;
 import aptech.view.student.StudentView;
 import java.awt.BorderLayout;
@@ -205,6 +206,7 @@ public class MainSchool extends javax.swing.JFrame {
         toolBar = new JToolBar(JToolBar.HORIZONTAL);
         initStudentButton();
         initTeacherButton();
+        initCourceButton();
         this.toolbarJPanel.add(toolBar);
     }
 
@@ -236,6 +238,20 @@ public class MainSchool extends javax.swing.JFrame {
         });
         clearAllListView();
         toolBar.add(btnTeacher);
+    }
+     private void initCourceButton() {
+        JButton btnCource = new JButton();
+        ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "course.png");
+        btnCource.setIcon(studentIcon);
+        btnCource.setText("Cource");
+        btnCource.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                loadCourceView(e);
+            }
+        });
+        clearAllListView();
+        toolBar.add(btnCource);
     }
     private void clearAllListView(){
            this.leftPanel.removeAll();
@@ -279,7 +295,8 @@ public class MainSchool extends javax.swing.JFrame {
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                exitProgram(e);
+                About ab = new About();
+                ab.setVisible(true);
             }
         });
         helpMenu.add(aboutMenuItem);
@@ -301,7 +318,12 @@ public class MainSchool extends javax.swing.JFrame {
         staffView.initSubView();
         this.rootWindow.setVisible(true);
     }
-
+    private void loadCourceView(ActionEvent evenData)
+    {
+        semesterView smView = new semesterView(this);
+        smView.initSubView();
+        this.rootWindow.setVisible(true);
+    }
     // terminate program
     private void exitProgram(ActionEvent event) {
         System.exit(1);
