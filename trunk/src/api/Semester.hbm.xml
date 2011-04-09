@@ -7,7 +7,7 @@
   <class catalog="tts" name="api.Semester" schema="dbo" table="Semester">
     <id name="semesterId" type="java.lang.Integer">
       <column name="SemesterId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="startDate" type="java.sql.Timestamp">
       <column length="23" name="start_date"/>
