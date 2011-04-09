@@ -1,6 +1,7 @@
 package api;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * AbstractSemester entity provides the base persistence definition of the
@@ -12,8 +13,8 @@ public abstract class AbstractSemester implements java.io.Serializable {
 	// Fields
 
 	private Integer semesterId;
-	private Timestamp startDate;
-	private Timestamp endDate;
+	private Date startDate;
+	private Date endDate;
 	private String description;
 
 	// Constructors
@@ -46,19 +47,19 @@ public abstract class AbstractSemester implements java.io.Serializable {
 		this.semesterId = semesterId;
 	}
 
-	public Timestamp getStartDate() {
+	public Date getStartDate() {
 		return this.startDate;
 	}
 
-	public void setStartDate(Timestamp startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public Timestamp getEndDate() {
+	public Date getEndDate() {
 		return this.endDate;
 	}
 
-	public void setEndDate(Timestamp endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
