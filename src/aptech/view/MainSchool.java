@@ -12,24 +12,21 @@ package aptech.view;
 
 import aptech.util.AppUtil;
 import aptech.util.Constant;
+import aptech.view.staff.StaffView;
 import aptech.view.student.StudentView;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -231,7 +228,17 @@ public class MainSchool extends javax.swing.JFrame {
         ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "teacher.png");
         btnTeacher.setIcon(studentIcon);
         btnTeacher.setText("Staff");
+        btnTeacher.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                loadStaffView(e);
+            }
+        });
+        clearAllListView();
         toolBar.add(btnTeacher);
+    }
+    private void clearAllListView(){
+           this.leftPanel.removeAll();
     }
 
     // </editor-fold>
@@ -285,6 +292,13 @@ public class MainSchool extends javax.swing.JFrame {
         //this.getContentPane().setBackground(new Color(240,240,240));
         StudentView studentView = new StudentView(this);
         studentView.initSubView();
+        this.rootWindow.setVisible(true);
+    }
+
+     private void loadStaffView(ActionEvent eventData) {
+        //this.getContentPane().setBackground(new Color(240,240,240));
+        StaffView staffView = new StaffView(this);
+        staffView.initSubView();
         this.rootWindow.setVisible(true);
     }
 
