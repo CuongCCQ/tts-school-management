@@ -72,7 +72,7 @@ public abstract class BaseSubContentView {
     protected void createNewSubView(JPanel subViewPanel)
     {
         mainSchool.getRightPanel().removeAll();
-        mainSchool.getRightPanel().add(subViewPanel);
+        mainSchool.getRightPanel().add(subViewPanel,BorderLayout.CENTER);
         mainSchool.validate();
         mainSchool.repaint();
     }
