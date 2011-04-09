@@ -18,5 +18,8 @@
     <property name="description" type="java.lang.String">
       <column name="Description"/>
     </property>
+    <property name="name" type="java.lang.String">
+      <column name="name"/>
+    </property>
   </class>
 </hibernate-mapping>
