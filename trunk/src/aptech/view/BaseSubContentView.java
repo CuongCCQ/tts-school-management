@@ -52,6 +52,7 @@ public abstract class BaseSubContentView {
     // send sub view to main schools
     public void initSubView() {
         GridLayout layout = new GridLayout(mainSchool.getHeight() / 30, 1);
+        this.mainSchool.getLeftPanel().removeAll();
         this.mainSchool.getLeftPanel().setLayout(layout);
         initLeftPanelButton();
         initSubPanelView();
@@ -66,6 +67,14 @@ public abstract class BaseSubContentView {
         if (this.subContentPanel != null) {
             mainSchool.getRightPanel().add(this.subContentPanel,BorderLayout.CENTER);
         }
+    }
+
+    protected void createNewSubView(JPanel subViewPanel)
+    {
+        mainSchool.getRightPanel().removeAll();
+        mainSchool.getRightPanel().add(subViewPanel);
+        mainSchool.validate();
+        mainSchool.repaint();
     }
 
     protected abstract JPanel initStartPanel();
