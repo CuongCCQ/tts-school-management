@@ -40,7 +40,7 @@ public class semesterView extends BaseSubContentView {
         btnNewStudent.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(mainSchool, "raise");
+               
             }
         });
 
