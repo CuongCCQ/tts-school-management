@@ -13,8 +13,7 @@ public abstract class AbstractSubject implements java.io.Serializable {
 	private String subjectCode;
 	private String subjectName;
 	private String description;
-	private Short status;
-
+	
 	// Constructors
 
 	/** default constructor */
@@ -22,20 +21,20 @@ public abstract class AbstractSubject implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public AbstractSubject(Integer subjectId, String subjectCode, Short status) {
+	public AbstractSubject(Integer subjectId, String subjectCode) {
 		this.subjectId = subjectId;
 		this.subjectCode = subjectCode;
-		this.status = status;
+		
 	}
 
 	/** full constructor */
 	public AbstractSubject(Integer subjectId, String subjectCode,
-			String subjectName, String description, Short status) {
+			String subjectName, String description) {
 		this.subjectId = subjectId;
 		this.subjectCode = subjectCode;
 		this.subjectName = subjectName;
 		this.description = description;
-		this.status = status;
+		
 	}
 
 	// Property accessors
@@ -72,12 +71,5 @@ public abstract class AbstractSubject implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Short getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(Short status) {
-		this.status = status;
-	}
 
 }

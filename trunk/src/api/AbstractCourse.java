@@ -8,9 +8,7 @@ package api;
 public abstract class AbstractCourse implements java.io.Serializable {
 
 	// Fields
-
 	private Integer id;
-	private String language;
 	private String courseName;
 	private String description;
 	private String courseCode;
@@ -27,15 +25,13 @@ public abstract class AbstractCourse implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public AbstractCourse(Integer id, String language, String courseName,
+	public AbstractCourse(Integer id, String courseName,
 			String description, String courseCode) {
 		this.id = id;
-		this.language = language;
 		this.courseName = courseName;
 		this.description = description;
 		this.courseCode = courseCode;
 	}
-
 	// Property accessors
 
 	public Integer getId() {
@@ -44,16 +40,7 @@ public abstract class AbstractCourse implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getLanguage() {
-		return this.language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
+	}	
 	public String getCourseName() {
 		return this.courseName;
 	}

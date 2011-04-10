@@ -7,7 +7,7 @@
   <class catalog="tts" name="api.Subject" schema="dbo" table="Subject">
     <id name="subjectId" type="java.lang.Integer">
       <column name="SubjectId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="subjectCode" type="java.lang.String">
       <column length="20" name="SubjectCode" not-null="true"/>
@@ -17,9 +17,6 @@
     </property>
     <property name="description" type="java.lang.String">
       <column name="Description"/>
-    </property>
-    <property name="status" type="java.lang.Short">
-      <column name="Status" not-null="true"/>
     </property>
   </class>
 </hibernate-mapping>

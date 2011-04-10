@@ -25,7 +25,6 @@ public class SubjectDAO extends BaseHibernateDAO {
 	public static final String SUBJECT_CODE = "subjectCode";
 	public static final String SUBJECT_NAME = "subjectName";
 	public static final String DESCRIPTION = "description";
-	public static final String STATUS = "status";
 
 	public void save(Subject transientInstance) {
 		log.debug("saving Subject instance");
@@ -101,9 +100,6 @@ public class SubjectDAO extends BaseHibernateDAO {
 		return findByProperty(DESCRIPTION, description);
 	}
 
-	public List findByStatus(Object status) {
-		return findByProperty(STATUS, status);
-	}
 
 	public List findAll() {
 		log.debug("finding all Subject instances");

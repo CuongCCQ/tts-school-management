@@ -11,8 +11,8 @@ public abstract class AbstractClassOffer implements java.io.Serializable {
 
 	private Integer classOfferId;
 	private String classCode;
-	private Short minStudent;
-	private Short maxStudent;
+	private Integer minStudent;
+	private Integer maxStudent;
 	private Integer semesterId;
 	private Integer id;
 
@@ -24,7 +24,7 @@ public abstract class AbstractClassOffer implements java.io.Serializable {
 
 	/** full constructor */
 	public AbstractClassOffer(Integer classOfferId, String classCode,
-			Short minStudent, Short maxStudent, Integer semesterId, Integer id) {
+			Integer minStudent, Integer maxStudent, Integer semesterId, Integer id) {
 		this.classOfferId = classOfferId;
 		this.classCode = classCode;
 		this.minStudent = minStudent;
@@ -51,19 +51,19 @@ public abstract class AbstractClassOffer implements java.io.Serializable {
 		this.classCode = classCode;
 	}
 
-	public Short getMinStudent() {
+	public Integer getMinStudent() {
 		return this.minStudent;
 	}
 
-	public void setMinStudent(Short minStudent) {
+	public void setMinStudent(Integer minStudent) {
 		this.minStudent = minStudent;
 	}
 
-	public Short getMaxStudent() {
+	public Integer getMaxStudent() {
 		return this.maxStudent;
 	}
 
-	public void setMaxStudent(Short maxStudent) {
+	public void setMaxStudent(Integer maxStudent) {
 		this.maxStudent = maxStudent;
 	}
 
