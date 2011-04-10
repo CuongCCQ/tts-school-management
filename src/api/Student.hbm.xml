@@ -33,9 +33,6 @@
     <property name="name" type="java.lang.String">
       <column length="200" name="name"/>
     </property>
-    <property name="age" type="java.lang.Integer">
-      <column name="Age"/>
-    </property>
     <property name="status" type="java.lang.Short">
       <column name="status"/>
     </property>

@@ -20,7 +20,6 @@ public abstract class AbstractStudent implements java.io.Serializable {
 	private String email;
 	private byte[] photo;
 	private String name;
-	private Integer age;
 	private Short status;
 
     public byte[] getPhoto() {
@@ -109,14 +108,6 @@ public abstract class AbstractStudent implements java.io.Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getAge() {
-		return this.age;
-	}
-
-	public void setAge(Integer age) {
-		this.age = age;
 	}
 
 	public Short getStatus() {
