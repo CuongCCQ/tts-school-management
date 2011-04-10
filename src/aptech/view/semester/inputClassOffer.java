@@ -140,6 +140,7 @@ List<Integer> listIdCource= new ArrayList<Integer>();
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         int idSemester = listId.get(cbSemester.getSelectedIndex());
         int idCource = listIdCource.get(cbCource.getSelectedIndex());
