@@ -15,6 +15,9 @@ public class Staff extends AbstractStaff implements java.io.Serializable {
 	public Staff(Integer staffId, String name) {
 		super(staffId, name);
 	}
+        public Staff(String name){
+           super(name);
+        }
 
 	/** full constructor */
 	
