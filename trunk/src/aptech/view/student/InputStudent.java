@@ -259,7 +259,6 @@ public class InputStudent extends javax.swing.JPanel {
         imgControl = new ImageControl(student.getPhoto());
         this.pnImg.add(imgControl);
         dateChooserCombo = new TtsDateChooser();
-        dateChooserCombo.setDateFormat(new SimpleDateFormat("mm/dd/yyyy"));
         dateChooserCombo.setSize(168, 18);
         this.jPanel1.add(dateChooserCombo);
 
