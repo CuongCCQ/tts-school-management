@@ -2,6 +2,8 @@ package api;
 
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -172,6 +174,23 @@ public class StudentDAO extends BaseHibernateDAO {
             String queryString = "from Student";
             Query queryObject = getSession().createQuery(queryString);
             return queryObject.list();
+        } catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+    }
+    public List findAllNameAndID() {
+        log.debug("finding all Student instances");
+        try {
+            List list= new ArrayList();
+            String queryString = "select name,StudentId from Student";
+            Query queryObject = getSession().createQuery(queryString);
+
+            for (Iterator it = queryObject.iterate(); it.hasNext();) {
+                list.add(it.next());
+
+            }
+            return list;
         } catch (RuntimeException re) {
             log.error("find all failed", re);
             throw re;
