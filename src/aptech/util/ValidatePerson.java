@@ -13,16 +13,10 @@ import java.util.Date;
  */
 public class ValidatePerson
 {
-        private static Integer personId;
-	private static Date dateOfBirth;
-	private static String personCode;
-	private static String address;
-	private static String phoneNumber;
-	private static String email;
-	private static String name;
+        
 	private static ValidateUtil validate= new ValidateUtil();
         private static String messeage= null;
-        public static String chekDOB(){
+        public static String chekDOB(Date dateOfBirth){
             Date date= new Date();
             if(dateOfBirth.after(date)){
                 messeage="Date of birth can not after curent time";
@@ -31,14 +25,14 @@ public class ValidatePerson
             return messeage;
         }
     @SuppressWarnings("static-access")
-        public static String isPhoneNumber(){            
+        public static String isPhoneNumber(String phoneNumber){
             if(!validate.isNumber(phoneNumber)){
                 messeage="Invalid phone number";
             }
             return messeage;
         }
     @SuppressWarnings("static-access")
-    public static  String isEmail(){
+    public static  String isEmail(String email){
 
         if(!validate.isEmail(email)){
             messeage="Invalid Email";
