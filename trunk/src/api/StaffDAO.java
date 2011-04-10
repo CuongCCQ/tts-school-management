@@ -60,6 +60,7 @@ public class StaffDAO extends BaseHibernateDAO {
 		log.debug("getting Staff instance with id: " + id);
 		try {
 			Staff instance = (Staff) getSession().get("api.Staff", id);
+                        
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
@@ -144,6 +145,16 @@ public class StaffDAO extends BaseHibernateDAO {
 		log.debug("finding all Staff instances");
 		try {
 			String queryString = "from Staff";
+			Query queryObject = getSession().createQuery(queryString);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}public List loadIdName() {
+		log.debug("finding all Staff instances");
+		try {
+			String queryString = "select StaffId,Name from Staff";
 			Query queryObject = getSession().createQuery(queryString);
 			return queryObject.list();
 		} catch (RuntimeException re) {
