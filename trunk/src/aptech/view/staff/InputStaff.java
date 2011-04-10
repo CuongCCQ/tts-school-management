@@ -14,10 +14,16 @@ import api.Staff;
 import api.StaffDAO;
 import api.Student;
 import api.StudentDAO;
+import aptech.util.ValidatePerson;
 import aptech.view.control.ImageControl;
+import aptech.view.control.TtsDateChooser;
+import aptech.view.control.image.ImageFileChooser;
+import aptech.view.student.InputStudent;
 import datechooser.beans.DateChooserCombo;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -49,15 +55,13 @@ public class InputStaff extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtStaffName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtStaffAddress = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtStaffPhone = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        txtStaffEmail = new javax.swing.JTextField();
+        cbStaffSex = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -94,11 +98,9 @@ public class InputStaff extends javax.swing.JPanel {
 
         jLabel7.setText("Email");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Fermale", "Male", " " }));
+        cbStaffSex.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Fermale", "Male", " " }));
 
         jLabel8.setText("Sex");
-
-        jLabel9.setText("Age");
 
         jLabel4.setText("Date Of Birth");
 
@@ -142,26 +144,22 @@ public class InputStaff extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtStaffAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtStaffPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))))
+                                    .addComponent(cbStaffSex, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtStaffEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -186,28 +184,25 @@ public class InputStaff extends javax.swing.JPanel {
                                 .addComponent(lblStaffCode)
                                 .addComponent(txtStaffCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel6)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtStaffPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
                                 .addComponent(txtStaffName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel7)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtStaffEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbStaffSex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel8)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtStaffAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel9)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel4)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,8 +215,20 @@ public class InputStaff extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showDialog(this, "select image");
+        ImageFileChooser fileChooser = new ImageFileChooser();
+        int result = fileChooser.showDialog(this, "Select image");
+        if (result == fileChooser.APPROVE_OPTION) {
+            try {
+                imageControl = new ImageControl(fileChooser.getSelectedFile().getAbsolutePath());
+
+            } catch (IOException ex) {
+                Logger.getLogger(InputStudent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.pnImg.removeAll();
+        this.pnImg.add(imageControl);
+        this.validate();
+        this.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -229,46 +236,65 @@ public class InputStaff extends javax.swing.JPanel {
         try {
             StaffDAO staffDAO = new StaffDAO();
             Staff staff = new Staff();
-            //JOptionPane.showMessageDialog(this,"Hello!"+ txtStaffName.getText());
+            staff.setName(txtStaffName.getText());
+            staff.setStaffCode(txtStaffCode.getText());
+            staff.setAddress(txtStaffAddress.getText());
+            boolean checkSex= true;
+            if(cbStaffSex.getSelectedIndex()==0){checkSex=false;}
+
+            staff.setSex(checkSex);
+            staff.setEmail(txtStaffEmail.getText());
+            staff.setPhoneNumber(txtStaffPhone.getText());
+            staff.setDateOfBirth(dateChooserCombo.getDate());
+            staff.setPhoto(imageControl.getImgData());
+            if(ValidatePerson.chekDOB(dateChooserCombo.getDate())!=null){
+            JOptionPane.showMessageDialog(this,"Invalid date. Date can not after current time");}
+            staffDAO.getSession().beginTransaction();
+            staffDAO.save(staff);
+            staffDAO.getSession().getTransaction().commit();
+            JOptionPane.showMessageDialog(this,"OK!Add success!");
+
         } catch (Exception e) {
+            e.printStackTrace();
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void initImage() throws IOException {
         StaffDAO dao = new StaffDAO();
-        Staff staff = dao.findById(3);
+        Staff staff = dao.findById(38);
         //imgControl=new ImageControl(AppUtil.getAppPath() + Constant.RESOURCE_PATH + Constant.DEFAULT_IMG_NAME);
-        //imgControl=new ImageControl(staff.getPhoto());
-        //this.pnImg.add(imgControl);
-        DateChooserCombo chooserCombo = new DateChooserCombo();
-        chooserCombo.setSize(168, 18);
-        this.jPanel1.add(chooserCombo);
+        imageControl=new ImageControl(staff.getPhoto());
+        this.pnImg.add(imageControl);
+        dateChooserCombo = new TtsDateChooser();
+        dateChooserCombo.setSize(168, 18);
+        this.jPanel1.add(dateChooserCombo);
 
 
 
 
     }
-    private ImageControl imgControl;
+   
+    private  ImageControl imageControl;
+    TtsDateChooser dateChooserCombo;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cbStaffSex;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel lblStaffCode;
     private javax.swing.JPanel pnImg;
+    private javax.swing.JTextField txtStaffAddress;
     private javax.swing.JTextField txtStaffCode;
+    private javax.swing.JTextField txtStaffEmail;
     private javax.swing.JTextField txtStaffName;
+    private javax.swing.JTextField txtStaffPhone;
     // End of variables declaration//GEN-END:variables
 }
