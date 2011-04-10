@@ -24,8 +24,8 @@
     <property name="email" type="java.lang.String">
       <column name="Email"/>
     </property>
-    <property name="photo" type="java.lang.String">
-      <column length="10" name="Photo"/>
+       <property name="photo" type="binary">
+      <column name="Photo"/>
     </property>
     <property name="name" type="java.lang.String">
       <column length="200" name="name" not-null="true"/>
