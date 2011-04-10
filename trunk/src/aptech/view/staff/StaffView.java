@@ -37,7 +37,7 @@ public class StaffView extends BaseSubContentView {
         btnNewStaff.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                createNewSubView(new testPanel());
+                createNewSubView(new ResulPanel() );
             }
         });
 
