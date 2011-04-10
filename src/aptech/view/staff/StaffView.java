@@ -6,11 +6,8 @@ package aptech.view.staff;
 
 import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -35,8 +32,14 @@ public class StaffView extends BaseSubContentView {
     private void initButtons() {
         btnNewStaff = new JButton("Create new Staff");
         this.lstButtons.add(btnNewStaff);
-     btnStaffDetail = new JButton("Show Staff Detail");
-       this.lstButtons.add(btnStaffDetail);
+        btnStaffDetail = new JButton("Show Staff Detail");
+        this.lstButtons.add(btnStaffDetail);
+        btnNewStaff.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                createNewSubView(new testPanel());
+            }
+        });
 
     }
 
