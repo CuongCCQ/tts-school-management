@@ -17,7 +17,7 @@ public abstract class AbstractStaff implements java.io.Serializable {
 	private String phoneNumber;
 	private Boolean sex;
 	private String email;
-	private String photo;
+	private byte[] photo;
 	private String name;
         private Date dateOfBirth;
 
@@ -42,6 +42,9 @@ public abstract class AbstractStaff implements java.io.Serializable {
 	/** minimal constructor */
 	public AbstractStaff(Integer staffId, String name) {
 		this.staffId = staffId;
+		this.name = name;
+	}
+        public AbstractStaff(String name) {
 		this.name = name;
 	}
 
@@ -98,11 +101,11 @@ public abstract class AbstractStaff implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public String getPhoto() {
+	public byte[] getPhoto() {
 		return this.photo;
 	}
 
-	public void setPhoto(String photo) {
+	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
 
@@ -113,6 +116,7 @@ public abstract class AbstractStaff implements java.io.Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 
 	
 
