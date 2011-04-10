@@ -7,7 +7,7 @@
   <class catalog="tts" name="api.SubjectAssignment" schema="dbo" table="Subject_Assignment">
     <id name="classOfferDetailId" type="java.lang.Integer">
       <column name="ClassOfferDetailId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="classOfferId" type="java.lang.Integer">
       <column name="ClassOfferId" not-null="true"/>
