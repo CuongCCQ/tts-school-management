@@ -21,5 +21,8 @@ public class ValidateUtil {
     {
         return true;
     }
-    
+    public static boolean isEmpty(String input)
+    {
+        return true;
+    }
 }
