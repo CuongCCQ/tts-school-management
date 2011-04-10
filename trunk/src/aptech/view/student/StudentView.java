@@ -24,6 +24,7 @@ public class StudentView extends BaseSubContentView {
 
     private JButton btnNewStudent;
     private JButton btnStudentDetail;
+    private JButton btnStudentCourseReg;
 
     public StudentView(MainSchool ms) {
         super(ms);
@@ -46,6 +47,14 @@ public class StudentView extends BaseSubContentView {
 
             public void actionPerformed(ActionEvent e) {
                 
+            }
+        });
+        btnStudentCourseReg= new JButton("RegCourse");
+        this.lstButtons.add(btnStudentCourseReg);
+        btnStudentCourseReg.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                createNewSubView(new RegCourse());
             }
         });
 
