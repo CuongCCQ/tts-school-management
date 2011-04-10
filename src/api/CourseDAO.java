@@ -22,7 +22,7 @@ import org.hibernate.criterion.Example;
 public class CourseDAO extends BaseHibernateDAO {
 	private static final Log log = LogFactory.getLog(CourseDAO.class);
 	// property constants
-	public static final String LANGUAGE = "language";
+	
 	public static final String COURSE_NAME = "courseName";
 	public static final String DESCRIPTION = "description";
 	public static final String COURSE_CODE = "courseCode";
@@ -89,10 +89,7 @@ public class CourseDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findByLanguage(Object language) {
-		return findByProperty(LANGUAGE, language);
-	}
-
+	
 	public List findByCourseName(Object courseName) {
 		return findByProperty(COURSE_NAME, courseName);
 	}

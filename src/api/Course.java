@@ -17,9 +17,9 @@ public class Course extends AbstractCourse implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Course(Integer id, String language, String courseName,
+	public Course(Integer id, String courseName,
 			String description, String courseCode) {
-		super(id, language, courseName, description, courseCode);
+		super(id, courseName, description, courseCode);
 	}
 
 }
