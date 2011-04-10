@@ -9,9 +9,6 @@
       <column name="id"/>
       <generator class="assigned"/>
     </id>
-    <property name="language" type="java.lang.String">
-      <column name="Language"/>
-    </property>
     <property name="courseName" type="java.lang.String">
       <column name="CourseName"/>
     </property>

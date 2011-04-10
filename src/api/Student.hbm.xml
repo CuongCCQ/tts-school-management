@@ -33,8 +33,5 @@
     <property name="name" type="java.lang.String">
       <column length="200" name="name"/>
     </property>
-    <property name="status" type="java.lang.Short">
-      <column name="status"/>
-    </property>
   </class>
 </hibernate-mapping>

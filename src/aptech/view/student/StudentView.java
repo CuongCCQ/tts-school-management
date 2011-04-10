@@ -42,6 +42,12 @@ public class StudentView extends BaseSubContentView {
 
         btnStudentDetail = new JButton("Show Student Detail");
         this.lstButtons.add(btnStudentDetail);
+        btnStudentDetail.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
 
     }
 
