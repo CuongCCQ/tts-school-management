@@ -13,8 +13,8 @@ public class ClassOffer extends AbstractClassOffer implements
 	}
 
 	/** full constructor */
-	public ClassOffer(Integer classOfferId, String classCode, Short minStudent,
-			Short maxStudent, Integer semesterId, Integer id) {
+	public ClassOffer(Integer classOfferId, String classCode, Integer minStudent,
+			Integer maxStudent, Integer semesterId, Integer id) {
 		super(classOfferId, classCode, minStudent, maxStudent, semesterId, id);
 	}
 

@@ -7,15 +7,15 @@
   <class catalog="tts" name="api.ClassOffer" schema="dbo" table="Class_Offer">
     <id name="classOfferId" type="java.lang.Integer">
       <column name="ClassOfferId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="classCode" type="java.lang.String">
       <column name="ClassCode" not-null="true"/>
     </property>
-    <property name="minStudent" type="java.lang.Short">
+    <property name="minStudent" type="java.lang.Integer">
       <column name="MinStudent" not-null="true"/>
     </property>
-    <property name="maxStudent" type="java.lang.Short">
+    <property name="maxStudent" type="java.lang.Integer">
       <column name="MaxStudent" not-null="true"/>
     </property>
     <property name="semesterId" type="java.lang.Integer">
