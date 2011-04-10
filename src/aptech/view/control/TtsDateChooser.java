@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package aptech.view.control;
 
 import aptech.util.Constant;
@@ -20,17 +19,15 @@ import java.util.Date;
 public class TtsDateChooser extends DateChooserCombo {
 
     SimpleDateFormat dateFormat;
+
     public TtsDateChooser() {
         super();
-        dateFormat=new SimpleDateFormat(Constant.DATE_FORMAT);
+        dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
         this.setDateFormat(dateFormat);
     }
 
-    public Date getDate() throws ParseException
-    {
-        Date d=new Date();
+    public Date getDate() throws ParseException {
+        Date d = new Date();
         return dateFormat.parse(this.getText());
     }
-
-
 }
