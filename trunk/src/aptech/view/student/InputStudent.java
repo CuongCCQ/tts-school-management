@@ -23,6 +23,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import resources.images.PathUtil;
 
 /**
  *
@@ -254,9 +256,8 @@ public class InputStudent extends javax.swing.JPanel {
 
     private void initImage() throws IOException {
         StudentDAO dao = new StudentDAO();
-        Student student = dao.findById(26);
-        //imgControl=new ImageControl(AppUtil.getAppPath() + Constant.RESOURCE_PATH + Constant.DEFAULT_IMG_NAME);
-        imgControl = new ImageControl(student.getPhoto());
+        URL resource = PathUtil.class.getResource(Constant.DEFAULT_IMG_NAME);
+        imgControl=new ImageControl(resource.getPath());
         this.pnImg.add(imgControl);
         dateChooserCombo = new TtsDateChooser();
         dateChooserCombo.setSize(168, 18);
