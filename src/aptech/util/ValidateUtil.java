@@ -5,6 +5,8 @@
 
 package aptech.util;
 
+import java.util.Date;
+
 /**
  *
  * @author bo
@@ -23,6 +25,11 @@ public class ValidateUtil {
     }
     public static boolean isEmpty(String input)
     {
+        return true;
+    }
+    public static boolean checkDate(Date dateFirst, Date dateSecond){
+        if(dateFirst.after(dateSecond)){
+        return  false;}
         return true;
     }
 }
