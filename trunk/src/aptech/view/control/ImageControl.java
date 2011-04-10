@@ -8,6 +8,8 @@ import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.ImageUtil;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import javax.swing.JPanel;
 public class ImageControl extends JPanel {
 
     BufferedImage image;
+    private Image imageThumb;
     byte[] imgData;
 
     public byte[] getImgData() {
@@ -35,22 +38,30 @@ public class ImageControl extends JPanel {
 
     public ImageControl(String filePath) throws IOException {
         image = ImageIO.read(new File(filePath));
-        setSize(image.getWidth(), image.getHeight());
+        setSize(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT);
         imgData = ImageUtil.convertImageToByteArray(image);
         image = ImageUtil.convertByteArrayToImg(imgData);
+        this.imageThumb=image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
+                image.SCALE_SMOOTH);
+        this.validate();
+        this.repaint();
     }
 
     public ImageControl(byte[] data) throws IOException {
         image = ImageUtil.convertByteArrayToImg(data);
-        setSize(image.getWidth(), image.getHeight());
+        setSize(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT);
         imgData = ImageUtil.convertImageToByteArray(image);
+        this.imageThumb=image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
+                image.SCALE_SMOOTH);
+        this.validate();
+        this.repaint();
     }
-
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (image != null) {
-            g.drawImage(image, 0, 0, this);
+        if (this.imageThumb != null) {
+            g.drawImage(this.imageThumb, 0, 0, this);
         }
 
     }
