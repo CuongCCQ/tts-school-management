@@ -12,19 +12,16 @@ package aptech.view.staff;
 
 import api.Staff;
 import api.StaffDAO;
-import api.Student;
-import api.StudentDAO;
 import aptech.util.ValidatePerson;
 import aptech.view.control.ImageControl;
 import aptech.view.control.TtsDateChooser;
 import aptech.view.control.image.ImageFileChooser;
 import aptech.view.student.InputStudent;
-import datechooser.beans.DateChooserCombo;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -159,15 +156,15 @@ public class InputStaff extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cbStaffSex, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtStaffEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(100, 100, 100)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(61, 61, 61))
+                .addGap(95, 95, 95))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(523, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -199,10 +196,10 @@ public class InputStaff extends javax.swing.JPanel {
                                 .addComponent(cbStaffSex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel8)
                                 .addComponent(txtStaffAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
+                            .addComponent(jLabel4)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -232,39 +229,55 @@ public class InputStaff extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
         try {
+            initStaff();
+            String bodMesseage = ValidatePerson.chekDOB(dateChooserCombo.getDate());
+            String emailMesseage = ValidatePerson.isEmail(txtStaffEmail.getText());
+            String phoneMesseage = ValidatePerson.isPhoneNumber(txtStaffPhone.getText());
             StaffDAO staffDAO = new StaffDAO();
-            Staff staff = new Staff();
-            staff.setName(txtStaffName.getText());
-            staff.setStaffCode(txtStaffCode.getText());
-            staff.setAddress(txtStaffAddress.getText());
-            boolean checkSex= true;
-            if(cbStaffSex.getSelectedIndex()==0){checkSex=false;}
-
-            staff.setSex(checkSex);
-            staff.setEmail(txtStaffEmail.getText());
-            staff.setPhoneNumber(txtStaffPhone.getText());
-            staff.setDateOfBirth(dateChooserCombo.getDate());
-            staff.setPhoto(imageControl.getImgData());
-            if(ValidatePerson.chekDOB(dateChooserCombo.getDate())!=null){
-            JOptionPane.showMessageDialog(this,"Invalid date. Date can not after current time");}
-            staffDAO.getSession().beginTransaction();
-            staffDAO.save(staff);
-            staffDAO.getSession().getTransaction().commit();
-            JOptionPane.showMessageDialog(this,"OK!Add success!");
-
+            System.out.println(txtStaffPhone.getText());
+            if (checkValidate(bodMesseage)&&checkValidate(emailMesseage)&&checkValidate(phoneMesseage)) {
+                staffDAO.getSession().beginTransaction();
+                staffDAO.save(staff);
+                staffDAO.getSession().getTransaction().commit();
+                JOptionPane.showMessageDialog(this, "OK!Add success!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+    private boolean checkValidate(String input) {
+        boolean check = true;
+        if (input != null) {
+            check = false;
+            JOptionPane.showMessageDialog(this, input, "Eros", JOptionPane.ERROR_MESSAGE);
+        }
+        return check;
+    }
+
+    private void initStaff() throws ParseException {
+
+        staff = new Staff();
+        staff.setName(txtStaffName.getText());
+        staff.setStaffCode(txtStaffCode.getText());
+        staff.setAddress(txtStaffAddress.getText());
+        boolean checkSex = true;
+        if (cbStaffSex.getSelectedIndex() == 0) {
+            checkSex = false;
+        }
+        staff.setSex(checkSex);
+        staff.setEmail(txtStaffEmail.getText());
+        staff.setPhoneNumber(txtStaffPhone.getText());
+        staff.setDateOfBirth(dateChooserCombo.getDate());
+        staff.setPhoto(imageControl.getImgData());
+    }
 
     private void initImage() throws IOException {
         StaffDAO dao = new StaffDAO();
-        Staff staff = dao.findById(38);
+        staff = dao.findById(38);
         //imgControl=new ImageControl(AppUtil.getAppPath() + Constant.RESOURCE_PATH + Constant.DEFAULT_IMG_NAME);
-        imageControl=new ImageControl(staff.getPhoto());
+        imageControl = new ImageControl(staff.getPhoto());
         this.pnImg.add(imageControl);
         dateChooserCombo = new TtsDateChooser();
         dateChooserCombo.setSize(168, 18);
@@ -274,10 +287,9 @@ public class InputStaff extends javax.swing.JPanel {
 
 
     }
-   
-    private  ImageControl imageControl;
+    private ImageControl imageControl;
     TtsDateChooser dateChooserCombo;
-    
+    private Staff staff;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbStaffSex;
     private javax.swing.JButton jButton1;
