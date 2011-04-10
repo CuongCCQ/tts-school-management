@@ -23,6 +23,7 @@ public class StaffView extends BaseSubContentView {
 
     private JButton btnNewStaff;
     private JButton btnStaffDetail;
+    
 
     public StaffView(MainSchool ms) {
         super(ms);
