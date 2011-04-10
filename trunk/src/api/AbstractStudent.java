@@ -1,6 +1,7 @@
 package api;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * AbstractStudent entity provides the base persistence definition of the
@@ -12,7 +13,7 @@ public abstract class AbstractStudent implements java.io.Serializable {
 	// Fields
 
 	private Integer studentId;
-	private Timestamp dateOfBirth;
+	private Date dateOfBirth;
 	private String studentCode;
 	private String address;
 	private String phoneNumber;
@@ -52,11 +53,11 @@ public abstract class AbstractStudent implements java.io.Serializable {
 		this.studentId = studentId;
 	}
 
-	public Timestamp getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return this.dateOfBirth;
 	}
 
-	public void setDateOfBirth(Timestamp dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

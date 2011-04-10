@@ -1,5 +1,7 @@
 package api;
 
+import java.util.Date;
+
 /**
  * AbstractStaff entity provides the base persistence definition of the Staff
  * entity. @author MyEclipse Persistence Tools
@@ -11,20 +13,29 @@ public abstract class AbstractStaff implements java.io.Serializable {
 
 	private Integer staffId;
 	private String staffCode;
-	private String firstName;
-	private String middleName;
-	private String lastName;
 	private String address;
 	private String phoneNumber;
 	private Boolean sex;
 	private String email;
 	private String photo;
 	private String name;
-	private Short age;
+        private Date dateOfBirth;
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
 
 	// Constructors
 
 	/** default constructor */
+
+
+
 	public AbstractStaff() {
 	}
 
@@ -35,23 +46,7 @@ public abstract class AbstractStaff implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public AbstractStaff(Integer staffId, String staffCode, String firstName,
-			String middleName, String lastName, String address,
-			String phoneNumber, Boolean sex, String email, String photo,
-			String name, Short age) {
-		this.staffId = staffId;
-		this.staffCode = staffCode;
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-		this.sex = sex;
-		this.email = email;
-		this.photo = photo;
-		this.name = name;
-		this.age = age;
-	}
+	
 
 	// Property accessors
 
@@ -69,30 +64,6 @@ public abstract class AbstractStaff implements java.io.Serializable {
 
 	public void setStaffCode(String staffCode) {
 		this.staffCode = staffCode;
-	}
-
-	public String getFirstName() {
-		return this.firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return this.middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getAddress() {
@@ -143,12 +114,6 @@ public abstract class AbstractStaff implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Short getAge() {
-		return this.age;
-	}
-
-	public void setAge(Short age) {
-		this.age = age;
-	}
+	
 
 }
