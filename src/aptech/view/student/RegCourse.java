@@ -16,8 +16,10 @@ import api.Student;
 import api.StudentCourseRegistration;
 import api.StudentCourseRegistrationDAO;
 import api.StudentDAO;
+import api.StudentV2;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -116,30 +118,42 @@ public class RegCourse extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        registration= new StudentCourseRegistration();
-        registrationDAO= new StudentCourseRegistrationDAO();
-        registration.setStudentId(listStudentID.get(cbxStudent.getSelectedIndex()));
-        registration.setClassOfferId(listClassID.get(cbxClass.getSelectedIndex()));
-        registration.setNote(txtNote.getText());
-        registrationDAO.getSession().beginTransaction();
-        registrationDAO.save(registration);
-        registrationDAO.getSession().getTransaction().commit();
+        try {
+            registration = new StudentCourseRegistration();
+            registrationDAO = new StudentCourseRegistrationDAO();
+            registration.setStudentId(listStudentID.get(cbxStudent.getSelectedIndex()));
+            registration.setClassOfferId(listClassID.get(cbxClass.getSelectedIndex()));
+            registration.setNote(txtNote.getText());
+            if (!txtNote.getText().isEmpty()) {
+                registrationDAO.getSession().beginTransaction();
+                registrationDAO.save(registration);
+                registrationDAO.getSession().getTransaction().commit();
+                JOptionPane.showMessageDialog(this, "Add Success!");
+
+            } else {
+                   JOptionPane.showMessageDialog(this,"Note is not alow null", "Eros", JOptionPane.ERROR_MESSAGE);
+
+            }
+
+
+        } catch (Exception e) {
+        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadAll() {
         studentDAO = new StudentDAO();
-        student = new Student();
-        List<Student> list = studentDAO.findAll();
+        student = new StudentV2();
+        List<StudentV2> listStudent = studentDAO.findAllStudentV2();
         listStudentID = new ArrayList<Integer>();
 
 
         classOffer = new ClassOffer();
         classOfferDAO = new ClassOfferDAO();
         List<ClassOffer> listClassName = classOfferDAO.findAll();
-        listClassID= new ArrayList<Integer>();
+        listClassID = new ArrayList<Integer>();
 
-        for ( Student stud : list) {
+        for (StudentV2 stud : listStudent) {
             cbxStudent.addItem(stud.getName());
             listStudentID.add(stud.getStudentId());
         }
@@ -148,14 +162,14 @@ public class RegCourse extends javax.swing.JPanel {
             listClassID.add(clOffer.getId());
         }
     }
-    private Student student;
+    private StudentV2 student;
     private StudentDAO studentDAO;
     private ClassOffer classOffer;
     private ClassOfferDAO classOfferDAO;
-    private  StudentCourseRegistration registration;
-    private  StudentCourseRegistrationDAO  registrationDAO;
-    private  List <Integer> listClassID;
-    private   List<Integer> listStudentID;
+    private StudentCourseRegistration registration;
+    private StudentCourseRegistrationDAO registrationDAO;
+    private List<Integer> listClassID;
+    private List<Integer> listStudentID;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxClass;
     private javax.swing.JComboBox cbxStudent;
