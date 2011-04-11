@@ -26,6 +26,7 @@
 		<mapping resource="api/Subject.hbm.xml" />
 		<mapping resource="api/ClassOffer.hbm.xml" />
 		<mapping resource="api/Student.hbm.xml" />
+                <mapping resource="api/StudentV2.hbm.xml" />
 		<mapping resource="api/StudentCourseRegistration.hbm.xml" />
 		<mapping resource="api/SubjectAssignment.hbm.xml" />
 		<mapping resource="api/Course.hbm.xml" />
