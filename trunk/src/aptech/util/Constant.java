@@ -17,4 +17,5 @@ public interface Constant {
     final String FERMALE="fermale";
     final String MALE="male";
     final String DATE_FORMAT="MM/dd/yyyy";
+    final String ERORR_STRING="Unexpexted error has been occured";
 }
