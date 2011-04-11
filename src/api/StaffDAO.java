@@ -151,7 +151,19 @@ public class StaffDAO extends BaseHibernateDAO {
 			log.error("find all failed", re);
 			throw re;
 		}
-	}public List loadIdName() {
+	}
+          public List findAllStaffV2() {
+        log.debug("finding all StaffV2 instances");
+        try {
+            String queryString = "from StaffV2";
+            Query queryObject = getSession().createQuery(queryString);
+            return queryObject.list();
+        } catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+    }
+        public List loadIdName() {
 		log.debug("finding all Staff instances");
 		try {
 			String queryString = "select StaffId,Name from Staff";
