@@ -10,10 +10,14 @@
  */
 package aptech.view.student;
 
+import api.StaffDAO;
 import api.Student;
 import api.StudentDAO;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
+import aptech.util.IsSure;
+import aptech.util.ValidatePerson;
+import aptech.util.ValidateUtil;
 import aptech.view.control.ImageControl;
 import aptech.view.control.TtsDateChooser;
 import aptech.view.control.image.ImageFileChooser;
@@ -23,6 +27,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -240,7 +245,7 @@ public class InputStudent extends javax.swing.JPanel {
                 imgControl = new ImageControl(fileChooser.getSelectedFile().getAbsolutePath());
 
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
+                JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
             }
         }
         this.pnImg.removeAll();
@@ -251,6 +256,16 @@ public class InputStudent extends javax.swing.JPanel {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
+
+            // validate
+            if (!isValidate()) {
+                return;
+            }
+            // confirm before save
+            if (!IsSure.confirm(confirmSaveMessage)) {
+                return;
+            }
+
             String errorMsg = initStudentFromUI();
             if (errorMsg.isEmpty()) {
                 StudentDAO dao = new StudentDAO();
@@ -258,8 +273,8 @@ public class InputStudent extends javax.swing.JPanel {
                 dao.save(this.student);
                 //dao.savePhoto(student);
                 dao.getSession().getTransaction().commit();
-                
-                
+
+
             } else {
                 AppUtil.showErrMsg(errorMsg);
             }
@@ -319,9 +334,55 @@ public class InputStudent extends javax.swing.JPanel {
         return errMsg;
     }
     // validate student from user input 
-    private void validateFromUI()
-    {
-        
+
+    private boolean isValidate() throws ParseException {
+        String msg = null;
+
+        // validate staff code
+        String staffCode = this.txtStudentCode.getText().trim();
+
+        if (staffCode.isEmpty()) {
+            AppUtil.showErrMsg(Constant.STUDENT_CODE_INVALID);
+            return false;
+        }
+
+        StudentDAO dao = new StudentDAO();
+        List lstStudent = dao.findByStudentCode(staffCode);
+        if (lstStudent.size() > 0) {
+            AppUtil.showErrMsg(Constant.STUDENT_CODE_IS_EXISTED);
+            return false;
+        }
+
+        if (this.txtName.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.NAME_INVALID);
+            return false;
+        }
+
+        if (this.txtAddress.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.ADDRESS_INVALID);
+            return false;
+        }
+
+        msg = ValidatePerson.chekDOB(dateChooserCombo.getDate());
+        if (msg != null) {
+            AppUtil.showErrMsg(msg);
+            return false;
+        }
+
+        msg = ValidatePerson.isPhoneNumber(txtPhoneNumber.getText());
+        if (msg != null) {
+            AppUtil.showErrMsg(msg);
+            return false;
+        }
+        msg = ValidatePerson.isEmail(this.txtEmail.getText().trim());
+        if (msg != null) {
+            AppUtil.showErrMsg(msg);
+            return false;
+        }
+
+
+
+        return true;
     }
 
     protected void initStudentFromModel(Student studentFromModel) {
@@ -335,12 +396,15 @@ public class InputStudent extends javax.swing.JPanel {
             initDateChooser(student.getDateOfBirth());
             this.imgControl = new ImageControl(student.getPhoto());
             this.pnImg.add(imgControl);
-            if(student.getSex())
+            if (student.getSex()) {
                 this.cmbSex.setSelectedIndex(1);
+            }
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
+            JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
         }
     }
+    String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
+    String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
     TtsDateChooser dateChooserCombo;
     protected Student student;
     private ImageControl imgControl;
