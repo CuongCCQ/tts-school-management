@@ -24,7 +24,7 @@
     <property name="email" type="java.lang.String">
       <column name="Email"/>
     </property>
-       <property name="photo" type="binary">
+    <property name="photo" type="binary">
       <column name="Photo"/>
     </property>
     <property name="name" type="java.lang.String">
