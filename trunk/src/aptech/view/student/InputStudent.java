@@ -318,6 +318,11 @@ public class InputStudent extends javax.swing.JPanel {
         }
         return errMsg;
     }
+    // validate student from user input 
+    private void validateFromUI()
+    {
+        
+    }
 
     protected void initStudentFromModel(Student studentFromModel) {
         try {

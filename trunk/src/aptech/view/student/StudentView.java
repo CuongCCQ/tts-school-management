@@ -85,7 +85,7 @@ public class StudentView extends BaseSubContentView {
         StudentDAO dao = new StudentDAO();
         List lstStudent = dao.findAllStudentV2();
         bottomModel = new StudentTableModel(lstStudent);
-        bottomTable = new TtsTable(bottomModel);
+        bottomTable = new TtsTable((StudentTableModel)bottomModel);
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
 
             public void editingStopped(ChangeEvent e) {
@@ -119,16 +119,16 @@ public class StudentView extends BaseSubContentView {
 
     protected void filter() {
         StudentDAO dao = new StudentDAO();
-        StudentV2 objSearch = this.bottomModel.getLstData().get(0);
+        StudentV2 objSearch =((StudentTableModel) this.bottomModel).getLstData().get(0);
         List<StudentV2> lstStudent = dao.filterByObject(objSearch);
-        bottomModel.setLstData(lstStudent, objSearch);
+        ((StudentTableModel)bottomModel).setLstData(lstStudent, objSearch);
         bottomModel.fireTableDataChanged();
     }
 
     private void doTableSelectionChange() {
         try {
             EditStudent editStudent = new EditStudent();
-            int studentId = this.bottomModel.getLstData().get(bottomTable.getSelectedRow()).getStudentId();
+            int studentId =((StudentTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getStudentId();
             StudentDAO dao = new StudentDAO();
             Student student = dao.findById(studentId);
             editStudent.initStudentFromModel(student);
