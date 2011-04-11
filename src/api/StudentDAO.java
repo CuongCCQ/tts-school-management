@@ -178,25 +178,7 @@ public class StudentDAO extends BaseHibernateDAO {
         }
     }
 
-    public List findAllNameAndID() {
-        log.debug("finding all Student instances");
-        try {
-            List list = new ArrayList();
-            String queryString = "select name,StudentId from Student";
-            Query queryObject = getSession().createQuery(queryString);
-
-            for (Iterator it = queryObject.iterate(); it.hasNext();) {
-                list.add(it.next());
-
-            }
-            return list;
-        } catch (RuntimeException re) {
-            log.error("find all failed", re);
-            throw re;
-        }
-    }
-
-    public List findAllStudentV2() {
+       public List findAllStudentV2() {
         log.debug("finding all StudentV2 instances");
         try {
             String queryString = "from StudentV2";
