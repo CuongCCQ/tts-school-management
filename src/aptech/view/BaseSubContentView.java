@@ -24,6 +24,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import resources.images.PathUtil;
 
 /**
@@ -38,7 +39,7 @@ public abstract class BaseSubContentView {
     protected JPanel subContentPanel;
     protected List<JButton> lstButtons;
     protected TtsTable bottomTable;
-    protected StudentTableModel bottomModel;
+    protected AbstractTableModel bottomModel;
 
     public BaseSubContentView(MainSchool mainSchool) {
         lstButtons = new ArrayList<JButton>();
