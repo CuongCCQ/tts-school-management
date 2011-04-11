@@ -21,6 +21,7 @@
 		</property>
 		<property name="myeclipse.connection.profile">sql2005</property>
 		<mapping resource="api/Staff.hbm.xml" />
+                <mapping resource="api/StaffV2.hbm.xml" />
 		<mapping resource="api/Semester.hbm.xml" />
 		<mapping resource="api/AssigmentSchedule.hbm.xml" />
 		<mapping resource="api/Subject.hbm.xml" />
