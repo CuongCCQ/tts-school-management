@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import api.ClassOfferDAO;
 import api.ClassOffer;
-import api.Staff;
 import api.StaffDAO;
+import api.StaffV2;
 import api.Subject;
 import api.SubjectDAO;
 import api.SubjectAssignment;
@@ -159,7 +159,7 @@ ClassOffer offer;
 SubjectDAO subjectDao;
 Subject subject;
 StaffDAO staffDao;
-Staff staff;
+StaffV2 staffV2;
 SubjectAssignment subjectAss;
 SubjectAssignmentDAO subjectAssDao;
 
@@ -169,22 +169,14 @@ List<Integer> listStaffId= new ArrayList<Integer>();
     @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         int idOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
-
         int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
         int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
-
-
         String minute = txtMinutePerLession.getText();
         String numberOffLession = txtNumberOflession.getText();
         String numberOfAss = txtNumberAss.getText();
-
-
         ValidateUtil validate = new ValidateUtil();
-
         subjectAss = new SubjectAssignment();
         subjectAssDao = new SubjectAssignmentDAO();
-
-
         if(!validate.isEmpty(minute)) {
             txtMinutePerLession.requestFocus();
         }else if (!validate.isEmpty(numberOffLession)) {
@@ -196,19 +188,15 @@ List<Integer> listStaffId= new ArrayList<Integer>();
                 int minuteLession = Integer.parseInt(minute);
                 short numberLession = Short.parseShort(numberOffLession);
                 short numberAss = Short.parseShort(numberOfAss);
-
-                subjectAssDao.getSession().beginTransaction();
-                
+                subjectAssDao.getSession().beginTransaction();              
                 subjectAss.setClassOfferId(idOffer);
                 subjectAss.setSubjectId(idSubject);
                 subjectAss.setStaffId(idStaff);
                 subjectAss.setMinutesPerLession(minuteLession);
                 subjectAss.setNumberOfAssignment(numberAss);
                 subjectAss.setNumberOfLession(numberLession);
-
                 subjectAssDao.save(subjectAss);
                 subjectAssDao.getSession().getTransaction().commit();
-
                 JOptionPane.showMessageDialog(null,"Add new succefully !");
             }catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
@@ -231,11 +219,11 @@ List<Integer> listStaffId= new ArrayList<Integer>();
  public void initStaffCombo()
  {
          staffDao = new StaffDAO();
-        staff = new Staff();
-         List listName= staffDao.findAll();
+        staffV2 = new StaffV2();
+         List listName= staffDao.findAllStaffV2();
          for (Object object : listName) {
-            cbStaff.addItem(((Staff)object).getName());
-           listStaffId.add(((Staff)object).getStaffId());
+            cbStaff.addItem(((StaffV2)object).getName());
+           listStaffId.add(((StaffV2)object).getStaffId());
         }
 }
  public void initSubjectCombo()
