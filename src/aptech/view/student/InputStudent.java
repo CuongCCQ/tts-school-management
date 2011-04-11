@@ -17,19 +17,15 @@ import aptech.util.Constant;
 import aptech.view.control.ImageControl;
 import aptech.view.control.TtsDateChooser;
 import aptech.view.control.image.ImageFileChooser;
-import datechooser.beans.DateChooserCombo;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import resources.images.PathUtil;
 
@@ -42,7 +38,13 @@ public class InputStudent extends javax.swing.JPanel {
     /** Creates new form InputStudent */
     public InputStudent() throws IOException {
         initComponents();
-        initImage();
+        initDefaultImage();
+        initStudentToEdit();
+        initDateChooser();
+    }
+
+    protected void initComponentV2() {
+        initComponents();
     }
 
     /** This method is called from within the constructor to
@@ -71,6 +73,7 @@ public class InputStudent extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnSave = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1000, 300));
 
@@ -130,50 +133,55 @@ public class InputStudent extends javax.swing.JPanel {
             }
         });
 
+        btnDelete.setForeground(new java.awt.Color(204, 0, 0));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtStudentCode, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbSex, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))))
-                        .addGap(100, 100, 100))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtStudentCode, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(263, 263, 263)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbSex, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(100, 100, 100)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -213,10 +221,16 @@ public class InputStudent extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
+                    .addComponent(btnDelete)
                     .addComponent(btnSave))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    protected void initStudentToEdit() {
+        this.btnDelete.setVisible(false);
+        return;
+    }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ImageFileChooser fileChooser = new ImageFileChooser();
@@ -226,7 +240,7 @@ public class InputStudent extends javax.swing.JPanel {
                 imgControl = new ImageControl(fileChooser.getSelectedFile().getAbsolutePath());
 
             } catch (IOException ex) {
-                Logger.getLogger(InputStudent.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
             }
         }
         this.pnImg.removeAll();
@@ -244,6 +258,8 @@ public class InputStudent extends javax.swing.JPanel {
                 dao.save(this.student);
                 //dao.savePhoto(student);
                 dao.getSession().getTransaction().commit();
+                
+                
             } else {
                 AppUtil.showErrMsg(errorMsg);
             }
@@ -254,31 +270,46 @@ public class InputStudent extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void initImage() throws IOException {
-        StudentDAO dao = new StudentDAO();
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void initDefaultImage() throws IOException {
         URL resource = PathUtil.class.getResource(Constant.DEFAULT_IMG_NAME);
-        imgControl=new ImageControl(resource.getPath());
+        imgControl = new ImageControl(resource.getPath());
         this.pnImg.add(imgControl);
+
+    }
+
+    private void initDateChooser() {
         dateChooserCombo = new TtsDateChooser();
         dateChooserCombo.setSize(168, 18);
         this.jPanel1.add(dateChooserCombo);
+    }
 
-
-
+    protected void initDateChooser(Date startDate) {
+        initDateChooser();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        this.dateChooserCombo.setSelectedDate(calendar);
     }
 
     // Get student info input form if validation fail a message will return
     protected String initStudentFromUI() throws ParseException {
         String errMsg = "";
-        this.student = new Student();
+        if (student == null) {
+            this.student = new Student();
+        }
         this.student.setAddress(this.txtAddress.getText().trim());
         this.student.setEmail(this.txtEmail.getText().trim());
         this.student.setName(this.txtName.getText().trim());
-        this.student.setPhoneNumber(this.txtName.getText());
+        this.student.setPhoneNumber(this.txtPhoneNumber.getText());
         this.student.setStudentCode(this.txtStudentCode.getText().trim());
         String cmbSexValue = this.cmbSex.getSelectedItem().toString();
-        if (cmbSexValue.equals(Constant.MALE)) {
+        if (cmbSexValue.equalsIgnoreCase(Constant.MALE)) {
             this.student.setSex(true);
+        } else {
+            this.student.setSex(false);
         }
         this.student.setDateOfBirth(this.dateChooserCombo.getDate());
 
@@ -287,10 +318,33 @@ public class InputStudent extends javax.swing.JPanel {
         }
         return errMsg;
     }
+
+    protected void initStudentFromModel(Student studentFromModel) {
+        try {
+            this.student = studentFromModel;
+            this.txtAddress.setText(student.getAddress());
+            this.txtEmail.setText(student.getEmail());
+            this.txtName.setText(student.getName());
+            this.txtPhoneNumber.setText(student.getPhoneNumber());
+            this.txtStudentCode.setText(student.getStudentCode());
+            initDateChooser(student.getDateOfBirth());
+            this.imgControl = new ImageControl(student.getPhoto());
+            this.pnImg.add(imgControl);
+            if(student.getSex())
+                this.cmbSex.setSelectedIndex(1);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
+        }
+    }
     TtsDateChooser dateChooserCombo;
     protected Student student;
     private ImageControl imgControl;
+
+    public JButton getBtnDelete() {
+        return btnDelete;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox cmbSex;
     private javax.swing.JButton jButton2;

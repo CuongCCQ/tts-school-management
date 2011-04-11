@@ -4,16 +4,27 @@
  */
 package aptech.view;
 
-import aptech.util.AppUtil;
-import aptech.util.Constant;
+import aptech.view.control.TtsTable;
+import aptech.view.student.StudentTableModel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import resources.images.PathUtil;
 
 /**
  *
@@ -26,6 +37,8 @@ public abstract class BaseSubContentView {
     protected MainSchool mainSchool;
     protected JPanel subContentPanel;
     protected List<JButton> lstButtons;
+    protected TtsTable bottomTable;
+    protected StudentTableModel bottomModel;
 
     public BaseSubContentView(MainSchool mainSchool) {
         lstButtons = new ArrayList<JButton>();
@@ -41,7 +54,7 @@ public abstract class BaseSubContentView {
             btn.setIconTextGap(10);
             btn.setFocusPainted(false);
             btn.setContentAreaFilled(false);
-            ImageIcon icon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "setting.png");
+            ImageIcon icon = new ImageIcon(PathUtil.class.getResource("setting.png"));
             btn.setIcon(icon);
             btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
             mainSchool.getLeftPanel().add(btn);
@@ -56,6 +69,8 @@ public abstract class BaseSubContentView {
         this.mainSchool.getLeftPanel().setLayout(layout);
         initLeftPanelButton();
         initSubPanelView();
+        initStartBottomTableModel();
+        initBottomView();
         mainSchool.validate();
         mainSchool.repaint();
     }
@@ -65,17 +80,38 @@ public abstract class BaseSubContentView {
         this.subContentPanel = initStartPanel();
         mainSchool.getRightPanel().removeAll();
         if (this.subContentPanel != null) {
-            mainSchool.getRightPanel().add(this.subContentPanel,BorderLayout.CENTER);
+            mainSchool.getRightPanel().add(this.subContentPanel, BorderLayout.CENTER);
         }
     }
 
-    protected void createNewSubView(JPanel subViewPanel)
-    {
+    // create bottom model
+    private void initBottomView() {        
+        if (bottomModel != null && bottomTable!=null) {
+            JScrollPane pane = new JScrollPane(bottomTable);
+            bottomTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            pane.setPreferredSize(mainSchool.getBottomPanel().getSize());
+            bottomTable.setFillsViewportHeight(true);
+            mainSchool.getBottomPanel().add(pane);
+           
+            
+        }
+    }
+
+    protected void createNewSubView(JPanel subViewPanel) {
         mainSchool.getRightPanel().removeAll();
-        mainSchool.getRightPanel().add(subViewPanel,BorderLayout.CENTER);
+        mainSchool.getRightPanel().add(subViewPanel, BorderLayout.CENTER);
         mainSchool.validate();
         mainSchool.repaint();
     }
 
     protected abstract JPanel initStartPanel();
+
+    // init table and model here
+    protected void initStartBottomTableModel() {
+        return ;
+    }
+
+    
+
+    
 }
