@@ -1,11 +1,9 @@
 package api;
 
-
-
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
@@ -58,9 +56,9 @@ public class StudentDAO extends BaseHibernateDAO {
             long id = student.getStudentId();
             String sql = "update Student set photo=? where studentid=? ";
             SQLQuery query = getSession().createSQLQuery(sql);
-            query.setParameter(0,student.getPhoto());
+            query.setParameter(0, student.getPhoto());
             query.setParameter(1, id);
-            int k=query.executeUpdate();
+            int k = query.executeUpdate();
             System.out.println(k);
             log.debug("save successful");
         } catch (RuntimeException re) {
@@ -179,10 +177,11 @@ public class StudentDAO extends BaseHibernateDAO {
             throw re;
         }
     }
+
     public List findAllNameAndID() {
         log.debug("finding all Student instances");
         try {
-            List list= new ArrayList();
+            List list = new ArrayList();
             String queryString = "select name,StudentId from Student";
             Query queryObject = getSession().createQuery(queryString);
 
@@ -191,6 +190,18 @@ public class StudentDAO extends BaseHibernateDAO {
 
             }
             return list;
+        } catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+    }
+
+    public List findAllStudentV2() {
+        log.debug("finding all StudentV2 instances");
+        try {
+            String queryString = "from StudentV2";
+            Query queryObject = getSession().createQuery(queryString);
+            return queryObject.list();
         } catch (RuntimeException re) {
             log.error("find all failed", re);
             throw re;
@@ -229,5 +240,54 @@ public class StudentDAO extends BaseHibernateDAO {
             log.error("attach failed", re);
             throw re;
         }
+    }
+
+    public List<StudentV2> filterByObject(StudentV2 st) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuider = new StringBuilder("from StudentV2 as model where 1=1");
+
+        // search by student code
+        if (st.getStudentCode() != null && !st.getStudentCode().isEmpty()) {
+            sqlBuider.append("and model.studentCode like ?");
+            params.add("%" + st.getStudentCode() + "%");
+        }
+
+        // search by address
+        if (st.getAddress() != null && !st.getAddress().isEmpty()) {
+            sqlBuider.append("and model.address like ?");
+            params.add("%" + st.getAddress() + "%");
+        }
+        // search by phone number
+        if (st.getPhoneNumber() != null && !st.getPhoneNumber().isEmpty()) {
+            sqlBuider.append("and model.phoneNumber like ?");
+            params.add("%" + st.getPhoneNumber() + "%");
+        }
+        // search by email
+        if (st.getEmail() != null && !st.getEmail().isEmpty()) {
+            sqlBuider.append("and model.email like ?");
+            params.add("%" + st.getEmail() + "%");
+        }
+
+        // search by email
+        if (st.getSex() != null) {
+            sqlBuider.append("and model.sex = ?");
+            params.add(st.getSex());
+        }
+
+        // search by name
+        if (st.getName() != null && !st.getName().isEmpty()) {
+            sqlBuider.append("and model.name like ?");
+            params.add("%" + st.getName() + "%");
+        }
+
+
+        Query queryObj = getSession().createQuery(sqlBuider.toString());
+        for (int i = 0; i < params.size(); i++) {
+            queryObj.setParameter(i, params.get(i));
+        }
+        List<StudentV2> result = queryObj.list();
+
+
+        return result;
     }
 }

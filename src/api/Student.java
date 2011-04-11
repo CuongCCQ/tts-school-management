@@ -1,9 +1,5 @@
 package api;
 
-import java.sql.Blob;
-import java.sql.Timestamp;
-import org.hibernate.Hibernate;
-
 /**
  * Student entity. @author MyEclipse Persistence Tools
  */
