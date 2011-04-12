@@ -2,28 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package aptech.view.semester;
+
 import api.Semester;
 import aptech.view.control.BaseTableModel;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author anhson
  */
-public class semesterTableModel extends BaseTableModel<Semester>{
-     @Override
-    public String[] initLabel() {
-        return new String[] {"Start Date", "Name", "End Date", "Discription"};
-    }
+public class semesterTableModel extends BaseTableModel<Semester> {
 
+    @Override
+    public String[] initLabel() {
+        return new String[]{"Start Date", "Name", "End Date", "Discription"};
+    }
 
     public semesterTableModel(List<Semester> lstData) {
         super();
@@ -32,6 +29,7 @@ public class semesterTableModel extends BaseTableModel<Semester>{
         this.lstData.addAll(lstData);
 
     }
+
     @Override
     public Class getColumnClass(int c) {
         if (lstData.size() > 1) {
@@ -54,7 +52,7 @@ public class semesterTableModel extends BaseTableModel<Semester>{
             return lstData.get(rowIndex).getDescription();
         } else if (columnIndex == 4) {
             return lstData.get(rowIndex).getName();
-        }else {
+        } else {
             return "";
         }
 //        }
@@ -65,21 +63,22 @@ public class semesterTableModel extends BaseTableModel<Semester>{
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         {
             try {
-                //DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                //df.parse((String) aValue);
-                //if (columnIndex == 0) {
-                  //  lstData.get(rowIndex).setStartDate((Date) aValue);
-                //} else if (columnIndex == 1) {
-                  //  lstData.get(rowIndex).setEndDate((Date)aValue);
-                //} else
-                if (columnIndex == 2) {
+                if (columnIndex == 3) {
                     lstData.get(rowIndex).setDescription(aValue.toString());
-                } else if (columnIndex == 3) {
+                } else if (columnIndex == 1) {
                     lstData.get(rowIndex).setName(aValue.toString());
-                } 
+                }
             } catch (Exception ex) {
                 Logger.getLogger(semesterTableModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if(rowIndex!=0 || columnIndex==0 || columnIndex==2)
+            return false;
+        return true;
     }
 }
