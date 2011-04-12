@@ -53,7 +53,7 @@ public class InputSemester extends javax.swing.JPanel {
             this.txtDescription.setText(semester.getDescription());
             
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
+            
         }
     }
     @SuppressWarnings("unchecked")
