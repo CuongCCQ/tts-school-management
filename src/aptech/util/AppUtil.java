@@ -22,4 +22,8 @@ public class AppUtil {
     {
         JOptionPane.showMessageDialog(null, errorMsg, "error", JOptionPane.WARNING_MESSAGE);
     }
+     public static void showNoticeMessage(String msg)
+    {
+        JOptionPane.showMessageDialog(null, msg, "notice", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

@@ -7,6 +7,8 @@ package aptech.view.student;
 import api.Student;
 import api.StudentDAO;
 import api.StudentV2;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
 import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
 import aptech.view.control.TtsTable;
@@ -33,12 +35,13 @@ import javax.swing.event.ListSelectionListener;
 public class StudentView extends BaseSubContentView {
 
     private JButton btnNewStudent;
-    private JButton btnStudentDetail;
+    
     private JButton btnStudentCourseReg;
 
     public StudentView(MainSchool ms) {
         super(ms);
         initButtons();
+        initStartBottomTableModel();
     }
 
     private void initButtons() {
@@ -47,17 +50,16 @@ public class StudentView extends BaseSubContentView {
         btnNewStudent.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(mainSchool, "raise");
+                try {
+                    createNewSubView(new InputStudent());
+                } catch (IOException ex) {
+                    AppUtil.showErrMsg(Constant.ERROR_STRING);
+                }
             }
         });
 
-        btnStudentDetail = new JButton("Show Student Detail");
-        this.lstButtons.add(btnStudentDetail);
-        btnStudentDetail.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        
+      
         btnStudentCourseReg = new JButton("RegCourse");
         this.lstButtons.add(btnStudentCourseReg);
         btnStudentCourseReg.addActionListener(new ActionListener() {

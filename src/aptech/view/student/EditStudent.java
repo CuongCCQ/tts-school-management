@@ -4,6 +4,7 @@
  */
 package aptech.view.student;
 
+import aptech.util.Constant;
 import java.io.IOException;
 
 /**
@@ -21,6 +22,7 @@ public class EditStudent extends InputStudent {
     @Override
     protected void initStudentToEdit() {
         getBtnDelete().setVisible(true);
+        this.confirmSaveMessage=Constant.SURE_TO_UPDATE_STUDENT;
     }
     
 }
