@@ -36,7 +36,7 @@ public class InputSemester extends javax.swing.JPanel {
         initCalendar();
         initSemesterToEdit();
     }
-    protected Semester semester;
+    protected Semester semester= new Semester();
     
     protected void initComponentV2(){
         initComponents();
