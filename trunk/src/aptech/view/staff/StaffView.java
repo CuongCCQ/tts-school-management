@@ -43,7 +43,6 @@ public class StaffView extends BaseSubContentView {
         });
 
     }
-
     @Override
     protected JPanel initStartPanel() {
         try {

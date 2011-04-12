@@ -8,7 +8,6 @@ import api.StudentV2;
 import aptech.view.control.BaseTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.AbstractTableModel;
 
 /**
  *
