@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -208,4 +209,52 @@ public class StaffDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+        public List<StaffV2> filterByObject(StaffV2 stf) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuider = new StringBuilder("from StaffV2 as model where 1=1");
+
+        // search by student code
+        if (stf.getStaffCode() != null && !stf.getStaffCode().isEmpty()) {
+            sqlBuider.append("and model.staffCode like ?");
+            params.add("%" + stf.getStaffCode() + "%");
+        }
+
+        // search by address
+        if (stf.getAddress() != null && !stf.getAddress().isEmpty()) {
+            sqlBuider.append("and model.address like ?");
+            params.add("%" + stf.getAddress() + "%");
+        }
+        // search by phone number
+        if (stf.getPhoneNumber() != null && !stf.getPhoneNumber().isEmpty()) {
+            sqlBuider.append("and model.phoneNumber like ?");
+            params.add("%" + stf.getPhoneNumber() + "%");
+        }
+        // search by email
+        if (stf.getEmail() != null && !stf.getEmail().isEmpty()) {
+            sqlBuider.append("and model.email like ?");
+            params.add("%" + stf.getEmail() + "%");
+        }
+
+        // search by email
+        if (stf.getSex() != null) {
+            sqlBuider.append("and model.sex = ?");
+            params.add(stf.getSex());
+        }
+
+        // search by name
+        if (stf.getName() != null && !stf.getName().isEmpty()) {
+            sqlBuider.append("and model.name like ?");
+            params.add("%" + stf.getName() + "%");
+        }
+
+
+        Query queryObj = getSession().createQuery(sqlBuider.toString());
+        for (int i = 0; i < params.size(); i++) {
+            queryObj.setParameter(i, params.get(i));
+        }
+        List<StaffV2> result = queryObj.list();
+
+
+        return result;
+    }
 }
