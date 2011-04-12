@@ -281,7 +281,7 @@ public class InputStaff extends javax.swing.JPanel {
         StaffDAO staffDAO = new StaffDAO();
         if (new IsSure().confirm()) {
             staffDAO.getSession().beginTransaction();
-            staffDAO.save(staff);
+            staffDAO.delete(staff);
             staffDAO.getSession().getTransaction().commit();
         }
 
