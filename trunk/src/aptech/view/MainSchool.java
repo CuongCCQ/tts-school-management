@@ -59,9 +59,6 @@ public class MainSchool extends javax.swing.JFrame {
     JMenuBar menuBar;
     JToolBar toolBar;
     JList lstMenu;
-    
-
-    
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -239,7 +236,8 @@ public class MainSchool extends javax.swing.JFrame {
         clearAllListView();
         toolBar.add(btnTeacher);
     }
-     private void initCourceButton() {
+
+    private void initCourceButton() {
         JButton btnCource = new JButton();
         ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "course.png");
         btnCource.setIcon(studentIcon);
@@ -253,8 +251,9 @@ public class MainSchool extends javax.swing.JFrame {
         clearAllListView();
         toolBar.add(btnCource);
     }
-    private void clearAllListView(){
-           this.leftPanel.removeAll();
+
+    private void clearAllListView() {
+        this.leftPanel.removeAll();
     }
 
     // </editor-fold>
@@ -295,7 +294,7 @@ public class MainSchool extends javax.swing.JFrame {
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                //new AboutFrame().setVisible(true);
+                new About().setVisible(true);
             }
         });
         helpMenu.add(aboutMenuItem);
@@ -303,7 +302,6 @@ public class MainSchool extends javax.swing.JFrame {
     }
 
 // </editor-fold>
-
     private void loadStudentView(ActionEvent eventData) {
         //this.getContentPane().setBackground(new Color(240,240,240));
         StudentView studentView = new StudentView(this);
@@ -311,19 +309,20 @@ public class MainSchool extends javax.swing.JFrame {
         this.rootWindow.setVisible(true);
     }
 
-     private void loadStaffView(ActionEvent eventData) {
+    private void loadStaffView(ActionEvent eventData) {
         //this.getContentPane().setBackground(new Color(240,240,240));
         StaffView staffView = new StaffView(this);
         staffView.initSubView();
         this.rootWindow.setVisible(true);
     }
-    private void loadCourceView(ActionEvent evenData)
-    {
+
+    private void loadCourceView(ActionEvent evenData) {
         semesterView smView = new semesterView(this);
         smView.initSubView();
         this.rootWindow.setVisible(true);
     }
     // terminate program
+
     private void exitProgram(ActionEvent event) {
         System.exit(1);
     }
