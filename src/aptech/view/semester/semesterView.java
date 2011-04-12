@@ -2,31 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package aptech.view.semester;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
-*/
-import api.StudentV2;
+ */
+
+import api.ClassOffer;
+import api.ClassOfferDAO;
 import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import api.Semester;
 import api.SemesterDAO;
 import aptech.view.control.TtsTable;
-import aptech.view.student.StudentTableModel;
+import aptech.view.staff.ResulPanel;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -42,18 +38,15 @@ import javax.swing.event.ListSelectionListener;
 public class semesterView extends BaseSubContentView {
 
     private JButton btnNewSemester;
-    private JButton btnStudentDetail;
     private JButton btnNewClassOffer;
-    private JButton btnViewClassDetail;
     private JButton btnNewCource;
-    private JButton btnViewCource;
     private JButton btnNewSubject;
-    private JButton btnViewSubject;
     private JButton btnNewAssinment;
-    
+
     public semesterView(MainSchool ms) {
         super(ms);
         initButtons();
+        //initStartBottomTableClassOffer();
     }
 
     private void initButtons() {
@@ -64,25 +57,24 @@ public class semesterView extends BaseSubContentView {
             public void actionPerformed(ActionEvent e) {
                 try {
                     createNewSubView(new InputSemester());
+                    initStartBottomTableModelSemester();
                 } catch (Exception ex) {
                     Logger.getLogger(semesterView.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
 
-        btnStudentDetail = new JButton("Show semester detail");
-        this.lstButtons.add(btnStudentDetail);
-         //Action of class offer
+        //Action of class offer
         btnNewClassOffer = new JButton("Add new input Class Offer");
         this.lstButtons.add(btnNewClassOffer);
         btnNewClassOffer.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-               createNewSubView(new inputClassOffer());
+                createNewSubView(new inputClassOffer());
+                initStartBottomTableClassOffer();
             }
         });
-        btnViewClassDetail = new JButton("Show class offer details");
-        this.lstButtons.add(btnViewClassDetail);
+
         btnNewCource = new JButton("Input new Cource");
         this.lstButtons.add(btnNewCource);
 
@@ -92,20 +84,15 @@ public class semesterView extends BaseSubContentView {
                 createNewSubView(new InputCource());
             }
         });
-        btnViewCource = new JButton("Show cource details");
-        this.lstButtons.add(btnViewCource);
-
 
         btnNewSubject = new JButton("Add new Subject");
         btnNewSubject.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                    createNewSubView(new InputSubject());
+                createNewSubView(new InputSubject());
             }
         });
         this.lstButtons.add(btnNewSubject);
-        btnViewSubject = new JButton("Show subject details");
-        this.lstButtons.add(btnViewSubject);
 
         btnNewAssinment = new JButton("Add new Assinment");
         this.lstButtons.add(btnNewAssinment);
@@ -115,7 +102,7 @@ public class semesterView extends BaseSubContentView {
                 createNewSubView(new InputAssignment());
             }
         });
-        
+
     }
 
     @Override
@@ -128,13 +115,12 @@ public class semesterView extends BaseSubContentView {
         return null;
     }
 
-
-     @Override
+    @Override
     protected void initStartBottomTableModel() {
         SemesterDAO dao = new SemesterDAO();
         List lstSemester = dao.findAll();
         bottomModel = new semesterTableModel(lstSemester);
-        bottomTable = new TtsTable((semesterTableModel)bottomModel);
+        bottomTable = new TtsTable((semesterTableModel) bottomModel);
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
 
             public void editingStopped(ChangeEvent e) {
@@ -172,16 +158,118 @@ public class semesterView extends BaseSubContentView {
 
     protected void filterSemester() {
         SemesterDAO dao = new SemesterDAO();
-        Semester objSearch =((semesterTableModel) this.bottomModel).getLstData().get(0);
+        Semester objSearch = ((semesterTableModel) this.bottomModel).getLstData().get(0);
         List<Semester> lstSemester = dao.filterByObject(objSearch);
-        ((semesterTableModel)bottomModel).setLstData(lstSemester, objSearch);
+        ((semesterTableModel) bottomModel).setLstData(lstSemester, objSearch);
         bottomModel.fireTableDataChanged();
     }
 
     private void doTableSelectionChange() throws Exception {
         try {
             EditSemester editSemester = new EditSemester();
-            int semesterId =((semesterTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSemesterId();
+            int semesterId = ((semesterTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSemesterId();
+            SemesterDAO seDao = new SemesterDAO();
+            Semester semester = seDao.findById(semesterId);
+            editSemester.initSemesterFromModel(semester);
+            createNewSubView(editSemester);
+        } catch (IOException ex) {
+            //JOptionPane.showMessageDialog(btnNewStudent, ex);
+        }
+    }
+
+    protected void initStartBottomTableModelSemester() {
+        SemesterDAO dao = new SemesterDAO();
+        List lstSemester = dao.findAll();
+        bottomModel = new semesterTableModel(lstSemester);
+        bottomTable = new TtsTable((semesterTableModel) bottomModel);
+        bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterSemester();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getDefaultEditor(Boolean.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterSemester();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (bottomTable.getSelectedRow() > 0) {
+                    try {
+                        doTableSelectionChange();
+                    } catch (Exception ex) {
+                        Logger.getLogger(semesterView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        reloadBottomView();
+    }
+    //Class - offer
+
+    protected void initStartBottomTableClassOffer() {
+        ClassOfferDAO dao = new ClassOfferDAO();
+        List lstClasOff = dao.findAll();
+        bottomModel = new ClassOfferTableModel(lstClasOff);
+        bottomTable = new TtsTable((ClassOfferTableModel) bottomModel);
+        bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterSemester();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getDefaultEditor(Boolean.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterClassOff();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (bottomTable.getSelectedRow() > 0) {
+                    try {
+                        doTableSelectionChangeClassOffer();
+                    } catch (Exception ex) {
+                        Logger.getLogger(semesterView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        reloadBottomView();
+    }
+
+    protected void filterClassOff() {
+        ClassOfferDAO dao = new ClassOfferDAO();
+        ClassOffer objSearch = ((ClassOfferTableModel) this.bottomModel).getLstData().get(0);
+        List<ClassOffer> lstClassOffer = dao.filterByObject(objSearch);
+        ((ClassOfferTableModel) bottomModel).setLstData(lstClassOffer, objSearch);
+        bottomModel.fireTableDataChanged();
+    }
+
+    private void doTableSelectionChangeClassOffer() throws Exception {
+        try {
+            EditSemester editSemester = new EditSemester();
+            int semesterId = ((semesterTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSemesterId();
             SemesterDAO seDao = new SemesterDAO();
             Semester semester = seDao.findById(semesterId);
             editSemester.initSemesterFromModel(semester);

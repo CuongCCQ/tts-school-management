@@ -15,13 +15,12 @@ import java.io.IOException;
 import api.SemesterDAO;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Locale;
 import api.Semester;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
+import aptech.util.IsSure;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -56,6 +55,7 @@ public class InputSemester extends javax.swing.JPanel {
             
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -120,7 +120,7 @@ public class InputSemester extends javax.swing.JPanel {
             .addGap(0, 25, Short.MAX_VALUE)
         );
 
-        btnAdd.setText("Add new ");
+        btnAdd.setText("Save");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -131,6 +131,11 @@ public class InputSemester extends javax.swing.JPanel {
         lblName.setText("Name :");
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -193,17 +198,20 @@ public class InputSemester extends javax.swing.JPanel {
     public boolean validateForm()
     {
         if(txtDescription.getText().isEmpty() && txtName.getText().isEmpty()){
-            
             return false;
         }
         else{
             return true;
         }
     }
-    //action add new semester
+    //action add new,update semester
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
        try {
             String errorMsg = initSemesterFromUI();
+
+             if (!IsSure.confirm(confirmSaveMessage)) {
+                return;
+            }
             if (errorMsg.isEmpty()) {
             if(!validateForm())
             {
@@ -234,7 +242,7 @@ public class InputSemester extends javax.swing.JPanel {
                 semester.setName(name);
                 semesterDao.save(semester);
                 semesterDao.getSession().getTransaction().commit();
-                JOptionPane.showMessageDialog(this,"Add new successfuly");
+                JOptionPane.showMessageDialog(this,"Save Data successfuly");
             }
             } else {
                 AppUtil.showErrMsg(errorMsg);
@@ -246,6 +254,20 @@ public class InputSemester extends javax.swing.JPanel {
             
        
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (semester != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                SemesterDAO dao = new SemesterDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(semester);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
+                this.btnDelete.setEnabled(false);
+                this.btnAdd.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 //Action update semesterDAO//method fill calendar
     public  void initCalendar() throws IOException
     {
@@ -272,7 +294,15 @@ public class InputSemester extends javax.swing.JPanel {
      public JButton getBtnDelete() {
         return btnDelete;
     }
+
+ 
+
+
+
+
      protected  Semester semesterB;
+     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
+    String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
