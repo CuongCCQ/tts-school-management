@@ -59,6 +59,7 @@ public abstract class BaseSubContentView {
         GridLayout layout = new GridLayout(mainSchool.getHeight() / 30, 1);
         this.mainSchool.getLeftPanel().removeAll();
         this.mainSchool.getLeftPanel().setLayout(layout);
+        this.mainSchool.getBottomPanel().removeAll();
         initLeftPanelButton();
         initSubPanelView();
         initStartBottomTableModel();
@@ -77,15 +78,28 @@ public abstract class BaseSubContentView {
     }
 
     // create bottom model
-    private void initBottomView() {        
-        if (bottomModel != null && bottomTable!=null) {
+    private void initBottomView() {
+        if (bottomModel != null && bottomTable != null) {
             JScrollPane pane = new JScrollPane(bottomTable);
             bottomTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             pane.setPreferredSize(mainSchool.getBottomPanel().getSize());
             bottomTable.setFillsViewportHeight(true);
             mainSchool.getBottomPanel().add(pane);
-           
-            
+
+        }
+    }
+    // reload bottom view
+
+    protected void reloadBottomView() {
+        if (bottomModel != null && bottomTable != null) {
+            JScrollPane pane = new JScrollPane(bottomTable);
+            bottomTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            pane.setPreferredSize(mainSchool.getBottomPanel().getSize());
+            bottomTable.setFillsViewportHeight(true);
+            this.mainSchool.getBottomPanel().removeAll();
+            mainSchool.getBottomPanel().add(pane);
+            mainSchool.validate();
+            mainSchool.repaint();
         }
     }
 
@@ -100,10 +114,6 @@ public abstract class BaseSubContentView {
 
     // init table and model here
     protected void initStartBottomTableModel() {
-        return ;
+        return;
     }
-
-    
-
-    
 }
