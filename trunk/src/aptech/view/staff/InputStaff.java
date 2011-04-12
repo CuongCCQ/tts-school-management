@@ -12,6 +12,8 @@ package aptech.view.staff;
 
 import api.Staff;
 import api.StaffDAO;
+import api.Student;
+import aptech.util.IsSure;
 import aptech.util.ValidatePerson;
 import aptech.view.control.ImageControl;
 import aptech.view.control.TtsDateChooser;
@@ -20,8 +22,11 @@ import aptech.view.student.InputStudent;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,6 +39,16 @@ public class InputStaff extends javax.swing.JPanel {
     public InputStaff() throws IOException {
         initComponents();
         initImage();
+        initStaffToEdit();
+        initDateChooser();
+    }
+
+    protected void initComponentV2() {
+        initComponents();
+    }
+
+    public JButton getBtnDelete() {
+        return btnDelete;
     }
 
     /** This method is called from within the constructor to
@@ -61,7 +76,8 @@ public class InputStaff extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1000, 300));
 
@@ -114,10 +130,18 @@ public class InputStaff extends javax.swing.JPanel {
             .addGap(0, 16, Short.MAX_VALUE)
         );
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setForeground(new java.awt.Color(255, 51, 102));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
             }
         });
 
@@ -142,7 +166,7 @@ public class InputStaff extends javax.swing.JPanel {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtStaffAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,23 +181,32 @@ public class InputStaff extends javax.swing.JPanel {
                                     .addComponent(cbStaffSex, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtStaffEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(100, 100, 100)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(95, 95, 95))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(523, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(420, 420, 420))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDelete)
+                            .addComponent(btnSave)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -199,15 +232,8 @@ public class InputStaff extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(pnImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -228,7 +254,7 @@ public class InputStaff extends javax.swing.JPanel {
         this.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
             initStaff();
             String bodMesseage = ValidatePerson.chekDOB(dateChooserCombo.getDate());
@@ -236,7 +262,8 @@ public class InputStaff extends javax.swing.JPanel {
             String phoneMesseage = ValidatePerson.isPhoneNumber(txtStaffPhone.getText());
             StaffDAO staffDAO = new StaffDAO();
             System.out.println(txtStaffPhone.getText());
-            if (checkValidate(bodMesseage)&&checkValidate(emailMesseage)&&checkValidate(phoneMesseage)) {
+            if (checkValidate(bodMesseage) && checkValidate(emailMesseage) && checkValidate(phoneMesseage)) {
+                //if(IsSure.confirm(bodMesseage)){}
                 staffDAO.getSession().beginTransaction();
                 staffDAO.save(staff);
                 staffDAO.getSession().getTransaction().commit();
@@ -246,7 +273,19 @@ public class InputStaff extends javax.swing.JPanel {
             e.printStackTrace();
         }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    @SuppressWarnings("static-access")
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        StaffDAO staffDAO = new StaffDAO();
+        if (new IsSure().confirm()) {
+            staffDAO.getSession().beginTransaction();
+            staffDAO.save(staff);
+            staffDAO.getSession().getTransaction().commit();
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
     private boolean checkValidate(String input) {
         boolean check = true;
         if (input != null) {
@@ -287,12 +326,51 @@ public class InputStaff extends javax.swing.JPanel {
 
 
     }
+
+    private void initDateChooser() {
+        dateChooserCombo = new TtsDateChooser();
+        dateChooserCombo.setSize(168, 18);
+        this.jPanel1.add(dateChooserCombo);
+    }
+
+    protected void initDateChooser(Date startDate) {
+        initDateChooser();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        this.dateChooserCombo.setSelectedDate(calendar);
+    }
+
+    protected void initStaffFromModel(Staff studentFromModel) {
+        try {
+            this.staff = studentFromModel;
+            this.txtStaffAddress.setText(staff.getAddress());
+            this.txtStaffEmail.setText(staff.getEmail());
+            this.txtStaffName.setText(staff.getName());
+            this.txtStaffPhone.setText(staff.getPhoneNumber());
+            this.txtStaffCode.setText(staff.getStaffCode());
+            initDateChooser(staff.getDateOfBirth());
+            this.imageControl = new ImageControl(staff.getPhoto());
+            this.pnImg.add(imageControl);
+            if (staff.getSex()) {
+                this.cbStaffSex.setSelectedIndex(1);
+            }
+        } catch (IOException ex) {
+            //JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
+        }
+    }
+
+    protected void initStaffToEdit() {
+        this.btnDelete.setVisible(false);
+        return;
+    }
     private ImageControl imageControl;
     TtsDateChooser dateChooserCombo;
     private Staff staff;
+    //private  JButton btnDelete;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnSave;
     private javax.swing.JComboBox cbStaffSex;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
