@@ -17,10 +17,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Locale;
 import api.Semester;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 public class InputSemester extends javax.swing.JPanel {
     DateChooserCombo chooserCombomStart;
@@ -30,9 +34,28 @@ public class InputSemester extends javax.swing.JPanel {
     public InputSemester() throws Exception {
         initComponents();
         initCalendar();
+        initSemesterToEdit();
     }
-
-   
+    protected Semester semester;
+    
+    protected void initComponentV2(){
+        initComponents();
+    }
+     protected void initSemesterToEdit() {
+        this.btnDelete.setVisible(false);
+        return;
+    }
+    protected void initSemesterFromModel(Semester semesterFromModel){
+       
+        try {
+            this.semester = semesterFromModel;
+            this.txtName.setText(semester.getName());
+            this.txtDescription.setText(semester.getDescription());
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, Constant.ERORR_STRING);
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -49,6 +72,7 @@ public class InputSemester extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
+        btnDelete = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -103,8 +127,10 @@ public class InputSemester extends javax.swing.JPanel {
             }
         });
 
-        lblName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblName.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblName.setText("Name :");
+
+        btnDelete.setText("Delete");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -121,19 +147,19 @@ public class InputSemester extends javax.swing.JPanel {
                             .addComponent(lblDesc))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(panelDateStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(panelDateEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(panelDateEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addComponent(lblTitle)))
                 .addGap(202, 202, 202))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(165, 165, 165)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(251, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,8 +183,10 @@ public class InputSemester extends javax.swing.JPanel {
                     .addComponent(lblDesc)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnAdd)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnDelete))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     //validate from
@@ -174,37 +202,51 @@ public class InputSemester extends javax.swing.JPanel {
     }
     //action add new semester
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-       if(!validateForm())
-       {
-           JOptionPane.showMessageDialog(null, "invalid","System saying",JOptionPane.WARNING_MESSAGE);
-           txtDescription.requestFocus();
-       }else{
-        SemesterDAO semesterDao = new SemesterDAO();
-        df = new SimpleDateFormat("MM/dd/yyyy");
-        Semester semester = new Semester();
-        String dateStart = chooserCombomStart.getText();
-        String dateEnd = chooserCombomEnd.getText();
-        String name = txtName.getText();
-        Date dStart=null;
-        Date dEnd = null;
-        try {
-            dStart = df.parse(dateStart);
-            dEnd = df.parse(dateEnd);
-        } catch (ParseException ex) {
-            Logger.getLogger(InputSemester.class.getName()).log(Level.SEVERE, null, ex);
+       try {
+            String errorMsg = initSemesterFromUI();
+            if (errorMsg.isEmpty()) {
+            if(!validateForm())
+            {
+                JOptionPane.showMessageDialog(null, "invalid","System saying",JOptionPane.WARNING_MESSAGE);
+                txtDescription.requestFocus();
+            }
+            else
+            {
+                SemesterDAO semesterDao = new SemesterDAO();
+                df = new SimpleDateFormat("MM/dd/yyyy");
+                Semester semester = new Semester();
+                String dateStart = chooserCombomStart.getText();
+                String dateEnd = chooserCombomEnd.getText();
+                String name = txtName.getText();
+                Date dStart=null;
+                Date dEnd = null;
+                try {
+                    dStart = df.parse(dateStart);
+                    dEnd = df.parse(dateEnd);
+                } catch (ParseException ex) {
+                    Logger.getLogger(InputSemester.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                String description = txtDescription.getText();
+                semesterDao.getSession().beginTransaction();
+                semester.setDescription(description);
+                semester.setStartDate(dStart);
+                semester.setEndDate(dEnd);
+                semester.setName(name);
+                semesterDao.save(semester);
+                semesterDao.getSession().getTransaction().commit();
+                JOptionPane.showMessageDialog(this,"Add new successfuly");
+            }
+            } else {
+                AppUtil.showErrMsg(errorMsg);
+            }
+        } catch (ParseException ex)
+        {
+            System.out.println(ex);
         }
-        String description = txtDescription.getText();
-        semesterDao.getSession().beginTransaction();
-        semester.setDescription(description);
-        semester.setStartDate(dStart);
-        semester.setEndDate(dEnd);
-        semester.setName(name);
-        semesterDao.save(semester);
-        semesterDao.getSession().getTransaction().commit();
-        JOptionPane.showMessageDialog(this,"Add new successfuly");
-       }
+            
+       
     }//GEN-LAST:event_btnAddActionPerformed
-//method fill calendar
+//Action update semesterDAO//method fill calendar
     public  void initCalendar() throws IOException
     {
         chooserCombomStart = new DateChooserCombo();
@@ -217,8 +259,23 @@ public class InputSemester extends javax.swing.JPanel {
         this.panelDateStart.add(chooserCombomStart);
         this.panelDateEnd.add(chooserCombomEnd);
     }
+     protected String initSemesterFromUI() throws ParseException {
+        String errMsg = "";
+        if (semesterB == null) {
+            this.semesterB = new Semester();
+        }
+        this.semesterB.setDescription(this.txtDescription.getText().trim());
+        this.semesterB.setName(this.txtName.getText().trim());
+        
+        return errMsg;
+    }
+     public JButton getBtnDelete() {
+        return btnDelete;
+    }
+     protected  Semester semesterB;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblDesc;
