@@ -65,18 +65,19 @@ public class semesterTableModel extends BaseTableModel<Semester>{
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         {
             try {
-                DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                df.parse((String) aValue);
-                if (columnIndex == 0) {
-                    lstData.get(rowIndex).setStartDate((Date) aValue);
-                } else if (columnIndex == 1) {
-                    lstData.get(rowIndex).setEndDate((Date)aValue);
-                } else if (columnIndex == 2) {
+                //DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                //df.parse((String) aValue);
+                //if (columnIndex == 0) {
+                  //  lstData.get(rowIndex).setStartDate((Date) aValue);
+                //} else if (columnIndex == 1) {
+                  //  lstData.get(rowIndex).setEndDate((Date)aValue);
+                //} else
+                if (columnIndex == 2) {
                     lstData.get(rowIndex).setDescription(aValue.toString());
                 } else if (columnIndex == 3) {
                     lstData.get(rowIndex).setName(aValue.toString());
                 } 
-            } catch (ParseException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(semesterTableModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
