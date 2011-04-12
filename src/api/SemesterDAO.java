@@ -1,6 +1,7 @@
 package api;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -136,4 +137,23 @@ public class SemesterDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+        public List<Semester> filterByObject(Semester st) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuider = new StringBuilder("from Semester as model where 1=1");
+
+        // search by address
+        if (st.getName() != null && !st.getName().isEmpty()) {
+            sqlBuider.append("and model.name like ?");
+            params.add("%" + st.getName() + "%");
+        }
+        
+        Query queryObj = getSession().createQuery(sqlBuider.toString());
+        for (int i = 0; i < params.size(); i++) {
+            queryObj.setParameter(i, params.get(i));
+        }
+        List<Semester> result = queryObj.list();
+
+
+        return result;
+    }
 }
