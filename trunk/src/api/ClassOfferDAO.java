@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -157,4 +158,23 @@ public class ClassOfferDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+         public List<ClassOffer> filterByObject(ClassOffer CO) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuider = new StringBuilder("from Class_Offer as model where 1=1");
+
+        // search by address
+        if (CO.getClassCode() != null && !CO.getClassCode().isEmpty()) {
+            sqlBuider.append("and model.ClassCode like ?");
+            params.add("%" + CO.getClassCode() + "%");
+        }
+
+        Query queryObj = getSession().createQuery(sqlBuider.toString());
+        for (int i = 0; i < params.size(); i++) {
+            queryObj.setParameter(i, params.get(i));
+        }
+        List<ClassOffer> result = queryObj.list();
+
+
+        return result;
+}
 }
