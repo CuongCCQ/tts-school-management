@@ -214,7 +214,7 @@ public class InputSemester extends javax.swing.JPanel {
             {
                 SemesterDAO semesterDao = new SemesterDAO();
                 df = new SimpleDateFormat("MM/dd/yyyy");
-                Semester semester = new Semester();
+                
                 String dateStart = chooserCombomStart.getText();
                 String dateEnd = chooserCombomEnd.getText();
                 String name = txtName.getText();
