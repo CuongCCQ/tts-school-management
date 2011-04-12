@@ -286,7 +286,18 @@ public class InputStudent extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        if (student != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                StudentDAO dao = new StudentDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(student);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
+                this.btnDelete.setEnabled(false);
+                this.btnSave.setEnabled(false);
+            }
+        }
+
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void initDefaultImage() throws IOException {
