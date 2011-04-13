@@ -53,6 +53,8 @@ public class StaffView extends BaseSubContentView {
             public void actionPerformed(ActionEvent e) {
                 try {
                     createNewSubView(new InputStaff());
+                    //reloadBottomView();
+                    //initStartBottomTableModel();
                 } catch (IOException ex) {
                     Logger.getLogger(StaffView.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -62,6 +64,7 @@ public class StaffView extends BaseSubContentView {
 
             public void actionPerformed(ActionEvent e) {
                 createNewSubView(new ResulPanel());
+                initStartBottomTableModel();
             }
         });
 
