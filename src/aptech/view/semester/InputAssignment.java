@@ -213,7 +213,7 @@ List<Integer> listStaffId= new ArrayList<Integer>();
          List listName= offDao.findAll();
          for (Object object : listName) {
             cbClassOffer.addItem(((ClassOffer)object).getClassCode());
-           listOfferId.add(((ClassOffer)object).getId());
+           listOfferId.add(((ClassOffer)object).getClassOfferId());
         }
 }
  public void initStaffCombo()
