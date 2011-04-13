@@ -10,19 +10,13 @@
  */
 package aptech.view.staff;
 
-import api.Staff;
-import api.StaffDAO;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import api.ClassOffer;
+import api.ClassOfferDAO;
+import api.SubjectAssignment;
+import api.SubjectAssignmentDAO;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -33,7 +27,8 @@ public class ResulPanel extends javax.swing.JPanel {
     /** Creates new form ResulPanel */
     public ResulPanel() {
         initComponents();
-       
+        initClass();
+
     }
 
     /** This method is called from within the constructor to
@@ -46,11 +41,9 @@ public class ResulPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cnxClassName = new javax.swing.JComboBox();
 
-        jLabel1.setText("Student Name");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel1.setText("Class Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -60,8 +53,8 @@ public class ResulPanel extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addComponent(cnxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(188, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -69,16 +62,31 @@ public class ResulPanel extends javax.swing.JPanel {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cnxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(237, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-   
-   
-   
+    void initClass() {
+        int a = 71;
+        List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
+        HashSet<Integer> lstIDClass = new HashSet<Integer>();
+
+        for (SubjectAssignment subjectTemp : test) {
+            lstIDClass.add(subjectTemp.getClassOfferId());
+        }
+        System.out.println(lstIDClass);
+        for (Integer integer : lstIDClass) {
+            //ClassOffer classTemp = new ClassOffer();
+            System.out.println(classOfferDAO.findById(integer).getClassCode());
+        }
+    }
+    private ClassOffer classOffer = new ClassOffer();
+    private ClassOfferDAO classOfferDAO = new ClassOfferDAO();
+    private SubjectAssignment assignment = new SubjectAssignment();
+    private SubjectAssignmentDAO subjectAssignmentDAO = new SubjectAssignmentDAO();
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cnxClassName;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
