@@ -13,6 +13,7 @@ package aptech.view.staff;
 import api.Staff;
 import api.StaffDAO;
 import api.Student;
+import aptech.util.Constant;
 import aptech.util.IsSure;
 import aptech.util.ValidatePerson;
 import aptech.view.control.ImageControl;
@@ -21,6 +22,7 @@ import aptech.view.control.image.ImageFileChooser;
 import aptech.view.student.InputStudent;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import resources.images.PathUtil;
 
 /**
  *
@@ -268,6 +271,7 @@ public class InputStaff extends javax.swing.JPanel {
                 staffDAO.save(staff);
                 staffDAO.getSession().getTransaction().commit();
                 JOptionPane.showMessageDialog(this, "OK!Add success!");
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -313,14 +317,12 @@ public class InputStaff extends javax.swing.JPanel {
     }
 
     private void initImage() throws IOException {
-        StaffDAO dao = new StaffDAO();
-        staff = dao.findById(38);
-        //imgControl=new ImageControl(AppUtil.getAppPath() + Constant.RESOURCE_PATH + Constant.DEFAULT_IMG_NAME);
-        imageControl = new ImageControl(staff.getPhoto());
+        URL resource = PathUtil.class.getResource(Constant.DEFAULT_IMG_NAME);
+        imageControl = new ImageControl(resource.getPath());
         this.pnImg.add(imageControl);
         dateChooserCombo = new TtsDateChooser();
-        dateChooserCombo.setSize(168, 18);
-        this.jPanel1.add(dateChooserCombo);
+        //dateChooserCombo.setSize(168, 18);
+        //this.jPanel1.add(dateChooserCombo);
 
 
 
