@@ -9,6 +9,8 @@
  * Created on Apr 2, 2011, 10:52:42 PM
  */
 
+import aptech.view.MainSchool;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 /**
@@ -20,7 +22,7 @@ public class login extends javax.swing.JFrame {
     /** Creates new form login */
     public login() {
         initComponents();
-       
+       setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /** This method is called from within the constructor to
@@ -146,6 +148,10 @@ public class login extends javax.swing.JFrame {
         }else
         {
             JOptionPane.showMessageDialog(null, "Login sucessffuly");
+            MainSchool main = new MainSchool();
+            this.setVisible(false);
+            main.setVisible(true);
+            
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

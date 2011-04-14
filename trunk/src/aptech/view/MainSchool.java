@@ -294,7 +294,7 @@ public class MainSchool extends javax.swing.JFrame {
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                //new About().setVisible(true);
+                new About().setVisible(true);
             }
         });
         helpMenu.add(aboutMenuItem);
