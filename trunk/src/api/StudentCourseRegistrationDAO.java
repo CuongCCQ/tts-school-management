@@ -91,6 +91,19 @@ public class StudentCourseRegistrationDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+        public List findByStudentCodeAndClassID(Object ClassOfferID,Object StudentID){
+            try {
+                String queryString = "from StudentCourseRegistration as model where model.classOfferId= ? "+
+                        "and model.studentId = ?";
+			Query queryObject = getSession().createQuery(queryString);
+			queryObject.setParameter(0, ClassOfferID);
+                        queryObject.setParameter(1, StudentID);
+			return queryObject.list();
+            } catch (RuntimeException e) {
+                throw  e;
+            }
+
+        }
 
 	public List findByClassOfferId(Object classOfferId) {
 		return findByProperty(CLASS_OFFER_ID, classOfferId);
