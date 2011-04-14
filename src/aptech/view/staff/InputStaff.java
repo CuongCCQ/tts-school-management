@@ -301,7 +301,7 @@ public class InputStaff extends javax.swing.JPanel {
 
     private void initStaff() throws ParseException {
 
-        staff = new Staff();
+       
         staff.setName(txtStaffName.getText());
         staff.setStaffCode(txtStaffCode.getText());
         staff.setAddress(txtStaffAddress.getText());
@@ -321,12 +321,6 @@ public class InputStaff extends javax.swing.JPanel {
         imageControl = new ImageControl(resource.getPath());
         this.pnImg.add(imageControl);
         dateChooserCombo = new TtsDateChooser();
-        //dateChooserCombo.setSize(168, 18);
-        //this.jPanel1.add(dateChooserCombo);
-
-
-
-
     }
 
     private void initDateChooser() {
@@ -367,7 +361,7 @@ public class InputStaff extends javax.swing.JPanel {
     }
     private ImageControl imageControl;
     TtsDateChooser dateChooserCombo;
-    private Staff staff;
+    private Staff staff= new Staff();
     //private  JButton btnDelete;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
