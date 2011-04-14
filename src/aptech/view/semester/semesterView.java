@@ -10,6 +10,8 @@ package aptech.view.semester;
 
 import api.ClassOffer;
 import api.ClassOfferDAO;
+import api.Course;
+import api.CourseDAO;
 import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -82,6 +85,7 @@ public class semesterView extends BaseSubContentView {
 
             public void actionPerformed(ActionEvent e) {
                 createNewSubView(new InputCource());
+                initStartBottomTableModelCourse() ;
             }
         });
 
@@ -276,6 +280,63 @@ public class semesterView extends BaseSubContentView {
             createNewSubView(editOffer);
         } catch (IOException ex) {
             //JOptionPane.showMessageDialog(btnNewStudent, ex);
+        }
+    }
+
+    //Course
+ protected void initStartBottomTableModelCourse() {
+        CourseDAO dao = new CourseDAO();
+        List lstCOurse= dao.findAll();
+        bottomModel = new CourseTableModel(lstCOurse);
+        bottomTable = new TtsTable((CourseTableModel)bottomModel);
+        bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+               filterCourse();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getDefaultEditor(Boolean.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterCourse();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (bottomTable.getSelectedRow() > 0) {
+                    doTableSelectionCourseChange();
+                }
+            }
+        });
+        reloadBottomView();
+    }
+    protected void filterCourse() {
+        CourseDAO dao = new CourseDAO();
+        Course objSearch =((CourseTableModel) this.bottomModel).getLstData().get(0);
+        List<Course> lstStudent = dao.filterByObject(objSearch);
+        ((CourseTableModel)bottomModel).setLstData(lstStudent, objSearch);
+        bottomModel.fireTableDataChanged();
+    }
+
+    private void doTableSelectionCourseChange() {
+        try {
+            EditCource editCourse = new EditCource();
+            int courseId =((CourseTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getId();
+            CourseDAO dao = new CourseDAO();
+            Course course = dao.findById(courseId);
+            editCourse.initCourseFromModel(course);
+            createNewSubView(editCourse);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(btnNewCource, ex);
         }
     }
 }

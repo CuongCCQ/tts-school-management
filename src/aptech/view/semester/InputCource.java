@@ -19,13 +19,81 @@ import aptech.util.ValidateUtil;
 import javax.swing.JOptionPane;
 import api.CourseDAO;
 import api.Course;
-public class InputCource extends javax.swing.JPanel {
-
+import aptech.util.AppUtil;
+import aptech.util.Constant;
+import aptech.util.IsSure;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+import javax.swing.JButton;
+public class InputCource extends javax.swing.JPanel{
+ String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
+ String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
+ protected Course course;
     /** Creates new form InputCource */
     public InputCource() {
         initComponents();
     }
+ protected void initComponentV2() {
+        initComponents();
+    }
+  public JButton getBtnDelete() {
+        return btnDelete;
+    }
+  protected void initCourseFromModel(Course courseFromModel){
+        try {
+            this.course = courseFromModel;
+            this.txtCourceName.setText(course.getCourseName());
+            this.txtDescription.setText(course.getDescription());
+            this.txtCourceCode.setText(course.getCourseCode());
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
+        }
+    }
+   protected String initCourseFromUI() throws ParseException {
+        String errMsg = "";
+        if (course == null) {
+            this.course = new Course();
+        }
+        this.course.setCourseCode(this.txtCourceCode.getText().trim());
+        this.course.setCourseName(this.txtCourceName.getText().trim());
+        this.course.setDescription(this.txtDescription.getText().trim());
+        return errMsg;
+    }
+   private boolean isValidate() throws ParseException {
+        String msg = null;
 
+        // validate staff code
+        String courseCode = this.txtCourceCode.getText().trim();
+
+        if (courseCode.isEmpty()) {
+            AppUtil.showErrMsg(Constant.COURSE_CODE_INVALID);
+            txtCourceCode.requestFocus();
+            return false;
+        }
+
+        CourseDAO dao = new CourseDAO();
+        List lstCourse = dao.findByCourseCode(courseCode);
+        if (lstCourse.size() > 0) {
+            AppUtil.showErrMsg(Constant.Course_CODE_IS_EXISTED);
+            txtCourceCode.requestFocus();
+            return false;
+        }
+
+        if (this.txtCourceName.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.NAME_INVALID);
+            txtCourceName.requestFocus();
+            return false;
+        }
+
+        if (this.txtDescription.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.DESC_COURSE_INVALID);
+            txtDescription.requestFocus();
+            return false;
+        }
+        return true;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -44,6 +112,7 @@ public class InputCource extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
+        btnDelete = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Cource Manager");
@@ -57,7 +126,7 @@ public class InputCource extends javax.swing.JPanel {
         lblDesc.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblDesc.setText("Description :");
 
-        btnAdd.setText("Add new");
+        btnAdd.setText("Save");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -67,6 +136,13 @@ public class InputCource extends javax.swing.JPanel {
         txtDescription.setColumns(20);
         txtDescription.setRows(5);
         jScrollPane1.setViewportView(txtDescription);
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -93,7 +169,9 @@ public class InputCource extends javax.swing.JPanel {
                                             .addComponent(lblTitle)))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(260, 260, 260)
-                        .addComponent(btnAdd)))
+                        .addComponent(btnAdd)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete)))
                 .addContainerGap(148, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -116,56 +194,63 @@ public class InputCource extends javax.swing.JPanel {
                     .addComponent(lblDesc)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAdd)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnDelete))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        ValidateUtil validate = new ValidateUtil();
-        if(!validate.isEmpty(txtCourceName.getText()))
-        {
-            txtCourceName.requestFocus();
-        }
-        else if(!validate.isEmpty(txtCourceCode.getText()))
-        {
-            txtCourceCode.requestFocus();
-        }else if(!validate.isEmpty(txtDescription.getText()))
-        {
-            txtDescription.requestFocus();
-        }else
-        {
-            try{
-            CourseDAO courseDAO = new CourseDAO();
-            Course course = new Course();
-            String couName = txtCourceName.getText();
-            String couCOde= txtCourceCode.getText();
-            String couDesc = txtDescription.getText();
-            
-          if(courseDAO.findByCourseCode(couCOde).size()>0)
-          {
-              JOptionPane.showMessageDialog(null,"Code early exits database !","System saying",JOptionPane.WARNING_MESSAGE);
-              txtCourceCode.requestFocus();
-          }else{
-            courseDAO.getSession().beginTransaction();
-            course.setCourseName(couName);
-            course.setCourseCode(couCOde);
-            course.setDescription(couDesc);
-            courseDAO.save(course);
-            courseDAO.getSession().getTransaction().commit();
-            JOptionPane.showMessageDialog(null,"Insert data succesffuly");
+       
+           try {
+
+            // validate
+            if (!isValidate()) {
+                return;
             }
-         }catch(Exception ex)
-            {
-           JOptionPane.showMessageDialog(null,"Error !","System saying",JOptionPane.ERROR_MESSAGE);
-           ex.printStackTrace();
+            // confirm before save
+            if (!IsSure.confirm(confirmSaveMessage)) {
+                return;
             }
+
+            String errorMsg = initCourseFromUI();
+            if (errorMsg.isEmpty()) {
+                CourseDAO dao = new CourseDAO();
+                dao.getSession().beginTransaction();
+                dao.save(this.course);
+                //dao.savePhoto(student);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showErrMsg(Constant.NOTICE_TO_UPDATE_Course);
+
+            } else {
+                AppUtil.showErrMsg(errorMsg);
+            }
+
+
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
         }
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+            if (course != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                CourseDAO dao = new CourseDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(course);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
+                this.btnDelete.setEnabled(false);
+                this.btnAdd.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCourceName;
     private javax.swing.JLabel lblCourceName1;
