@@ -29,4 +29,16 @@ public interface Constant {
     final String NOTICE_TO_UPDATE_STUDENT = "Save Student successfully";
     final String SURE_TO_DELETE_STUDENT = "are you sure to delete this student";
     final String NOTICE_TO_DELETE_STUDENT = "Delete Student Successfully";
+
+    final String NAME_COURSE_INVALID = "Invalid name";
+    final String DESC_COURSE_INVALID = "Invalid Description";
+    final String COURSE_CODE_INVALID = "Invalid Course code";
+    final String Course_CODE_IS_EXISTED = "This course code is existed in database";
+    final String SURE_TO_SAVE_Course = "are you sure to save the new course to data base";
+    final String NOTICE_TO_SAVE_Course = "Save Course successfully";
+    final String SURE_TO_UPDATE_Course = "are you sure to update course to data base";
+    final String NOTICE_TO_UPDATE_Course = "Save course successfully";
+    final String SURE_TO_DELETE_Course= "are you sure to delete this course";
+    final String NOTICE_TO_DELETE_Course = "Delete course Successfully";
+    
 }
