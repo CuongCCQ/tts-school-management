@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -147,4 +148,35 @@ public class CourseDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+
+        public List<Course> filterByObject(Course st) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuider = new StringBuilder("from Course as model where 1=1");
+
+        // search by className
+        if (st.getCourseName() != null && !st.getCourseName().isEmpty()) {
+            sqlBuider.append("and model.CourseName like ?");
+            params.add("%" + st.getCourseName() + "%");
+        }
+
+        // search by Description
+        if (st.getDescription() != null && !st.getDescription().isEmpty()) {
+            sqlBuider.append("and model.Description like ?");
+            params.add("%" + st.getDescription() + "%");
+        }
+        // search by course code
+        if (st.getCourseCode() != null && !st.getCourseCode().isEmpty()) {
+            sqlBuider.append("and model.CourseCode like ?");
+            params.add("%" + st.getCourseCode() + "%");
+        }
+
+        Query queryObj = getSession().createQuery(sqlBuider.toString());
+        for (int i = 0; i < params.size(); i++) {
+            queryObj.setParameter(i, params.get(i));
+        }
+        List<Course> result = queryObj.list();
+
+
+        return result;
+    }
 }
