@@ -63,6 +63,7 @@ public class semesterTableModel extends BaseTableModel<Semester> {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         {
             try {
+                
                 if (columnIndex == 3) {
                     lstData.get(rowIndex).setDescription(aValue.toString());
                 } else if (columnIndex == 1) {
