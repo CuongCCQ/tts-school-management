@@ -19,12 +19,13 @@ import java.util.logging.Logger;
  */
 public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
 
-    @Override
+   @Override
     public String[] initLabel() {
-        return new String[]{"Class code", "Min student", "Max student", "Semester","Course"};
+        return new String[] {"Class code",  "Min students", "Max students"};
     }
 
-     public ClassOfferTableModel(List<ClassOffer> lstData) {
+
+    public ClassOfferTableModel(List<ClassOffer> lstData) {
         super();
         this.lstData = new ArrayList<ClassOffer>();
         this.lstData.add(new ClassOffer());
@@ -32,8 +33,16 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
 
     }
 
+    @Override
+    public Class getColumnClass(int c) {
+        if (lstData.size() > 1) {
+            return getValueAt(1, c).getClass();
+        }
+        return String.class;
+    }
+
     public Object getValueAt(int rowIndex, int columnIndex) {
-         String value = "";
+        String value = "";
 
 //        if (rowIndex > 0) {
         if (columnIndex == 0) {
@@ -42,35 +51,23 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
             return lstData.get(rowIndex).getMinStudent();
         } else if (columnIndex == 2) {
             return lstData.get(rowIndex).getMaxStudent();
-        } else if (columnIndex == 3) {
-            return lstData.get(rowIndex).getSemesterId();
-        } else if (columnIndex == 4) {
-            return lstData.get(rowIndex).getId();
         } else {
             return "";
         }
+//        }
+
     }
+
     @Override
-     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         {
-            try {
-                if (columnIndex == 1) {
-                    lstData.get(rowIndex).setMinStudent((Integer) aValue);
-                } else if (columnIndex == 2) {
-                    lstData.get(rowIndex).setMaxStudent((Integer) aValue);
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(semesterTableModel.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            if (columnIndex == 0) {
+                lstData.get(rowIndex).setClassCode((String)aValue);
+            } else if (columnIndex == 1) {
+                lstData.get(rowIndex).setMinStudent((Integer)aValue);
+            } else if (columnIndex == 2) {
+                lstData.get(rowIndex).setMaxStudent((Integer)aValue);
+            } 
         }
-
     }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if(rowIndex!=0 || columnIndex==0 || columnIndex==1||columnIndex==2)
-            return false;
-        return true;
-    }
-
 }

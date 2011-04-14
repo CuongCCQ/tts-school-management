@@ -268,12 +268,12 @@ public class semesterView extends BaseSubContentView {
 
     private void doTableSelectionChangeClassOffer() throws Exception {
         try {
-            EditSemester editSemester = new EditSemester();
-            int semesterId = ((semesterTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSemesterId();
-            SemesterDAO seDao = new SemesterDAO();
-            Semester semester = seDao.findById(semesterId);
-            editSemester.initSemesterFromModel(semester);
-            createNewSubView(editSemester);
+            EditClassOffer editOffer = new EditClassOffer();
+            int offerId = ((ClassOfferTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getClassOfferId();
+            ClassOfferDAO coDao = new ClassOfferDAO();
+            ClassOffer classOffer = coDao.findById(offerId);
+            editOffer.initClassOfferModel(classOffer);
+            createNewSubView(editOffer);
         } catch (IOException ex) {
             //JOptionPane.showMessageDialog(btnNewStudent, ex);
         }

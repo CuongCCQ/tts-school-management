@@ -77,7 +77,7 @@ public class semesterTableModel extends BaseTableModel<Semester> {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if(rowIndex!=0 || columnIndex==0 || columnIndex==2)
+        if(rowIndex!=0 || columnIndex==0 || columnIndex==1)
             return false;
         return true;
     }
