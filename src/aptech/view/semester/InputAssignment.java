@@ -8,7 +8,6 @@
  *
  * Created on Apr 10, 2011, 8:29:45 PM
  */
-
 package aptech.view.semester;
 
 /**
@@ -33,6 +32,7 @@ import aptech.util.ValidateUtil;
 import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
 public class InputAssignment extends javax.swing.JPanel {
  String confirmSaveMessage = Constant.SURE_TO_SAVE_ASS;
  String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
@@ -232,26 +232,71 @@ public class InputAssignment extends javax.swing.JPanel {
                 .addContainerGap(86, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+    ClassOfferDAO offDao;
+    ClassOffer offer;
+    SubjectDAO subjectDao;
+    Subject subject;
+    StaffDAO staffDao;
+    StaffV2 staffV2;
+    SubjectAssignment subjectAss;
+    SubjectAssignmentDAO subjectAssDao;
+    List<Integer> listOfferId = new ArrayList<Integer>();
+    List<Integer> listSubjectId = new ArrayList<Integer>();
+    List<Integer> listStaffId = new ArrayList<Integer>();
 
-ClassOfferDAO offDao;
-ClassOffer offer;
-SubjectDAO subjectDao;
-Subject subject;
-StaffDAO staffDao;
-StaffV2 staffV2;
-SubjectAssignment subjectAss;
-SubjectAssignmentDAO subjectAssDao;
-
-List<Integer> listOfferId= new ArrayList<Integer>();
-List<Integer> listSubjectId= new ArrayList<Integer>();
-List<Integer> listStaffId= new ArrayList<Integer>();
     @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+<<<<<<< .mine
+        int idClassOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
+        int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
+        int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
+        String minute = txtMinutePerLession.getText();
+        String numberOffLession = txtNumberOflession.getText();
+        String numberOfAss = txtNumberAss.getText();
+        ValidateUtil validate = new ValidateUtil();
+        subjectAss = new SubjectAssignment();
+        subjectAssDao = new SubjectAssignmentDAO();
+        if (!validate.isEmpty(minute)) {
+            txtMinutePerLession.requestFocus();
+        } else if (!validate.isEmpty(numberOffLession)) {
+            txtNumberOflession.requestFocus();
+        } else if (!validate.isEmpty(numberOfAss)) {
+            txtNumberAss.requestFocus();
+        } else {
+            try {
+                int minuteLession = Integer.parseInt(minute);
+                short numberLession = Short.parseShort(numberOffLession);
+                short numberAss = Short.parseShort(numberOfAss);
+                subjectAssDao.getSession().beginTransaction();
+                subjectAss.setClassOfferId(idClassOffer);
+                subjectAss.setSubjectId(idSubject);
+                subjectAss.setStaffId(idStaff);
+                subjectAss.setMinutesPerLession(minuteLession);
+                subjectAss.setNumberOfAssignment(numberAss);
+                subjectAss.setNumberOfLession(numberLession);
+                if (subjectAssDao.findBySubClassAndStaff(idSubject, idClassOffer, idStaff).isEmpty()) {
+                    subjectAssDao.save(subjectAss);
+                    subjectAssDao.getSession().getTransaction().commit();
+                    JOptionPane.showMessageDialog(null, "Add new succefully !");
+
+                } else {
+                    String meString=cbStaff.getSelectedItem().toString()+" have been ";
+                    meString=meString+" register with "+cbClassOffer.getSelectedItem().toString();
+                    meString=meString+" and "+cbSubject.getSelectedItem().toString();
+                    meString=meString+"\n"+".Please try again!";
+                    JOptionPane.showMessageDialog(this,meString,"",JOptionPane.WARNING_MESSAGE);
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Must is a number !", "System saying", JOptionPane.WARNING_MESSAGE);
+                txtNumberOflession.requestFocus();
+=======
 
         try{
             // validate
             if (!isValidate()) {
                 return;
+>>>>>>> .r126
             }
             // confirm before save
             if (!IsSure.confirm(confirmSaveMessage)) {
@@ -270,7 +315,7 @@ List<Integer> listStaffId= new ArrayList<Integer>();
                 ValidateUtil validate = new ValidateUtil();
                 subjectAss = new SubjectAssignment();
                 subjectAssDao = new SubjectAssignmentDAO();
-        
+
                     try {
                         int minuteLession = Integer.parseInt(minute);
                         short numberLession = Short.parseShort(numberOffLession);
@@ -302,6 +347,10 @@ List<Integer> listStaffId= new ArrayList<Integer>();
         
 }//GEN-LAST:event_btnAddActionPerformed
 
+<<<<<<< .mine
+    public void initClassOffCombo() {
+        offDao = new ClassOfferDAO();
+=======
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (ass != null) {
             if (IsSure.confirm(this.confirmDeleteMessage)) {
@@ -319,34 +368,34 @@ List<Integer> listStaffId= new ArrayList<Integer>();
  public void initClassOffCombo()
  {
          offDao = new ClassOfferDAO();
+>>>>>>> .r126
         offer = new ClassOffer();
-         List listName= offDao.findAll();
-         for (Object object : listName) {
-            cbClassOffer.addItem(((ClassOffer)object).getClassCode());
-           listOfferId.add(((ClassOffer)object).getClassOfferId());
+        List listName = offDao.findAll();
+        for (Object object : listName) {
+            cbClassOffer.addItem(((ClassOffer) object).getClassCode());
+            listOfferId.add(((ClassOffer) object).getClassOfferId());
         }
-}
- public void initStaffCombo()
- {
-         staffDao = new StaffDAO();
+    }
+
+    public void initStaffCombo() {
+        staffDao = new StaffDAO();
         staffV2 = new StaffV2();
-         List listName= staffDao.findAllStaffV2();
-         for (Object object : listName) {
-            cbStaff.addItem(((StaffV2)object).getName());
-           listStaffId.add(((StaffV2)object).getStaffId());
+        List listName = staffDao.findAllStaffV2();
+        for (Object object : listName) {
+            cbStaff.addItem(((StaffV2) object).getName());
+            listStaffId.add(((StaffV2) object).getStaffId());
         }
-}
- public void initSubjectCombo()
- {
+    }
+
+    public void initSubjectCombo() {
         subjectDao = new SubjectDAO();
         subject = new Subject();
-         List listName= subjectDao.findAll();
-         for (Object object : listName) {
-            cbSubject.addItem(((Subject)object).getSubjectName());
-           listSubjectId.add(((Subject)object).getSubjectId());
+        List listName = subjectDao.findAll();
+        for (Object object : listName) {
+            cbSubject.addItem(((Subject) object).getSubjectName());
+            listSubjectId.add(((Subject) object).getSubjectId());
         }
-}
- 
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
@@ -364,5 +413,4 @@ List<Integer> listStaffId= new ArrayList<Integer>();
     private javax.swing.JTextField txtNumberAss;
     private javax.swing.JTextField txtNumberOflession;
     // End of variables declaration//GEN-END:variables
-
 }
