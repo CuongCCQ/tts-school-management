@@ -12,6 +12,11 @@ package aptech.view.staff;
 
 import api.ClassOffer;
 import api.ClassOfferDAO;
+import api.Student;
+import api.StudentCourseRegistration;
+import api.StudentCourseRegistrationDAO;
+import api.StudentDAO;
+import api.StudentV2;
 import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ public class ResulPanel extends javax.swing.JPanel {
     public ResulPanel() {
         initComponents();
         initClass();
+        //initStudent();
+        initSchedu();
 
     }
 
@@ -41,9 +48,23 @@ public class ResulPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        cnxClassName = new javax.swing.JComboBox();
+        cbxClassName = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        cbxStudent = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
 
         jLabel1.setText("Class Name");
+
+        cbxClassName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxClassNameActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Student Code");
+
+        jLabel3.setText("Schedu ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -51,10 +72,16 @@ public class ResulPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
                 .addGap(40, 40, 40)
-                .addComponent(cnxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(188, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cbxStudent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbxClassName, 0, 64, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -62,31 +89,89 @@ public class ResulPanel extends javax.swing.JPanel {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cnxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(237, Short.MAX_VALUE))
+                    .addComponent(cbxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    void initClass() {
-        int a = 71;
-        List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
-        HashSet<Integer> lstIDClass = new HashSet<Integer>();
+    private void cbxClassNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClassNameActionPerformed
+        // TODO add your handling code here:
+        try {
+            int clsOfferID=lstIDClass.get(cbxClassName.getSelectedIndex());
+            List<StudentCourseRegistration> lstReg= new ArrayList<StudentCourseRegistration>();
+            List<Integer> lstStudentID= new ArrayList<Integer>();
+            lstReg= studentCourseRegistrationDAO.findByClassOfferId(clsOfferID);
+            for (StudentCourseRegistration stuIdTemp : lstReg) {
+                              lstStudentID.add(stuIdTemp.getStudentId());
+            }
+            cbxStudent.removeAllItems();
+            for (Integer integer : lstStudentID) {
+                studentV2=studentDAO.findByIdV2(integer);
+                cbxStudent.addItem(studentV2.getName());
 
+            }
+            
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_cbxClassNameActionPerformed
+
+    public void initSchedu(){
+        for (SubjectAssignment subjectAss : test) {
+            //System.out.println(subjectAss.getClassOfferDetailId());
+            lstClassOfferDetail.add(subjectAss.getClassOfferDetailId());
+        }
+        System.out.println(lstClassOfferDetail);
+        
+    }
+
+    void initClass() {
+        HashSet<Integer> hsIDClass = new HashSet<Integer>();
         for (SubjectAssignment subjectTemp : test) {
-            lstIDClass.add(subjectTemp.getClassOfferId());
+            hsIDClass.add(subjectTemp.getClassOfferId());
         }
-        System.out.println(lstIDClass);
+        for (Integer integer : hsIDClass) {
+            cbxClassName.addItem(classOfferDAO.findById(integer).getClassCode());
+            lstIDClass.add(integer);
+           }
+
+
+
+    }
+
+    void initStudent() {
         for (Integer integer : lstIDClass) {
-            //ClassOffer classTemp = new ClassOffer();
-            System.out.println(classOfferDAO.findById(integer).getClassCode());
+            System.out.println(integer);
         }
+
+     
     }
     private ClassOffer classOffer = new ClassOffer();
     private ClassOfferDAO classOfferDAO = new ClassOfferDAO();
     private SubjectAssignment assignment = new SubjectAssignment();
     private SubjectAssignmentDAO subjectAssignmentDAO = new SubjectAssignmentDAO();
+    private StudentV2 studentV2 = new StudentV2();
+    private  StudentDAO studentDAO= new StudentDAO();
+    private  StudentCourseRegistration studentCourseRegistration= new StudentCourseRegistration();
+    private  StudentCourseRegistrationDAO studentCourseRegistrationDAO= new StudentCourseRegistrationDAO();
+    int a = 74;
+    List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
+    List<Integer> lstIDClass = new ArrayList<Integer>();
+    List<Student> lstStudent= new ArrayList<Student>();
+    List<Integer> lstClassOfferDetail= new ArrayList<Integer>();
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cnxClassName;
+    private javax.swing.JComboBox cbxClassName;
+    private javax.swing.JComboBox cbxStudent;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }
