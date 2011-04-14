@@ -164,14 +164,7 @@ List<Integer> listIdCource= new ArrayList<Integer>();
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         try {
-               if(!IsSure.confirm(confirmSaveMessage))
-                {
-                       return;
-                }
-               String errMsg = initOfferFromUI();
-               
-                if(errMsg.isEmpty()){
-                    if(txtClassCode.getText().isEmpty())
+                    if(this.txtClassCode.getText().isEmpty())
                     {
                         JOptionPane.showMessageDialog(null,"Enter class code !","System saying",JOptionPane.WARNING_MESSAGE);
                         txtClassCode.requestFocus();
@@ -221,11 +214,7 @@ List<Integer> listIdCource= new ArrayList<Integer>();
                                  txtMinstudent.requestFocus();
                             }
                         }
-                }else
-                {
-                    AppUtil.showErrMsg(errMsg);
-                }
-            } catch (ParseException ex) {
+            } catch (Exception ex) {
              System.out.print(ex);
         }
     }//GEN-LAST:event_btnAddActionPerformed
