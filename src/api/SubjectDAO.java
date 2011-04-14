@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -146,4 +147,36 @@ public class SubjectDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+
+
+       public List<Subject> filterByObject(Subject st) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder sqlBuider = new StringBuilder("from Subject as model where 1=1");
+
+        // search by code
+        if (st.getSubjectCode() != null && !st.getSubjectCode().isEmpty()) {
+            sqlBuider.append("and model.SubjectCode like ?");
+            params.add("%" + st.getSubjectCode() + "%");
+        }
+
+        // search by name
+        if (st.getSubjectName() != null && !st.getSubjectName().isEmpty()) {
+            sqlBuider.append("and model.SubjectName like ?");
+            params.add("%" + st.getSubjectName() + "%");
+        }
+        // search by Description
+        if (st.getDescription() != null && !st.getDescription().isEmpty()) {
+            sqlBuider.append("and model.Description like ?");
+            params.add("%" + st.getDescription() + "%");
+        }
+
+        Query queryObj = getSession().createQuery(sqlBuider.toString());
+        for (int i = 0; i < params.size(); i++) {
+            queryObj.setParameter(i, params.get(i));
+        }
+        List<Subject> result = queryObj.list();
+
+
+        return result;
+    }
 }

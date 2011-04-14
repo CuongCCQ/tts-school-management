@@ -15,18 +15,17 @@ package aptech.view.semester;
  *
  * @author anhson
  */
-import aptech.util.ValidateUtil;
 import javax.swing.JOptionPane;
 import api.CourseDAO;
 import api.Course;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.IsSure;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.JButton;
 public class InputCource extends javax.swing.JPanel{
+    
  String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
  String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
  protected Course course;
@@ -40,6 +39,7 @@ public class InputCource extends javax.swing.JPanel{
   public JButton getBtnDelete() {
         return btnDelete;
     }
+
   protected void initCourseFromModel(Course courseFromModel){
         try {
             this.course = courseFromModel;

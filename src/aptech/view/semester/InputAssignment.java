@@ -25,11 +25,19 @@ import api.Subject;
 import api.SubjectDAO;
 import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
+import aptech.util.IsSure;
 
 import aptech.util.ValidateUtil;
+import java.text.ParseException;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 public class InputAssignment extends javax.swing.JPanel {
-
+ String confirmSaveMessage = Constant.SURE_TO_SAVE_ASS;
+ String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
+ protected SubjectAssignment ass;
+ protected boolean ok;
     /** Creates new form InputAssignment */
     public InputAssignment() {
         initComponents();
@@ -37,7 +45,64 @@ public class InputAssignment extends javax.swing.JPanel {
         initStaffCombo();
         initSubjectCombo();
     }
+    protected void initComponentV2() {
+        initComponents();
+    }
+    public JButton getBtnDelete() {
+        return btnDelete;
+    }
 
+     protected void initAssFromModel(SubjectAssignment assFromModel){
+        try {
+            this.ass = assFromModel;
+            this.txtMinutePerLession.setText(ass.getMinutesPerLession().toString());
+            this.txtNumberAss.setText(ass.getNumberOfAssignment().toString());
+            this.txtNumberOflession.setText(ass.getNumberOfLession().toString());
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
+        }
+    }
+
+      protected String initAssFromUI() throws ParseException {
+        String errMsg = "";
+        if (ass == null) {
+            this.ass = new SubjectAssignment();
+        }
+        try{
+            this.ass.setMinutesPerLession(Integer.parseInt( this.txtMinutePerLession.getText().trim()));
+            this.ass.setNumberOfAssignment(Short.parseShort(this.txtNumberAss.getText().trim()));
+            this.ass.setNumberOfLession(Short.parseShort(this.txtNumberOflession.getText().trim()));
+            ok = true;
+        }catch(NumberFormatException nEx)
+        {
+            
+             ok = false;
+        }
+        return errMsg;
+    }
+
+
+       private boolean isValidate() throws ParseException {
+           
+        if (this.txtMinutePerLession.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Enter minute per lesson !");
+            txtMinutePerLession.requestFocus();
+            return false;
+        }
+
+        if (this.txtNumberAss.getText().trim().isEmpty()) {
+           JOptionPane.showMessageDialog(null,"Enter number ass !");
+            txtNumberAss.requestFocus();
+            return false;
+        }
+        if (this.txtNumberOflession.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Enter number of lession !");
+            txtNumberOflession.requestFocus();
+            return false;
+        }
+        return true;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -61,23 +126,24 @@ public class InputAssignment extends javax.swing.JPanel {
         lblStaff1 = new javax.swing.JLabel();
         cbSubject = new javax.swing.JComboBox();
         txtNumberOflession = new javax.swing.JTextField();
+        btnDelete = new javax.swing.JButton();
 
-        lblClass.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblClass.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblClass.setText("Class :");
 
-        lblStaff.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblStaff.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblStaff.setText("Staff :");
 
-        lblNumberOf.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNumberOf.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblNumberOf.setText("Number of lession :");
 
-        lblNumberOfAss.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNumberOfAss.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblNumberOfAss.setText("Number of Assiment :");
 
-        lblMinutePer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblMinutePer.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblMinutePer.setText("Minute per lession :");
 
-        lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Subject Assinmegt  Manager");
 
         btnAdd.setText("Add new");
@@ -87,8 +153,15 @@ public class InputAssignment extends javax.swing.JPanel {
             }
         });
 
-        lblStaff1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblStaff1.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblStaff1.setText("Subject :");
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -112,8 +185,12 @@ public class InputAssignment extends javax.swing.JPanel {
                             .addComponent(cbClassOffer, 0, 186, Short.MAX_VALUE)
                             .addComponent(cbStaff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtMinutePerLession, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-                            .addComponent(txtNumberAss, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtNumberAss, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(125, 125, 125)
                         .addComponent(lblTitle)))
@@ -149,7 +226,9 @@ public class InputAssignment extends javax.swing.JPanel {
                     .addComponent(lblStaff1)
                     .addComponent(cbSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(86, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -168,43 +247,74 @@ List<Integer> listSubjectId= new ArrayList<Integer>();
 List<Integer> listStaffId= new ArrayList<Integer>();
     @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        int idOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
-        int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
-        int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
-        String minute = txtMinutePerLession.getText();
-        String numberOffLession = txtNumberOflession.getText();
-        String numberOfAss = txtNumberAss.getText();
-        ValidateUtil validate = new ValidateUtil();
-        subjectAss = new SubjectAssignment();
-        subjectAssDao = new SubjectAssignmentDAO();
-        if(!validate.isEmpty(minute)) {
-            txtMinutePerLession.requestFocus();
-        }else if (!validate.isEmpty(numberOffLession)) {
-            txtNumberOflession.requestFocus();
-        }else if(!validate.isEmpty(numberOfAss)) {
-            txtNumberAss.requestFocus();
-        }else {
-            try {
-                int minuteLession = Integer.parseInt(minute);
-                short numberLession = Short.parseShort(numberOffLession);
-                short numberAss = Short.parseShort(numberOfAss);
-                subjectAssDao.getSession().beginTransaction();              
-                subjectAss.setClassOfferId(idOffer);
-                subjectAss.setSubjectId(idSubject);
-                subjectAss.setStaffId(idStaff);
-                subjectAss.setMinutesPerLession(minuteLession);
-                subjectAss.setNumberOfAssignment(numberAss);
-                subjectAss.setNumberOfLession(numberLession);
-                subjectAssDao.save(subjectAss);
-                subjectAssDao.getSession().getTransaction().commit();
-                JOptionPane.showMessageDialog(null,"Add new succefully !");
-            }catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
-                txtNumberOflession.requestFocus();
+
+        try{
+            // validate
+            if (!isValidate()) {
+                return;
             }
-        }
+            // confirm before save
+            if (!IsSure.confirm(confirmSaveMessage)) {
+                return;
+            }
+
+            String errorMsg = initAssFromUI();
+            if (errorMsg.isEmpty()) {
+                
+                int idOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
+                int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
+                int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
+                String minute = txtMinutePerLession.getText();
+                String numberOffLession = txtNumberOflession.getText();
+                String numberOfAss = txtNumberAss.getText();
+                ValidateUtil validate = new ValidateUtil();
+                subjectAss = new SubjectAssignment();
+                subjectAssDao = new SubjectAssignmentDAO();
+        
+                    try {
+                        int minuteLession = Integer.parseInt(minute);
+                        short numberLession = Short.parseShort(numberOffLession);
+                        short numberAss = Short.parseShort(numberOfAss);
+                        subjectAssDao.getSession().beginTransaction();
+                        subjectAss.setClassOfferId(idOffer);
+                        subjectAss.setSubjectId(idSubject);
+                        subjectAss.setStaffId(idStaff);
+                        subjectAss.setMinutesPerLession(minuteLession);
+                        subjectAss.setNumberOfAssignment(numberAss);
+                        subjectAss.setNumberOfLession(numberLession);
+                        subjectAssDao.save(subjectAss);
+                        subjectAssDao.getSession().getTransaction().commit();
+                        JOptionPane.showMessageDialog(null,"Add new succefully !");
+                    }catch(NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
+                        txtNumberOflession.requestFocus();
+                    }
+            }
+      }catch(Exception ex)
+      {
+          if(!ok){
+             JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
+          }else
+          {
+              JOptionPane.showMessageDialog(null,"Update suceffuly !");
+          }
+      }
         
 }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (ass != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(ass);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_ASS);
+                this.btnDelete.setEnabled(false);
+                this.btnAdd.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
  public void initClassOffCombo()
  {
@@ -239,6 +349,7 @@ List<Integer> listStaffId= new ArrayList<Integer>();
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JComboBox cbClassOffer;
     private javax.swing.JComboBox cbStaff;
     private javax.swing.JComboBox cbSubject;

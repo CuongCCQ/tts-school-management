@@ -40,5 +40,26 @@ public interface Constant {
     final String NOTICE_TO_UPDATE_Course = "Save course successfully";
     final String SURE_TO_DELETE_Course= "are you sure to delete this course";
     final String NOTICE_TO_DELETE_Course = "Delete course Successfully";
-    
+
+    final String NAME_SUBJECT_INVALID = "Invalid name";
+    final String DESC_SUBJECT_INVALID = "Invalid Description";
+    final String SUBJECT_CODE_INVALID = "Invalid Subject code";
+    final String SUBJECT_CODE_IS_EXISTED = "This Subject code is existed in database";
+    final String SURE_TO_SAVE_SUBJECT = "are you sure to save the new subject to data base";
+    final String NOTICE_TO_SAVE_SUBJECT = "Save Subject successfully";
+    final String SURE_TO_UPDATE_Subject = "are you sure to update subject to data base";
+    final String NOTICE_TO_UPDATE_Subject = "Save subject successfully";
+    final String SURE_TO_DELETE_Subject= "are you sure to delete this subject";
+    final String NOTICE_TO_DELETE_Subject = "Delete subject Successfully";
+
+     final String NAME_ASS_INVALID = "Invalid name";
+    final String MINUTE_PER_LESSON = "Invalid Minute per Lesson";
+    final String NUMBER_OF_LESSON = "Invalid number of lesson";
+
+    final String SURE_TO_SAVE_ASS = "are you sure to save the new ass to data base";
+    final String NOTICE_TO_SAVE_ASS = "Save ASS successfully";
+    final String SURE_TO_UPDATE_ASS = "are you sure to update ass to data base";
+    final String NOTICE_TO_UPDATE_ASS = "Save ass successfully";
+    final String SURE_TO_DELETE_ASS= "are you sure to delete this ASS";
+    final String NOTICE_TO_DELETE_ASS = "Delete Ass Successfully";
 }

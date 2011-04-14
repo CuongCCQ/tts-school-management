@@ -14,16 +14,84 @@ package aptech.view.semester;
 import api.SubjectDAO;
 import aptech.util.ValidateUtil;
 import api.Subject;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
+import aptech.util.IsSure;
+import java.text.ParseException;
+import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 /**
  *
  * @author anhson
  */
 public class InputSubject extends javax.swing.JPanel {
-
+    String confirmSaveMessage = Constant.SURE_TO_SAVE_SUBJECT;
+    String confirmDeleteMessage = Constant.SURE_TO_DELETE_Subject;
+    protected Subject subject;
     /** Creates new form InputSubject */
     public InputSubject() {
         initComponents();
+    }
+     protected void initComponentV2() {
+        initComponents();
+    }
+     public JButton getBtnDelete() {
+        return btnDelete;
+    }
+    protected void initSubjectFromModel(Subject subjectFromModel){
+        try {
+            this.subject = subjectFromModel;
+            this.txtSubCode.setText(subject.getSubjectCode());
+            this.txtSubName.setText(subject.getSubjectName());
+            this.txtDescription.setText(subject.getDescription());
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
+        }
+    }
+   protected String initSubjectFromUI() throws ParseException {
+        String errMsg = "";
+        if (subject == null) {
+            this.subject = new Subject();
+        }
+        this.subject.setSubjectCode(this.txtSubCode.getText().trim());
+        this.subject.setSubjectName(this.txtSubName.getText().trim());
+        this.subject.setDescription(this.txtDescription.getText().trim());
+        return errMsg;
+    }
+    private boolean isValidate() throws ParseException {
+        String msg = null;
+
+        // validate staff code
+        String subjectCode = this.txtSubCode.getText().trim();
+
+        if (subjectCode.isEmpty()) {
+            AppUtil.showErrMsg(Constant.SUBJECT_CODE_INVALID);
+            txtSubCode.requestFocus();
+            return false;
+        }
+
+        SubjectDAO dao = new SubjectDAO();
+        List lstCourse = dao.findBySubjectCode(subjectCode);
+        if (lstCourse.size() > 0) {
+            AppUtil.showErrMsg(Constant.SUBJECT_CODE_IS_EXISTED);
+            txtSubCode.requestFocus();
+            return false;
+        }
+
+        if (this.txtSubName.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.NAME_SUBJECT_INVALID);
+            txtSubName.requestFocus();
+            return false;
+        }
+
+        if (this.txtDescription.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.DESC_SUBJECT_INVALID);
+            txtDescription.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     /** This method is called from within the constructor to
@@ -44,12 +112,13 @@ public class InputSubject extends javax.swing.JPanel {
         lblCourceName1 = new javax.swing.JLabel();
         lblCourceName = new javax.swing.JLabel();
         lblTitle = new javax.swing.JLabel();
+        btnDelete = new javax.swing.JButton();
 
         txtDescription.setColumns(20);
         txtDescription.setRows(5);
         jScrollPane1.setViewportView(txtDescription);
 
-        btnAdd.setText("Add new");
+        btnAdd.setText("Save");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -59,14 +128,21 @@ public class InputSubject extends javax.swing.JPanel {
         lblDesc.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblDesc.setText("Description :");
 
-        lblCourceName1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblCourceName1.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblCourceName1.setText("Subject code :");
 
-        lblCourceName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblCourceName.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblCourceName.setText("Subject Name :");
 
-        lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Subject Manager");
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -76,21 +152,20 @@ public class InputSubject extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblCourceName)
+                            .addComponent(lblDesc)
+                            .addComponent(lblCourceName1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtSubCode, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtSubName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblCourceName)
-                                    .addComponent(lblDesc)
-                                    .addComponent(lblCourceName1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtSubCode, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtSubName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(207, 207, 207)
-                                .addComponent(btnAdd))))
+                                .addComponent(btnAdd)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDelete))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(104, 104, 104)
                         .addComponent(lblTitle)))
@@ -116,49 +191,63 @@ public class InputSubject extends javax.swing.JPanel {
                     .addComponent(lblDesc)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAdd)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnDelete))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        ValidateUtil validate = new ValidateUtil();
-        if(!validate.isEmpty(txtSubName.getText())) {
-            txtSubName.requestFocus();
-        } else if(!validate.isEmpty(txtSubCode.getText())) {
-            txtSubCode.requestFocus();
-        }else if(!validate.isEmpty(txtDescription.getText())) {
-            txtDescription.requestFocus();
-        }else {
-            try{
-                SubjectDAO subDAO = new SubjectDAO();
-                Subject subject = new Subject();
-                String subName = txtSubName.getText();
-                String subCOde= txtSubCode.getText();
-                String subDesc = txtDescription.getText();
+           try {
 
-                if(subDAO.findBySubjectCode(subCOde).size()>0) {
-                    JOptionPane.showMessageDialog(null,"Code early exits database !","System saying",JOptionPane.WARNING_MESSAGE);
-                    txtSubCode.requestFocus();
-                }else{
-                    subDAO.getSession().beginTransaction();
-                    subject.setSubjectName(subName);
-                    subject.setSubjectCode(subCOde);
-                    subject.setDescription(subDesc);
-                    subDAO.save(subject);
-                    subDAO.getSession().getTransaction().commit();
-                    JOptionPane.showMessageDialog(null,"Insert data succesffuly");
+                // validate
+                if (!isValidate()) {
+                    return;
                 }
-            }catch(Exception ex) {
-                JOptionPane.showMessageDialog(null,"Error !","System saying",JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                // confirm before save
+                if (!IsSure.confirm(confirmSaveMessage)) {
+                    return;
+                }
+
+                String errorMsg = initSubjectFromUI();
+                if (errorMsg.isEmpty()) {
+                    SubjectDAO dao = new SubjectDAO();
+                    dao.getSession().beginTransaction();
+                    dao.save(this.subject);
+                    //dao.savePhoto(student);
+                    dao.getSession().getTransaction().commit();
+                    AppUtil.showErrMsg(Constant.NOTICE_TO_UPDATE_Subject);
+
+                } else {
+                    AppUtil.showErrMsg(errorMsg);
+                }
+
+
+            } catch (ParseException ex) {
+                System.out.println(ex.getMessage());
             }
-        }
 }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+         if (subject != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                SubjectDAO dao = new SubjectDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(subject);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_Subject);
+                this.btnDelete.setEnabled(false);
+                this.btnAdd.setEnabled(false);
+            }
+         }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCourceName;
     private javax.swing.JLabel lblCourceName1;
