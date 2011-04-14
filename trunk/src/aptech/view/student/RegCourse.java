@@ -121,22 +121,33 @@ public class RegCourse extends javax.swing.JPanel {
         try {
             registration = new StudentCourseRegistration();
             registrationDAO = new StudentCourseRegistrationDAO();
-            registration.setStudentId(listStudentID.get(cbxStudent.getSelectedIndex()));
-            registration.setClassOfferId(listClassID.get(cbxClass.getSelectedIndex()));
+            int idStudentTemp = listStudentID.get(cbxStudent.getSelectedIndex());
+            registration.setStudentId(idStudentTemp);
+            int idClassOfferIDTemp = listClassID.get(cbxClass.getSelectedIndex());
+            registration.setClassOfferId(idClassOfferIDTemp);
             registration.setNote(txtNote.getText());
+            List<StudentCourseRegistration> lstTEmp = new ArrayList<StudentCourseRegistration>();
+            lstTEmp = registrationDAO.findByStudentCodeAndClassID(idClassOfferIDTemp, idStudentTemp);
             if (!txtNote.getText().isEmpty()) {
-                registrationDAO.getSession().beginTransaction();
-                registrationDAO.save(registration);
-                registrationDAO.getSession().getTransaction().commit();
-                JOptionPane.showMessageDialog(this, "Add Success!");
+                if (lstTEmp.isEmpty()) {
+                    registrationDAO.getSession().beginTransaction();
+                    registrationDAO.save(registration);
+                    registrationDAO.getSession().getTransaction().commit();
+                    JOptionPane.showMessageDialog(this, "Add Success!");
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "This student has been register in this class", "Eros", JOptionPane.ERROR_MESSAGE);
+
+                }
 
             } else {
-                   JOptionPane.showMessageDialog(this,"Note is not alow null", "Eros", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Note is not alow null", "Eros", JOptionPane.ERROR_MESSAGE);
 
             }
 
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -159,7 +170,7 @@ public class RegCourse extends javax.swing.JPanel {
         }
         for (ClassOffer clOffer : listClassName) {
             cbxClass.addItem(clOffer.getClassCode());
-            listClassID.add(clOffer.getId());
+            listClassID.add(clOffer.getClassOfferId());
         }
     }
     private StudentV2 student;
