@@ -207,43 +207,47 @@ public class InputSemester extends javax.swing.JPanel {
     //action add new,update semester
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
        try {
-            String errorMsg = initSemesterFromUI();
-
              if (!IsSure.confirm(confirmSaveMessage)) {
                 return;
-            }
-            if (errorMsg.isEmpty()) {
-            if(!validateForm())
-            {
-                JOptionPane.showMessageDialog(null, "invalid","System saying",JOptionPane.WARNING_MESSAGE);
-                txtDescription.requestFocus();
-            }
-            else
-            {
-                SemesterDAO semesterDao = new SemesterDAO();
-                df = new SimpleDateFormat("MM/dd/yyyy");
-                
-                String dateStart = chooserCombomStart.getText();
-                String dateEnd = chooserCombomEnd.getText();
-                String name = txtName.getText();
-                Date dStart=null;
-                Date dEnd = null;
-                try {
-                    dStart = df.parse(dateStart);
-                    dEnd = df.parse(dateEnd);
-                } catch (ParseException ex) {
-                    Logger.getLogger(InputSemester.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                String description = txtDescription.getText();
-                semesterDao.getSession().beginTransaction();
-                semester.setDescription(description);
-                semester.setStartDate(dStart);
-                semester.setEndDate(dEnd);
-                semester.setName(name);
-                semesterDao.save(semester);
-                semesterDao.getSession().getTransaction().commit();
-                JOptionPane.showMessageDialog(this,"Save Data successfuly");
-            }
+            String errorMsg = initSemesterFromUI();
+            if (errorMsg.isEmpty()) {
+                
+                if(txtName.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Enter name!","System saying",JOptionPane.WARNING_MESSAGE);
+                    txtName.requestFocus();
+                }else if (txtDescription.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(null, "Enter Description!","System saying",JOptionPane.WARNING_MESSAGE);
+                    txtDescription.requestFocus();
+                }
+                else
+                {
+                    SemesterDAO semesterDao = new SemesterDAO();
+                    df = new SimpleDateFormat("MM/dd/yyyy");
+
+                    String dateStart = chooserCombomStart.getText();
+                    String dateEnd = chooserCombomEnd.getText();
+                    String name = txtName.getText();
+                    Date dStart=null;
+                    Date dEnd = null;
+                    try {
+                        dStart = df.parse(dateStart);
+                        dEnd = df.parse(dateEnd);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(InputSemester.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    String description = txtDescription.getText();
+                    semesterDao.getSession().beginTransaction();
+                    semester.setDescription(description);
+                    semester.setStartDate(dStart);
+                    semester.setEndDate(dEnd);
+                    semester.setName(name);
+                    semesterDao.save(semester);
+                    semesterDao.getSession().getTransaction().commit();
+                    JOptionPane.showMessageDialog(this,"Save Data successfuly");
+                }
             } else {
                 AppUtil.showErrMsg(errorMsg);
             }
@@ -288,20 +292,14 @@ public class InputSemester extends javax.swing.JPanel {
         }
         this.semesterB.setDescription(this.txtDescription.getText().trim());
         this.semesterB.setName(this.txtName.getText().trim());
-        
         return errMsg;
     }
      public JButton getBtnDelete() {
         return btnDelete;
     }
-
- 
-
-
-
-
-     protected  Semester semesterB;
-     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
+     
+    protected  Semester semesterB;
+    String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

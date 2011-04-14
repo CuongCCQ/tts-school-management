@@ -18,7 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import api.CourseDAO;
 import api.Course;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
+import aptech.util.IsSure;
 import aptech.util.ValidateUtil;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import java.io.IOException;
+import java.text.ParseException;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 /**
  *
@@ -39,7 +46,9 @@ List<Integer> listIdCource= new ArrayList<Integer>();
         initSemesterCombo();
         initCourceCombo();
     }
-
+     protected void initComponentV2(){
+        initComponents();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -56,6 +65,7 @@ List<Integer> listIdCource= new ArrayList<Integer>();
         cbSemester = new javax.swing.JComboBox();
         cbCource = new javax.swing.JComboBox();
         btnAdd = new javax.swing.JButton();
+        Btndelete = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Class Offer  Manager");
@@ -75,10 +85,17 @@ List<Integer> listIdCource= new ArrayList<Integer>();
         lblCource.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblCource.setText("Cource :");
 
-        btnAdd.setText("Add new");
+        btnAdd.setText("Save");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
+            }
+        });
+
+        Btndelete.setText("Delete");
+        Btndelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtndeleteActionPerformed(evt);
             }
         });
 
@@ -103,11 +120,13 @@ List<Integer> listIdCource= new ArrayList<Integer>();
                             .addComponent(cbSemester, 0, 186, Short.MAX_VALUE)
                             .addComponent(txtClassCode)
                             .addComponent(cbCource, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(1, 1, 1)
+                        .addComponent(Btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(132, 132, 132)
                         .addComponent(lblTitle)))
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,69 +154,95 @@ List<Integer> listIdCource= new ArrayList<Integer>();
                     .addComponent(lblCource)
                     .addComponent(cbCource, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        int idSemester = listId.get(cbSemester.getSelectedIndex());
-        int idCource = listIdCource.get(cbCource.getSelectedIndex());
-        String classOffCode = txtClassCode.getText();
-        String minStudent = txtMinstudent.getText();
-        String maxStudent = txtMaxStudent.getText();
-        ValidateUtil validate = new ValidateUtil();
-        offDao = new ClassOfferDAO();
-        offer = new ClassOffer();
 
-        
-        if(!validate.isEmpty(classOffCode))
-        {
-            txtClassCode.requestFocus();
-        }else if (!validate.isEmpty(minStudent))
-        {
-            txtMinstudent.requestFocus();
-        }else if(!validate.isEmpty(maxStudent))
-        {
-            txtMaxStudent.requestFocus();
-        }else
-        {
-            try
-            {
-                int min = Integer.parseInt(minStudent);
-                int max = Integer.parseInt(maxStudent);
-                if(offDao.findByClassCode(classOffCode).size()>0)
+        try {
+               if(!IsSure.confirm(confirmSaveMessage))
                 {
-                    JOptionPane.showMessageDialog(null,"Code early exits database !","System saying",JOptionPane.WARNING_MESSAGE);
-                    txtClassCode.requestFocus();
+                       return;
+                }
+               String errMsg = initOfferFromUI();
+               
+                if(errMsg.isEmpty()){
+                    if(txtClassCode.getText().isEmpty())
+                    {
+                        JOptionPane.showMessageDialog(null,"Enter class code !","System saying",JOptionPane.WARNING_MESSAGE);
+                        txtClassCode.requestFocus();
+                    }else if (txtMinstudent.getText().isEmpty())
+                    {
+                        JOptionPane.showMessageDialog(null,"Enter min student !","System saying",JOptionPane.WARNING_MESSAGE);
+                        txtMinstudent.requestFocus();
+                    }else if(txtMaxStudent.getText().isEmpty())
+                    {
+                     JOptionPane.showMessageDialog(null,"Enter max student !","System saying",JOptionPane.WARNING_MESSAGE);                       txtMaxStudent.requestFocus();
+                    }
+                    else{
+                        offDao = new ClassOfferDAO();
+                        offer = new ClassOffer();
+                       int idSemester = listId.get(cbSemester.getSelectedIndex());
+                       int idCource = listIdCource.get(cbCource.getSelectedIndex());
+                       String classOffCode = txtClassCode.getText();
+                       String minStudent = txtMinstudent.getText();
+                       String maxStudent = txtMaxStudent.getText();
+                           try
+                           {
+                               int min = Integer.parseInt(minStudent);
+                                int max = Integer.parseInt(maxStudent);
+                                if(offDao.findByClassCode(classOffCode).size()>0)
+                                {
+                                    JOptionPane.showMessageDialog(null,"Code early exits database !","System saying",JOptionPane.WARNING_MESSAGE);
+                                    txtClassCode.requestFocus();
+                             }else{
+                                    offDao.getSession().beginTransaction();
+                                    offer.setClassCode(classOffCode);
+                                    offer.setId(min);
+                                    offer.setMinStudent(min);
+                                    offer.setMaxStudent(max);
+                                    offer.setId(idCource);
+                                    offer.setSemesterId(idSemester);
+
+                                    offDao.save(offer);
+                                    offDao.getSession().getTransaction().commit();
+
+                                    JOptionPane.showMessageDialog(null,"Add new succefully !");
+                                }
+
+
+                            }catch(NumberFormatException ex)
+                            {
+                                JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
+                                 txtMinstudent.requestFocus();
+                            }
+                        }
                 }else
                 {
-                    offDao.getSession().beginTransaction();
-
-                    offer.setClassCode(classOffCode);
-                    offer.setId(min);
-                    offer.setMinStudent(min);
-                    offer.setMaxStudent(max);
-                    offer.setId(idCource);
-                    offer.setSemesterId(idSemester);
-
-                    offDao.save(offer);
-                    offDao.getSession().getTransaction().commit();
-
-                    JOptionPane.showMessageDialog(null,"Add new succefully !");
+                    AppUtil.showErrMsg(errMsg);
                 }
-                
-               
-            }catch(NumberFormatException ex)
-            {
-                 JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
-                 txtMinstudent.requestFocus();
+            } catch (ParseException ex) {
+             System.out.print(ex);
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void BtndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtndeleteActionPerformed
+         if (cOffer != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                ClassOfferDAO dao = new ClassOfferDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(cOffer);
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
+                this.Btndelete.setEnabled(false);
+                this.btnAdd.setVisible(false);
             }
         }
-        
-        
-    }//GEN-LAST:event_btnAddActionPerformed
+    }//GEN-LAST:event_BtndeleteActionPerformed
     public void initSemesterCombo()
     {
          semesDao = new SemesterDAO();
@@ -218,8 +263,40 @@ List<Integer> listIdCource= new ArrayList<Integer>();
            listIdCource.add(((Course)object).getId());
         }
     }
+    //update , delete
+   protected String initOfferFromUI() throws ParseException {
+        String errMsg = "";
+        if (cOffer == null) {
+            this.cOffer = new ClassOffer();
+        }
+        this.cOffer.setClassCode(this.txtClassCode.getText());
+        this.cOffer.setMinStudent(Integer.parseInt(this.txtMinstudent.getText()));
+        this.cOffer.setMaxStudent(Integer.parseInt(this.txtMaxStudent.getText()));
+        
+        return errMsg;
+    }
+    protected  void initClassOfferModel(ClassOffer cOfferFromModel)
+    {
+         try {
+            this.cOffer = cOfferFromModel;
+            this.txtClassCode.setText(cOffer.getClassCode());
+            this.txtMinstudent.setText(cOffer.getMinStudent().toString());
+            this.txtMaxStudent.setText(cOffer.getMaxStudent().toString());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
+        }
+    }
+    public JButton getBtnDelete()
+    {
+        return Btndelete;
+    }
 
+    //--------------------------------
+    String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
+    String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
+    protected ClassOffer  cOffer;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Btndelete;
     private javax.swing.JButton btnAdd;
     private javax.swing.JComboBox cbCource;
     private javax.swing.JComboBox cbSemester;
