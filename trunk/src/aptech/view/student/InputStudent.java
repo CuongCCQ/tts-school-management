@@ -390,9 +390,6 @@ public class InputStudent extends javax.swing.JPanel {
             AppUtil.showErrMsg(msg);
             return false;
         }
-
-
-
         return true;
     }
 

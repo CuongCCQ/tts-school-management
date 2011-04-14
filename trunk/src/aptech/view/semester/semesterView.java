@@ -18,6 +18,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import api.Semester;
 import api.SemesterDAO;
+import api.Subject;
+import api.SubjectAssignment;
+import api.SubjectAssignmentDAO;
+import api.SubjectDAO;
 import aptech.view.control.TtsTable;
 import aptech.view.staff.ResulPanel;
 import java.io.IOException;
@@ -94,6 +98,7 @@ public class semesterView extends BaseSubContentView {
 
             public void actionPerformed(ActionEvent e) {
                 createNewSubView(new InputSubject());
+                initStartBottomTableModelSubject();
             }
         });
         this.lstButtons.add(btnNewSubject);
@@ -104,6 +109,7 @@ public class semesterView extends BaseSubContentView {
 
             public void actionPerformed(ActionEvent e) {
                 createNewSubView(new InputAssignment());
+                initStartBottomTableModelAss();
             }
         });
 
@@ -337,6 +343,120 @@ public class semesterView extends BaseSubContentView {
             createNewSubView(editCourse);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(btnNewCource, ex);
+        }
+    }
+
+
+    //Subject
+     protected void initStartBottomTableModelSubject() {
+        SubjectDAO dao = new SubjectDAO();
+        List lstSubject= dao.findAll();
+        bottomModel = new subjectTableModel(lstSubject);
+        bottomTable = new TtsTable((subjectTableModel)bottomModel);
+        bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+               filterSubject();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getDefaultEditor(Boolean.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterSubject();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (bottomTable.getSelectedRow() > 0) {
+                    doTableSelectionSubjectChange();
+                }
+            }
+        });
+        reloadBottomView();
+    }
+      protected void filterSubject() {
+        SubjectDAO dao = new SubjectDAO();
+        Subject objSearch =((subjectTableModel) this.bottomModel).getLstData().get(0);
+        List<Subject> lstSubject = dao.filterByObject(objSearch);
+        ((subjectTableModel)bottomModel).setLstData(lstSubject, objSearch);
+        bottomModel.fireTableDataChanged();
+    }
+     private void doTableSelectionSubjectChange() {
+        try {
+            EditSubject editSubject = new EditSubject();
+            int sujectId =((subjectTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSubjectId();
+            SubjectDAO dao = new SubjectDAO();
+            Subject subject = dao.findById(sujectId);
+            editSubject.initSubjectFromModel(subject);
+            createNewSubView(editSubject);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(btnNewSubject, ex);
+        }
+    }
+
+     //Assiment
+
+      protected void initStartBottomTableModelAss() {
+        SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
+        List lstSubject= dao.findAll();
+        bottomModel = new AssimentTableModel(lstSubject);
+        bottomTable = new TtsTable((AssimentTableModel)bottomModel);
+        bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+               filterSubject();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getDefaultEditor(Boolean.class).addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent e) {
+                filterSubject();
+            }
+
+            public void editingCanceled(ChangeEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        bottomTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (bottomTable.getSelectedRow() > 0) {
+                    doTableSelectionAssChange();
+                }
+            }
+        });
+        reloadBottomView();
+    }
+//      protected void filterAss() {
+//        SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
+//        SubjectAssignment objSearch =((AssimentTableModel) this.bottomModel).getLstData().get(0);
+//        List<SubjectAssignment> lstAss = dao.filterByObject(objSearch);
+//        ((subjectTableModel)bottomModel).setLstData(lstAss, objSearch);
+//        bottomModel.fireTableDataChanged();
+//    }
+     private void doTableSelectionAssChange() {
+        try {
+            EditAss editAss = new EditAss();
+            int assId =((AssimentTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getClassOfferDetailId();
+            SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
+            SubjectAssignment assSub = dao.findById(assId);
+            editAss.initAssFromModel(assSub);
+            createNewSubView(editAss);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(btnNewAssinment, ex);
         }
     }
 }
