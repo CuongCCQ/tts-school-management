@@ -34,10 +34,12 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class InputAssignment extends javax.swing.JPanel {
- String confirmSaveMessage = Constant.SURE_TO_SAVE_ASS;
- String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
- protected SubjectAssignment ass;
- protected boolean ok;
+
+    String confirmSaveMessage = Constant.SURE_TO_SAVE_ASS;
+    String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
+    protected SubjectAssignment ass;
+    protected boolean ok;
+
     /** Creates new form InputAssignment */
     public InputAssignment() {
         initComponents();
@@ -45,14 +47,16 @@ public class InputAssignment extends javax.swing.JPanel {
         initStaffCombo();
         initSubjectCombo();
     }
+
     protected void initComponentV2() {
         initComponents();
     }
+
     public JButton getBtnDelete() {
         return btnDelete;
     }
 
-     protected void initAssFromModel(SubjectAssignment assFromModel){
+    protected void initAssFromModel(SubjectAssignment assFromModel) {
         try {
             this.ass = assFromModel;
             this.txtMinutePerLession.setText(ass.getMinutesPerLession().toString());
@@ -64,45 +68,44 @@ public class InputAssignment extends javax.swing.JPanel {
         }
     }
 
-      protected String initAssFromUI() throws ParseException {
+    protected String initAssFromUI() throws ParseException {
         String errMsg = "";
         if (ass == null) {
             this.ass = new SubjectAssignment();
         }
-        try{
-            this.ass.setMinutesPerLession(Integer.parseInt( this.txtMinutePerLession.getText().trim()));
+        try {
+            this.ass.setMinutesPerLession(Integer.parseInt(this.txtMinutePerLession.getText().trim()));
             this.ass.setNumberOfAssignment(Short.parseShort(this.txtNumberAss.getText().trim()));
             this.ass.setNumberOfLession(Short.parseShort(this.txtNumberOflession.getText().trim()));
             ok = true;
-        }catch(NumberFormatException nEx)
-        {
-            
-             ok = false;
+        } catch (NumberFormatException nEx) {
+
+            ok = false;
         }
         return errMsg;
     }
 
+    private boolean isValidate() throws ParseException {
 
-       private boolean isValidate() throws ParseException {
-           
         if (this.txtMinutePerLession.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null,"Enter minute per lesson !");
+            JOptionPane.showMessageDialog(null, "Enter minute per lesson !");
             txtMinutePerLession.requestFocus();
             return false;
         }
 
         if (this.txtNumberAss.getText().trim().isEmpty()) {
-           JOptionPane.showMessageDialog(null,"Enter number ass !");
+            JOptionPane.showMessageDialog(null, "Enter number ass !");
             txtNumberAss.requestFocus();
             return false;
         }
         if (this.txtNumberOflession.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null,"Enter number of lession !");
+            JOptionPane.showMessageDialog(null, "Enter number of lession !");
             txtNumberOflession.requestFocus();
             return false;
         }
         return true;
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -157,11 +160,6 @@ public class InputAssignment extends javax.swing.JPanel {
         lblStaff1.setText("Subject :");
 
         btnDelete.setText("Delete");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -246,21 +244,19 @@ public class InputAssignment extends javax.swing.JPanel {
 
     @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-<<<<<<< .mine
         int idClassOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
         int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
         int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
         String minute = txtMinutePerLession.getText();
         String numberOffLession = txtNumberOflession.getText();
         String numberOfAss = txtNumberAss.getText();
-        ValidateUtil validate = new ValidateUtil();
         subjectAss = new SubjectAssignment();
         subjectAssDao = new SubjectAssignmentDAO();
-        if (!validate.isEmpty(minute)) {
+        if (!ValidateUtil.isEmpty(minute)) {
             txtMinutePerLession.requestFocus();
-        } else if (!validate.isEmpty(numberOffLession)) {
+        } else if (!ValidateUtil.isEmpty(numberOffLession)) {
             txtNumberOflession.requestFocus();
-        } else if (!validate.isEmpty(numberOfAss)) {
+        } else if (!ValidateUtil.isEmpty(numberOfAss)) {
             txtNumberAss.requestFocus();
         } else {
             try {
@@ -274,101 +270,29 @@ public class InputAssignment extends javax.swing.JPanel {
                 subjectAss.setMinutesPerLession(minuteLession);
                 subjectAss.setNumberOfAssignment(numberAss);
                 subjectAss.setNumberOfLession(numberLession);
-                if (subjectAssDao.findBySubClassAndStaff(idSubject, idClassOffer, idStaff).isEmpty()) {
+                if (subjectAssDao.findBySubjectAndClass(idSubject, idClassOffer).isEmpty()) {
                     subjectAssDao.save(subjectAss);
                     subjectAssDao.getSession().getTransaction().commit();
                     JOptionPane.showMessageDialog(null, "Add new succefully !");
 
                 } else {
-                    String meString=cbStaff.getSelectedItem().toString()+" have been ";
-                    meString=meString+" register with "+cbClassOffer.getSelectedItem().toString();
-                    meString=meString+" and "+cbSubject.getSelectedItem().toString();
-                    meString=meString+"\n"+".Please try again!";
-                    JOptionPane.showMessageDialog(this,meString,"",JOptionPane.WARNING_MESSAGE);
+                    
+                    String meString = cbSubject.getSelectedItem().toString();
+                    meString = meString + " in " + cbClassOffer.getSelectedItem().toString()+" have been register.";
+                    meString = meString + "\n" + "Please try again the information!";
+                    JOptionPane.showMessageDialog(this, meString, "", JOptionPane.WARNING_MESSAGE);
                 }
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Must is a number !", "System saying", JOptionPane.WARNING_MESSAGE);
-                txtNumberOflession.requestFocus();
-=======
-
-        try{
-            // validate
-            if (!isValidate()) {
-                return;
->>>>>>> .r126
-            }
-            // confirm before save
-            if (!IsSure.confirm(confirmSaveMessage)) {
-                return;
-            }
-
-            String errorMsg = initAssFromUI();
-            if (errorMsg.isEmpty()) {
-                
-                int idOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
-                int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
-                int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
-                String minute = txtMinutePerLession.getText();
-                String numberOffLession = txtNumberOflession.getText();
-                String numberOfAss = txtNumberAss.getText();
-                ValidateUtil validate = new ValidateUtil();
-                subjectAss = new SubjectAssignment();
-                subjectAssDao = new SubjectAssignmentDAO();
-
-                    try {
-                        int minuteLession = Integer.parseInt(minute);
-                        short numberLession = Short.parseShort(numberOffLession);
-                        short numberAss = Short.parseShort(numberOfAss);
-                        subjectAssDao.getSession().beginTransaction();
-                        subjectAss.setClassOfferId(idOffer);
-                        subjectAss.setSubjectId(idSubject);
-                        subjectAss.setStaffId(idStaff);
-                        subjectAss.setMinutesPerLession(minuteLession);
-                        subjectAss.setNumberOfAssignment(numberAss);
-                        subjectAss.setNumberOfLession(numberLession);
-                        subjectAssDao.save(subjectAss);
-                        subjectAssDao.getSession().getTransaction().commit();
-                        JOptionPane.showMessageDialog(null,"Add new succefully !");
-                    }catch(NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
-                        txtNumberOflession.requestFocus();
-                    }
-            }
-      }catch(Exception ex)
-      {
-          if(!ok){
-             JOptionPane.showMessageDialog(null, "Must is a number !","System saying",JOptionPane.WARNING_MESSAGE);
-          }else
-          {
-              JOptionPane.showMessageDialog(null,"Update suceffuly !");
-          }
-      }
-        
+                txtNumberOflession.requestFocus();              
 }//GEN-LAST:event_btnAddActionPerformed
+        }
+    }
 
-<<<<<<< .mine
+       
     public void initClassOffCombo() {
         offDao = new ClassOfferDAO();
-=======
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (ass != null) {
-            if (IsSure.confirm(this.confirmDeleteMessage)) {
-                SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
-                dao.getSession().beginTransaction();
-                dao.delete(ass);
-                dao.getSession().getTransaction().commit();
-                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_ASS);
-                this.btnDelete.setEnabled(false);
-                this.btnAdd.setEnabled(false);
-            }
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
- public void initClassOffCombo()
- {
-         offDao = new ClassOfferDAO();
->>>>>>> .r126
         offer = new ClassOffer();
         List listName = offDao.findAll();
         for (Object object : listName) {
