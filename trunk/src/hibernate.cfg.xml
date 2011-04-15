@@ -29,5 +29,6 @@
     <mapping resource="api/SubjectAssignment.hbm.xml"/>
     <mapping resource="api/Course.hbm.xml"/>
     <mapping resource="api/Attendance.hbm.xml"/>
+    <mapping resource="api/Account.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
