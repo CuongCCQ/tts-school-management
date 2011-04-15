@@ -8,7 +8,6 @@
  *
  * Created on Apr 10, 2011, 10:37:08 AM
  */
-
 package aptech.view.semester;
 
 /**
@@ -24,34 +23,39 @@ import aptech.util.IsSure;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.JButton;
-public class InputCource extends javax.swing.JPanel{
-    
- String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
- String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
- protected Course course;
+
+public class InputCource extends javax.swing.JPanel {
+
+    String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
+    String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
+    protected Course course;
+
     /** Creates new form InputCource */
     public InputCource() {
         initComponents();
     }
- protected void initComponentV2() {
+
+    protected void initComponentV2() {
         initComponents();
     }
-  public JButton getBtnDelete() {
+
+    public JButton getBtnDelete() {
         return btnDelete;
     }
 
-  protected void initCourseFromModel(Course courseFromModel){
+    protected void initCourseFromModel(Course courseFromModel) {
         try {
             this.course = courseFromModel;
             this.txtCourceName.setText(course.getCourseName());
             this.txtDescription.setText(course.getDescription());
             this.txtCourceCode.setText(course.getCourseCode());
-            
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
         }
     }
-   protected String initCourseFromUI() throws ParseException {
+
+    protected String initCourseFromUI() throws ParseException {
         String errMsg = "";
         if (course == null) {
             this.course = new Course();
@@ -61,7 +65,8 @@ public class InputCource extends javax.swing.JPanel{
         this.course.setDescription(this.txtDescription.getText().trim());
         return errMsg;
     }
-   private boolean isValidate() throws ParseException {
+
+    private boolean isValidate() throws ParseException {
         String msg = null;
 
         // validate staff code
@@ -76,9 +81,12 @@ public class InputCource extends javax.swing.JPanel{
         CourseDAO dao = new CourseDAO();
         List lstCourse = dao.findByCourseCode(courseCode);
         if (lstCourse.size() > 0) {
-            AppUtil.showErrMsg(Constant.Course_CODE_IS_EXISTED);
-            txtCourceCode.requestFocus();
-            return false;
+            if (course == null) {
+                AppUtil.showErrMsg(Constant.Course_CODE_IS_EXISTED);
+                txtCourceCode.requestFocus();
+                return false;
+            }
+
         }
 
         if (this.txtCourceName.getText().trim().isEmpty()) {
@@ -94,6 +102,7 @@ public class InputCource extends javax.swing.JPanel{
         }
         return true;
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -202,8 +211,8 @@ public class InputCource extends javax.swing.JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-       
-           try {
+
+        try {
 
             // validate
             if (!isValidate()) {
@@ -234,7 +243,7 @@ public class InputCource extends javax.swing.JPanel{
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-            if (course != null) {
+        if (course != null) {
             if (IsSure.confirm(this.confirmDeleteMessage)) {
                 CourseDAO dao = new CourseDAO();
                 dao.getSession().beginTransaction();
@@ -246,8 +255,6 @@ public class InputCource extends javax.swing.JPanel{
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
@@ -260,5 +267,4 @@ public class InputCource extends javax.swing.JPanel{
     private javax.swing.JTextField txtCourceName;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
-
 }
