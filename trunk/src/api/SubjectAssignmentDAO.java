@@ -52,6 +52,20 @@ public class SubjectAssignmentDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+        public void deleteByStaffID(int staffID) {
+		log.debug("deleting SubjectAssignment instance");
+		try {
+                    String querryString="delete from SubjectAssignment as model where model."
+					+STAFF_ID+" =?";
+                    Query query= getSession().createQuery(querryString);
+                    query.setParameter(0, staffID);
+                    query.executeUpdate();
+
+                } catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}
+	}
 
 	public SubjectAssignment findById(java.lang.Integer id) {
 		log.debug("getting SubjectAssignment instance with id: " + id);
@@ -105,6 +119,20 @@ public class SubjectAssignmentDAO extends BaseHibernateDAO {
                         queryObject.setParameter(1, classId);
                         queryObject.setParameter(2, staffId);
 			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+           public List findBySubjectAndClass(Integer subjectId, int classId) {
+		log.debug("finding SubjectAssignment instance with property Subject, class and staff");
+		try {
+			String queryString = "from SubjectAssignment as model where model."
+					+SUBJECT_ID+ "= ? and model."+CLASS_OFFER_ID+"=?";
+			Query queryObject = getSession().createQuery(queryString);
+			queryObject.setParameter(0,subjectId);
+                        queryObject.setParameter(1, classId);
+                        return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
 			throw re;
