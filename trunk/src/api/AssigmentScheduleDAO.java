@@ -55,7 +55,6 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
             Query query = getSession().createQuery(querryString);
             for (SubjectAssignment subjectAssignment : lstSubjectAssignments) {
                 query.setParameter(0, subjectAssignment.getClassOfferDetailId());
-                System.out.println(subjectAssignment.getClassOfferDetailId());
                 query.executeUpdate();
             }
 
