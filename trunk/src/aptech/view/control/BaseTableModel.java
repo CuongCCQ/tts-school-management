@@ -4,9 +4,15 @@
  */
 package aptech.view.control;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -65,6 +71,7 @@ public abstract class BaseTableModel<E> extends AbstractTableModel {
 
       @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
+          TtsTable ttsTable = new TtsTable(this);
         if (rowIndex < 1) {
             return true;
         }
@@ -73,3 +80,15 @@ public abstract class BaseTableModel<E> extends AbstractTableModel {
 
 
 }
+class ImageRenderer extends DefaultTableCellRenderer {
+    JLabel lbl = new JLabel();
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+        boolean hasFocus, int row, int column) {
+        lbl.setText((String) value);
+        lbl.setIcon(new ImageIcon("/resources/images/home.png"));
+        return lbl;
+    }
+}
+

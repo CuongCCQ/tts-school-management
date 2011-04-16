@@ -5,8 +5,6 @@
 
 package aptech.view.semester;
 
-import java.io.IOException;
-
 /**
  *
  * @author anhson
@@ -17,9 +15,8 @@ public class EditSemester extends InputSemester{
         initComponentV2();
     }
 
-    @Override
-    
+
     protected void initSemesterToEdit() {
-        getBtnDelete().setVisible(true);
+       
     }
 }

@@ -27,7 +27,7 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
         this.lstData = new ArrayList<ClassOffer>();
         this.lstData.add(new ClassOffer());
         this.lstData.addAll(lstData);
-
+        isCellEditable(0,3);
     }
 
     @Override
@@ -74,4 +74,11 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
             }
         }
     }
+        @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {    
+        if(rowIndex!=0 || columnIndex==1 || columnIndex==2||columnIndex==3)
+            return false;
+        return true;
+    }
+    
 }

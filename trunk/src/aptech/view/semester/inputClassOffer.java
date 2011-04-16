@@ -21,9 +21,6 @@ import api.Course;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.IsSure;
-import aptech.util.ValidateUtil;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import java.io.IOException;
 import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -48,6 +45,7 @@ public class inputClassOffer extends javax.swing.JPanel {
         initComponents();
         initSemesterCombo();
         initCourceCombo();
+        getBtnDelete().setVisible(false);
     }
 
     protected void initComponentV2() {

@@ -33,16 +33,11 @@ public class InputSemester extends javax.swing.JPanel {
     public InputSemester() throws Exception {
         initComponents();
         initCalendar();
-        initSemesterToEdit();
     }
     protected Semester semester= new Semester();
     
     protected void initComponentV2(){
         initComponents();
-    }
-     protected void initSemesterToEdit() {
-        this.btnDelete.setVisible(false);
-        return;
     }
     protected void initSemesterFromModel(Semester semesterFromModel){
        
@@ -72,7 +67,6 @@ public class InputSemester extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        btnDelete = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -130,13 +124,6 @@ public class InputSemester extends javax.swing.JPanel {
         lblName.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblName.setText("Name :");
 
-        btnDelete.setText("Delete");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,10 +144,7 @@ public class InputSemester extends javax.swing.JPanel {
                                 .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(panelDateStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(panelDateEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addComponent(lblTitle)))
@@ -188,9 +172,7 @@ public class InputSemester extends javax.swing.JPanel {
                     .addComponent(lblDesc)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
-                    .addComponent(btnDelete))
+                .addComponent(btnAdd)
                 .addContainerGap(99, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -258,20 +240,6 @@ public class InputSemester extends javax.swing.JPanel {
             
        
     }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (semester != null) {
-            if (IsSure.confirm(this.confirmDeleteMessage)) {
-                SemesterDAO dao = new SemesterDAO();
-                dao.getSession().beginTransaction();
-                dao.delete(semester);
-                dao.getSession().getTransaction().commit();
-                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
-                this.btnDelete.setEnabled(false);
-                this.btnAdd.setEnabled(false);
-            }
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
 //Action update semesterDAO//method fill calendar
     public  void initCalendar() throws IOException
     {
@@ -294,16 +262,12 @@ public class InputSemester extends javax.swing.JPanel {
         this.semesterB.setName(this.txtName.getText().trim());
         return errMsg;
     }
-     public JButton getBtnDelete() {
-        return btnDelete;
-    }
      
     protected  Semester semesterB;
     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnDelete;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblDesc;
