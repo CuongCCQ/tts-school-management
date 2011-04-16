@@ -10,9 +10,14 @@
  */
 package aptech.view.staff;
 
+import api.AssigmentSchedule;
+import api.AssigmentScheduleDAO;
 import api.Staff;
 import api.StaffDAO;
 import api.Student;
+import api.SubjectAssignment;
+import api.SubjectAssignmentDAO;
+import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.IsSure;
 import aptech.util.ValidatePerson;
@@ -26,6 +31,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -240,6 +246,7 @@ public class InputStaff extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    @SuppressWarnings("static-access")
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ImageFileChooser fileChooser = new ImageFileChooser();
         int result = fileChooser.showDialog(this, "Select image");
@@ -259,15 +266,18 @@ public class InputStaff extends javax.swing.JPanel {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
-            initStaff();
+
             String bodMesseage = ValidatePerson.chekDOB(dateChooserCombo.getDate());
             String emailMesseage = ValidatePerson.isEmail(txtStaffEmail.getText());
             String phoneMesseage = ValidatePerson.isPhoneNumber(txtStaffPhone.getText());
             StaffDAO staffDAO = new StaffDAO();
-            System.out.println(txtStaffPhone.getText());
+            if (!isValidate()) {
+                return;
+
+            }
             if (checkValidate(bodMesseage) && checkValidate(emailMesseage) && checkValidate(phoneMesseage)) {
-                //if(IsSure.confirm(bodMesseage)){}
                 staffDAO.getSession().beginTransaction();
+                initStaff();
                 staffDAO.save(staff);
                 staffDAO.getSession().getTransaction().commit();
                 JOptionPane.showMessageDialog(this, "OK!Add success!");
@@ -279,13 +289,62 @@ public class InputStaff extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    private boolean isValidate() throws ParseException {
+        String msg = null;
+        // validate staff code
+        String staffCode = this.txtStaffCode.getText().trim();
+        if (staffCode.isEmpty()) {
+            AppUtil.showErrMsg(Constant.STAFF_CODE_INVALID);
+            return false;
+        }
+        StaffDAO dao = new StaffDAO();
+        List lstStaff = dao.findByStaffCode(staffCode);
+        if (lstStaff.size() > 0) {
+            if (staff == null) {
+                AppUtil.showErrMsg(Constant.STAFF_CODE_IS_EXISTED);
+                return false;
+            }
+        }
+
+        if (this.txtStaffName.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.NAME_INVALID);
+            return false;
+        }
+
+        if (this.txtStaffAddress.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.ADDRESS_INVALID);
+            return false;
+        }
+
+        msg = ValidatePerson.chekDOB(dateChooserCombo.getDate());
+        if (msg != null) {
+            AppUtil.showErrMsg(msg);
+            return false;
+        }
+
+        msg = ValidatePerson.isPhoneNumber(txtStaffPhone.getText());
+        if (msg != null) {
+            AppUtil.showErrMsg(msg);
+            return false;
+        }
+        msg = ValidatePerson.isEmail(this.txtStaffEmail.getText().trim());
+        if (msg != null) {
+            AppUtil.showErrMsg(msg);
+
+            return false;
+        }
+        return true;
+    }
+
     @SuppressWarnings("static-access")
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         StaffDAO staffDAO = new StaffDAO();
-        if (new IsSure().confirm()) {
+        if (IsSure.confirm()) {
             staffDAO.getSession().beginTransaction();
             staffDAO.delete(staff);
+            assigmentScheduleDAO.deleteByStaffID(subjectAssignmentDAO.findByStaffId(staff.getStaffId()));
+            subjectAssignmentDAO.deleteByStaffID(staff.getStaffId());
             staffDAO.getSession().getTransaction().commit();
         }
 
@@ -300,8 +359,9 @@ public class InputStaff extends javax.swing.JPanel {
     }
 
     private void initStaff() throws ParseException {
-
-       
+        if (staff == null) {
+            staff = new Staff();
+        }
         staff.setName(txtStaffName.getText());
         staff.setStaffCode(txtStaffCode.getText());
         staff.setAddress(txtStaffAddress.getText());
@@ -314,6 +374,7 @@ public class InputStaff extends javax.swing.JPanel {
         staff.setPhoneNumber(txtStaffPhone.getText());
         staff.setDateOfBirth(dateChooserCombo.getDate());
         staff.setPhoto(imageControl.getImgData());
+
     }
 
     private void initImage() throws IOException {
@@ -344,6 +405,7 @@ public class InputStaff extends javax.swing.JPanel {
             this.txtStaffName.setText(staff.getName());
             this.txtStaffPhone.setText(staff.getPhoneNumber());
             this.txtStaffCode.setText(staff.getStaffCode());
+            this.txtStaffCode.setEditable(false);
             initDateChooser(staff.getDateOfBirth());
             this.imageControl = new ImageControl(staff.getPhoto());
             this.pnImg.add(imageControl);
@@ -361,7 +423,9 @@ public class InputStaff extends javax.swing.JPanel {
     }
     private ImageControl imageControl;
     TtsDateChooser dateChooserCombo;
-    private Staff staff= new Staff();
+    private Staff staff;
+    private SubjectAssignmentDAO subjectAssignmentDAO= new SubjectAssignmentDAO();
+    private  AssigmentScheduleDAO assigmentScheduleDAO= new AssigmentScheduleDAO();
     //private  JButton btnDelete;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
