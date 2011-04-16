@@ -1,6 +1,5 @@
 package api;
 
-import java.sql.Timestamp;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,7 +14,7 @@ import org.hibernate.criterion.Example;
  * transactions or they can be augmented to handle user-managed Spring
  * transactions. Each of these methods provides additional information for how
  * to configure it for the desired type of transaction control.
- * 
+ *
  * @see api.AssigmentSchedule
  * @author MyEclipse Persistence Tools
  */
@@ -107,6 +106,20 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
         }
     }
 
+     public List findByClassOfferDetailIdTimeUnTeach(Object classOfferDetailId) {
+
+        try {
+            String queryString = "from AssigmentSchedule as model where model.classOfferDetailId=? and model.startTime<"
+                    + "dateadd(dd,0, datediff(dd,0, getDate()))";
+            Query queryObject = getSession().createQuery(queryString);
+            queryObject.setParameter(0, classOfferDetailId);
+            return queryObject.list();
+        } catch (RuntimeException re) {
+            log.error("find by property name failed", re);
+            throw re;
+        }
+    }
+
     public List findByClassOfferDetailId(Object classOfferDetailId) {
         return findByProperty(CLASS_OFFER_DETAIL_ID, classOfferDetailId);
     }
@@ -121,6 +134,20 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
             String queryString = "from AssigmentSchedule";
             Query queryObject = getSession().createQuery(queryString);
             return queryObject.list();
+        } catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+    }
+
+    public int deleteAllByClassOfferId(int classOfferDetailId) {
+        log.debug("delete all AssigmentSchedule instances by classOfferId ");
+        try {
+            String queryString = "delete from AssigmentSchedule as a where a.classOfferDetailId=? and a.startTime>=getdate()";
+            Query queryObject = getSession().createQuery(queryString);
+            queryObject.setParameter(0, classOfferDetailId);
+            int k = queryObject.executeUpdate();
+            return k;
         } catch (RuntimeException re) {
             log.error("find all failed", re);
             throw re;
