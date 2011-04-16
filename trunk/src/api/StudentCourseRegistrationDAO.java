@@ -49,6 +49,21 @@ public class StudentCourseRegistrationDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+        	public void deleteByStudent(int studentID) {
+		log.debug("deleting StudentCourseRegistration instance");
+		try {
+			String stringQuerry="delete from StudentCourseRegistration as model where model.studentId = ?";
+			Query queryObject = getSession().createQuery(stringQuerry);
+                        queryObject.setParameter(0, studentID);
+                        queryObject.executeUpdate();
+                        log.debug("delete successful");
+		} catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}
+
+	}
+          
 
 	public StudentCourseRegistration findById(java.lang.Integer id) {
 		log.debug("getting StudentCourseRegistration instance with id: " + id);
