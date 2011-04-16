@@ -7,16 +7,16 @@
   <class catalog="tts" name="api.AssigmentSchedule" schema="dbo" table="Assigment_Schedule">
     <id name="assigmentScheduleId" type="java.lang.Integer">
       <column name="AssigmentScheduleId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="classOfferDetailId" type="java.lang.Integer">
       <column name="ClassOfferDetailId" not-null="true"/>
     </property>
-    <property name="date" type="java.sql.Timestamp">
-      <column length="23" name="date"/>
+    <property name="startTime" type="java.sql.Timestamp">
+      <column length="23" name="startTime"/>
     </property>
-    <property name="description" type="java.lang.String">
-      <column name="Description"/>
+    <property name="MinuteToTeach" type="java.lang.Integer">
+      <column name="MinuteToTeach"/>
     </property>
   </class>
 </hibernate-mapping>

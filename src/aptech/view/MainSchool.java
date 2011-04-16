@@ -10,6 +10,7 @@
  */
 package aptech.view;
 
+import api.Account;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.view.semester.semesterView;
@@ -22,6 +23,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -59,6 +61,17 @@ public class MainSchool extends javax.swing.JFrame {
     JMenuBar menuBar;
     JToolBar toolBar;
     JList lstMenu;
+    Account userToken;
+
+    public Account getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(Account userToken) {
+        this.userToken = userToken;
+    }
+    
+
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -294,7 +307,7 @@ public class MainSchool extends javax.swing.JFrame {
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                new About().setVisible(true);
+//                new About().setVisible(true);
             }
         });
         helpMenu.add(aboutMenuItem);
@@ -334,7 +347,9 @@ public class MainSchool extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                new MainSchool();
+                MainSchool mainSchool = new MainSchool();
+                Account acc=new Account(1, "tuyuri", "123",72,new Date(),(short)2);
+                mainSchool.setUserToken(acc);
             }
         });
 

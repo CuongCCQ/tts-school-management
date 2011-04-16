@@ -1,75 +1,71 @@
 package api;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * AbstractAssigmentSchedule entity provides the base persistence definition of
  * the AssigmentSchedule entity. @author MyEclipse Persistence Tools
  */
-
 public abstract class AbstractAssigmentSchedule implements java.io.Serializable {
 
-	// Fields
+    // Fields
+    private Integer assigmentScheduleId;
+    private Integer classOfferDetailId;
+    private Date startTime;
+    private Integer MinuteToTeach;
 
-	private Integer assigmentScheduleId;
-	private Integer classOfferDetailId;
-	private Timestamp date;
-	private String description;
+    public Integer getMinuteToTeach() {
+        return MinuteToTeach;
+    }
 
-	// Constructors
+    public void setMinuteToTeach(Integer MinuteToTeach) {
+        this.MinuteToTeach = MinuteToTeach;
+    }
 
-	/** default constructor */
-	public AbstractAssigmentSchedule() {
-	}
+    // Constructors
+    /** default constructor */
+    public AbstractAssigmentSchedule() {
+    }
 
-	/** minimal constructor */
-	public AbstractAssigmentSchedule(Integer assigmentScheduleId,
-			Integer classOfferDetailId) {
-		this.assigmentScheduleId = assigmentScheduleId;
-		this.classOfferDetailId = classOfferDetailId;
-	}
+    /** minimal constructor */
+    public AbstractAssigmentSchedule(Integer assigmentScheduleId,
+            Integer classOfferDetailId) {
+        this.assigmentScheduleId = assigmentScheduleId;
+        this.classOfferDetailId = classOfferDetailId;
+    }
 
-	/** full constructor */
-	public AbstractAssigmentSchedule(Integer assigmentScheduleId,
-			Integer classOfferDetailId, Timestamp date, String description) {
-		this.assigmentScheduleId = assigmentScheduleId;
-		this.classOfferDetailId = classOfferDetailId;
-		this.date = date;
-		this.description = description;
-	}
+    /** full constructor */
+    // Property accessors
+    public Integer getAssigmentScheduleId() {
+        return this.assigmentScheduleId;
+    }
 
-	// Property accessors
+    public void setAssigmentScheduleId(Integer assigmentScheduleId) {
+        this.assigmentScheduleId = assigmentScheduleId;
+    }
 
-	public Integer getAssigmentScheduleId() {
-		return this.assigmentScheduleId;
-	}
+    public Integer getClassOfferDetailId() {
+        return this.classOfferDetailId;
+    }
 
-	public void setAssigmentScheduleId(Integer assigmentScheduleId) {
-		this.assigmentScheduleId = assigmentScheduleId;
-	}
+    public void setClassOfferDetailId(Integer classOfferDetailId) {
+        this.classOfferDetailId = classOfferDetailId;
+    }
 
-	public Integer getClassOfferDetailId() {
-		return this.classOfferDetailId;
-	}
+    public Date getDate() {
+        return this.startTime;
+    }
 
-	public void setClassOfferDetailId(Integer classOfferDetailId) {
-		this.classOfferDetailId = classOfferDetailId;
-	}
+    public void setDate(Date date) {
+        this.startTime = date;
+    }
 
-	public Timestamp getDate() {
-		return this.date;
-	}
+    public Timestamp getStartTime() {
+        return new Timestamp(startTime.getTime());
+    }
 
-	public void setDate(Timestamp date) {
-		this.date = date;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
 }

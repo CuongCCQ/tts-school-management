@@ -68,6 +68,8 @@ public interface Constant {
     final String NOTICE_INVALID_TIME = "The time is not valid";
     final String NOTICE_NOT_SELECT_CLASS = "Please select class";
     final String NOTICE_NOT_SCHEDULE = "Please select any schedule for this class";
+    final String NOTICE_CLASS_FINISHED = "This class is finished";
+    final String NOTICE_UPDATE_SCHEDULE_COMPLETED = "Update schedule completed";
     final int TIME_TO_BEGIN_SCHOOL=8;
     final int TIME_TO_END_SCHOOL=23;
   }
