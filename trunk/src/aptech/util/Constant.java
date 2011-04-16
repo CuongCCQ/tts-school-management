@@ -22,7 +22,10 @@ public interface Constant {
     final String NAME_INVALID = "Invalid name";
     final String ADDRESS_INVALID = "Invalid address";
     final String STUDENT_CODE_INVALID = "Invalid Student code";
+    final String STAFF_CODE_INVALID = "Invalid Staff code";
     final String STUDENT_CODE_IS_EXISTED = "This student code is existed in database";
+    final String STAFF_CODE_IS_EXISTED = "This staff code is existed in database";
+
     final String SURE_TO_SAVE_STUDENT = "are you sure to save the new student to data base";
     final String NOTICE_TO_SAVE_STUDENT = "Save Student successfully";
     final String SURE_TO_UPDATE_STUDENT = "are you sure to update student to data base";
@@ -62,4 +65,4 @@ public interface Constant {
     final String NOTICE_TO_UPDATE_ASS = "Save ass successfully";
     final String SURE_TO_DELETE_ASS= "are you sure to delete this ASS";
     final String NOTICE_TO_DELETE_ASS = "Delete Ass Successfully";
-}
+  }
