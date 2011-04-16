@@ -10,9 +10,6 @@ import api.ClassOffer;
 import aptech.view.control.BaseTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author anhson
@@ -21,7 +18,7 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
 
    @Override
     public String[] initLabel() {
-        return new String[] {"Class code",  "Min students", "Max students"};
+        return new String[] {"Class code",  "Min students", "Max students","Semester"};
     }
 
 
@@ -51,7 +48,11 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
             return lstData.get(rowIndex).getMinStudent();
         } else if (columnIndex == 2) {
             return lstData.get(rowIndex).getMaxStudent();
-        } else {
+        }else if(columnIndex==3)
+        {
+            return lstData.get(rowIndex).getSemesterId();
+        }
+        else {
             return "";
         }
 //        }
@@ -67,7 +68,10 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
                 lstData.get(rowIndex).setMinStudent((Integer)aValue);
             } else if (columnIndex == 2) {
                 lstData.get(rowIndex).setMaxStudent((Integer)aValue);
-            } 
+            } else if (columnIndex == 3)
+            {
+                lstData.get(rowIndex).setSemesterId((Integer)aValue);
+            }
         }
     }
 }
