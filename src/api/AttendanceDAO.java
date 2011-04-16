@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -89,6 +90,23 @@ public class AttendanceDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+            public void deleteByStaffID(List<SubjectAssignment> lstSubjectAssignments) {
+        log.debug("deleting AssigmentSchedule instance");
+        try {
+            String querryString = "delete from AssigmentSchedule as model where model." + ASSIGMENT_SCHEDULE_ID + "=?";
+            Query query = getSession().createQuery(querryString);
+            for (SubjectAssignment subjectAssignment : lstSubjectAssignments) {
+              List<AssigmentSchedule> lstAssigmentSchedules= new ArrayList<AssigmentSchedule>();
+            }
+
+
+
+
+        } catch (RuntimeException re) {
+            log.error("delete failed", re);
+            throw re;
+        }
+    }
 
 	public List findByAbsenceStatus(Object absenceStatus) {
 		return findByProperty(ABSENCE_STATUS, absenceStatus);
