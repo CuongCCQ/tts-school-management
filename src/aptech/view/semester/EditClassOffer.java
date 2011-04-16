@@ -1,8 +1,5 @@
 package aptech.view.semester;
 
-
-import aptech.view.semester.inputClassOffer;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.

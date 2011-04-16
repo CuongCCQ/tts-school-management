@@ -35,7 +35,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
+import aptech.view.semester.inputClassOffer;
 /**
  *
  * @author bo
