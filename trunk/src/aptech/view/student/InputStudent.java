@@ -12,6 +12,8 @@ package aptech.view.student;
 
 import api.StaffDAO;
 import api.Student;
+import api.StudentCourseRegistration;
+import api.StudentCourseRegistrationDAO;
 import api.StudentDAO;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
@@ -291,6 +293,7 @@ public class InputStudent extends javax.swing.JPanel {
                 StudentDAO dao = new StudentDAO();
                 dao.getSession().beginTransaction();
                 dao.delete(student);
+                studentCourseRegistrationDAO.deleteByStudent(student.getStudentId());
                 dao.getSession().getTransaction().commit();
                 AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
                 this.btnDelete.setEnabled(false);
@@ -348,20 +351,19 @@ public class InputStudent extends javax.swing.JPanel {
 
     private boolean isValidate() throws ParseException {
         String msg = null;
-
         // validate staff code
         String staffCode = this.txtStudentCode.getText().trim();
-
         if (staffCode.isEmpty()) {
             AppUtil.showErrMsg(Constant.STUDENT_CODE_INVALID);
             return false;
         }
-
         StudentDAO dao = new StudentDAO();
         List lstStudent = dao.findByStudentCode(staffCode);
         if (lstStudent.size() > 0) {
-            AppUtil.showErrMsg(Constant.STUDENT_CODE_IS_EXISTED);
-            return false;
+            if (student == null) {
+                AppUtil.showErrMsg(Constant.STUDENT_CODE_IS_EXISTED);
+                return false;
+            }
         }
 
         if (this.txtName.getText().trim().isEmpty()) {
@@ -401,6 +403,7 @@ public class InputStudent extends javax.swing.JPanel {
             this.txtName.setText(student.getName());
             this.txtPhoneNumber.setText(student.getPhoneNumber());
             this.txtStudentCode.setText(student.getStudentCode());
+            this.txtStudentCode.setEditable(false);
             initDateChooser(student.getDateOfBirth());
             this.imgControl = new ImageControl(student.getPhoto());
             this.pnImg.add(imgControl);
@@ -416,6 +419,8 @@ public class InputStudent extends javax.swing.JPanel {
     TtsDateChooser dateChooserCombo;
     protected Student student;
     private ImageControl imgControl;
+    private StudentCourseRegistration studentCourseRegistration=new StudentCourseRegistration();
+    private  StudentCourseRegistrationDAO studentCourseRegistrationDAO= new StudentCourseRegistrationDAO();
 
     public JButton getBtnDelete() {
         return btnDelete;
