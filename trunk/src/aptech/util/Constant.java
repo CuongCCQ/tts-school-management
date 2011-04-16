@@ -66,6 +66,8 @@ public interface Constant {
     final String SURE_TO_DELETE_ASS= "are you sure to delete this ASS";
     final String NOTICE_TO_DELETE_ASS = "Delete Ass Successfully";
     final String NOTICE_INVALID_TIME = "The time is not valid";
+    final String NOTICE_NOT_SELECT_CLASS = "Please select class";
+    final String NOTICE_NOT_SCHEDULE = "Please select any schedule for this class";
     final int TIME_TO_BEGIN_SCHOOL=8;
     final int TIME_TO_END_SCHOOL=23;
   }
