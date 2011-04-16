@@ -23,7 +23,6 @@ import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
 import api.SubjectDAO;
 import aptech.view.control.TtsTable;
-import aptech.view.staff.ResulPanel;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,7 +34,6 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import aptech.view.semester.inputClassOffer;
 /**
  *
  * @author bo
@@ -182,6 +180,7 @@ public class semesterView extends BaseSubContentView {
             Semester semester = seDao.findById(semesterId);
             editSemester.initSemesterFromModel(semester);
             createNewSubView(editSemester);
+            //editSemester.initSemesterToEdit();
         } catch (IOException ex) {
             //JOptionPane.showMessageDialog(btnNewStudent, ex);
         }
@@ -236,7 +235,7 @@ public class semesterView extends BaseSubContentView {
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
 
             public void editingStopped(ChangeEvent e) {
-                filterSemester();
+                filterClassOff();
             }
 
             public void editingCanceled(ChangeEvent e) {
@@ -284,6 +283,7 @@ public class semesterView extends BaseSubContentView {
             ClassOffer classOffer = coDao.findById(offerId);
             editOffer.initClassOfferModel(classOffer);
             createNewSubView(editOffer);
+            editOffer.getBtnDelete();
         } catch (IOException ex) {
             //JOptionPane.showMessageDialog(btnNewStudent, ex);
         }

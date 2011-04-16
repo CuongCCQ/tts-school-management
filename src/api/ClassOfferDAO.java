@@ -160,14 +160,14 @@ public class ClassOfferDAO extends BaseHibernateDAO {
 	}
          public List<ClassOffer> filterByObject(ClassOffer CO) {
         List<Object> params = new ArrayList<Object>();
-        StringBuilder sqlBuider = new StringBuilder("from Class_Offer as model where 1=1");
+        StringBuilder sqlBuider = new StringBuilder("from ClassOffer as model where 1=1");
 
-        // search by address
+        // search by class code
         if (CO.getClassCode() != null && !CO.getClassCode().isEmpty()) {
-            sqlBuider.append("and model.ClassCode like ?");
+            sqlBuider.append("and model.classCode like ?");
             params.add("%" + CO.getClassCode() + "%");
         }
-
+       
         Query queryObj = getSession().createQuery(sqlBuider.toString());
         for (int i = 0; i < params.size(); i++) {
             queryObj.setParameter(i, params.get(i));
