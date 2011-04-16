@@ -12,6 +12,7 @@ package aptech.view.staff;
 
 import api.AssigmentSchedule;
 import api.AssigmentScheduleDAO;
+import api.AttendanceDAO;
 import api.Staff;
 import api.StaffDAO;
 import api.Student;
@@ -343,6 +344,11 @@ public class InputStaff extends javax.swing.JPanel {
         if (IsSure.confirm()) {
             staffDAO.getSession().beginTransaction();
             staffDAO.delete(staff);
+            List<SubjectAssignment> lstSubjectAssignments= subjectAssignmentDAO.findByStaffId(staff.getStaffId());
+            for (SubjectAssignment subjectAssignment : lstSubjectAssignments) {
+                attendanceDAO.deleteByStaffID(assigmentScheduleDAO.findByClassOfferDetailId(subjectAssignment.getClassOfferDetailId()));
+            }
+
             assigmentScheduleDAO.deleteByStaffID(subjectAssignmentDAO.findByStaffId(staff.getStaffId()));
             subjectAssignmentDAO.deleteByStaffID(staff.getStaffId());
             staffDAO.getSession().getTransaction().commit();
@@ -426,6 +432,7 @@ public class InputStaff extends javax.swing.JPanel {
     private Staff staff;
     private SubjectAssignmentDAO subjectAssignmentDAO= new SubjectAssignmentDAO();
     private  AssigmentScheduleDAO assigmentScheduleDAO= new AssigmentScheduleDAO();
+    private  AttendanceDAO attendanceDAO = new AttendanceDAO();
     //private  JButton btnDelete;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
