@@ -21,7 +21,6 @@ import api.StudentDAO;
 import api.StudentV2;
 import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,8 +35,7 @@ public class ResulPanel extends javax.swing.JPanel {
     public ResulPanel() {
         initComponents();
         initClass();
-        //initStudent();
-        //initSchedu();
+
 
     }
 
@@ -70,12 +68,6 @@ public class ResulPanel extends javax.swing.JPanel {
         });
 
         jLabel2.setText("Student Code");
-
-        cbxStudent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxStudentActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Subject");
 
@@ -148,42 +140,37 @@ public class ResulPanel extends javax.swing.JPanel {
             List<StudentCourseRegistration> lstReg = new ArrayList<StudentCourseRegistration>();
             lstReg = studentCourseRegistrationDAO.findByClassOfferId(clsOfferID);
             lstStudentID.clear();
+            if (cbxStudent.getItemCount() > 0) {
+                cbxStudent.removeAllItems();
+            }
             for (StudentCourseRegistration stuIdTemp : lstReg) {
                 lstStudentID.add(stuIdTemp.getStudentId());
             }
-           //System.out.println(lstStudentID);
-           for (Integer integer : lstStudentID) {
+            for (Integer integer : lstStudentID) {
                 studentV2 = studentDAO.findByIdV2(integer);
                 cbxStudent.addItem(studentV2.getName());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return;
         }
     }//GEN-LAST:event_cbxClassNameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //initSchedu();
         // TODO add your handling code here:
+        initSchedu();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void cbxStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStudentActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxStudentActionPerformed
-
     public void initSchedu() {
-        if (lstClassOfferDetail.isEmpty()) {
-            for (SubjectAssignment subjectAss : test) {
-                lstClassOfferDetail.add(subjectAss.getClassOfferDetailId());
-            }
-        }
+        int id = lstIDClass.get(cbxClassName.getSelectedIndex());
 
-        System.out.println(lstClassOfferDetail);
-        int classID = lstIDClass.get(cbxClassName.getSelectedIndex());
-        System.out.println(lstStudentID);
+
+        System.out.println(classOfferDAO.findById(id).getClassCode());
+
+
     }
 
     void initClass() {
-        HashSet<Integer> hsIDClass = new HashSet<Integer>();
+        hsIDClass = new HashSet<Integer>();
         for (SubjectAssignment subjectTemp : test) {
             hsIDClass.add(subjectTemp.getClassOfferId());
         }
@@ -211,7 +198,8 @@ public class ResulPanel extends javax.swing.JPanel {
     private StudentDAO studentDAO = new StudentDAO();
     private StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
     private StudentCourseRegistrationDAO studentCourseRegistrationDAO = new StudentCourseRegistrationDAO();
-    int a = 74;
+    int a = 70;
+    HashSet<Integer> hsIDClass;
     List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
     List<Integer> lstIDClass = new ArrayList<Integer>();
     List<Student> lstStudent = new ArrayList<Student>();
