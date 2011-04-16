@@ -12,6 +12,7 @@ import aptech.util.Constant;
 import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
 import aptech.view.control.TtsTable;
+import aptech.view.staff.ClassSchedule;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class StudentView extends BaseSubContentView {
     private JButton btnNewStudent;
     
     private JButton btnStudentCourseReg;
+
+    private JButton btnClassSchedule;
 
     public StudentView(MainSchool ms) {
         super(ms);
@@ -69,6 +72,17 @@ public class StudentView extends BaseSubContentView {
             }
         });
 
+         btnClassSchedule = new JButton("Class Schedule");
+        this.lstButtons.add(btnClassSchedule);
+        btnClassSchedule.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                createNewSubView(new ClassSchedule(mainSchool.getUserToken().getStaffId()));
+            }
+        });
+
+
+        
     }
 
     @Override

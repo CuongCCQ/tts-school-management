@@ -14,16 +14,8 @@ public class AssigmentSchedule extends AbstractAssigmentSchedule implements
 	public AssigmentSchedule() {
 	}
 
-	/** minimal constructor */
-	public AssigmentSchedule(Integer assigmentScheduleId,
-			Integer classOfferDetailId) {
-		super(assigmentScheduleId, classOfferDetailId);
-	}
-
+	
 	/** full constructor */
-	public AssigmentSchedule(Integer assigmentScheduleId,
-			Integer classOfferDetailId, Timestamp date, String description) {
-		super(assigmentScheduleId, classOfferDetailId, date, description);
-	}
+	
 
 }
