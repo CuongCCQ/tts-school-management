@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,6 +44,7 @@ import net.infonode.docking.util.ViewMap;
 import net.infonode.gui.colorprovider.ColorProvider;
 import net.infonode.gui.componentpainter.SolidColorComponentPainter;
 import net.infonode.util.Direction;
+import resources.images.PathUtil;
 
 /**
  *
@@ -214,6 +216,7 @@ public class MainSchool extends javax.swing.JFrame {
     // init tool bar
     private void initToolBar() {
         toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        initTimeLineButton();
         initStudentButton();
         initTeacherButton();
         initCourceButton();
@@ -221,6 +224,22 @@ public class MainSchool extends javax.swing.JFrame {
     }
 
     // <editor-fold defaultstate="collapsed" desc="init toolbar buttons">
+
+      private void initTimeLineButton() {
+        JButton btnStudent = new JButton();
+        URL resource = PathUtil.class.getResource("calender.png");
+        ImageIcon studentIcon = new ImageIcon(resource);
+        btnStudent.setIcon(studentIcon);
+        btnStudent.setText("Timeline");
+        btnStudent.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                loadStudentView(e);
+            }
+        });
+        toolBar.add(btnStudent);
+    }
+
     private void initStudentButton() {
         JButton btnStudent = new JButton();
         ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "student.png");
