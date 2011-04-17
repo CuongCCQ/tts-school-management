@@ -12,8 +12,11 @@ public interface Constant {
 
     final String RESOURCE_PATH = "/resources/images/";
     final String DEFAULT_IMG_NAME = "default-photo.png";
+    final String DEFAULT_PNIMG_NAME = "schedule.png";
     final int IMAGE_SIZE_WIDTH = 200;
     final int IMAGE_SIZE_HEIGHT = 200;
+    final int SCHEDULE_IMAGE_SIZE_WIDTH = 90;
+    final int SCHEDULE_IMAGE_SIZE_HEIGHT = 540;
     final String FERMALE = "fermale";
     final String MALE = "male";
     final String DATE_FORMAT = "MM/dd/yyyy";
@@ -72,4 +75,6 @@ public interface Constant {
     final String NOTICE_UPDATE_SCHEDULE_COMPLETED = "Update schedule completed";
     final int TIME_TO_BEGIN_SCHOOL=8;
     final int TIME_TO_END_SCHOOL=23;
+    final int TIME_LINE_WIDTH=50;
+
   }
