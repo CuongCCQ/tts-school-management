@@ -24,7 +24,7 @@ public class AssimentTableModel extends BaseTableModel<SubjectAssignment>{
     }
     @Override
     public String[] initLabel() {
-        return new String[] {"Minute per lesson", "Number of lession", "Number of Assiment"};
+        return new String[] {"Minute per lesson", "Number of lession", "Number of Assiment","Class offer","Subject","Staff"};
     }
     @Override
      public Class getColumnClass(int c) {
@@ -44,9 +44,23 @@ public class AssimentTableModel extends BaseTableModel<SubjectAssignment>{
             return lstData.get(rowIndex).getNumberOfLession();
         } else if (columnIndex == 2) {
             return lstData.get(rowIndex).getNumberOfAssignment();
-        } else {
+        }else if (columnIndex == 3) {
+            return lstData.get(rowIndex).getClassOfferId();
+        }else if (columnIndex == 4) {
+            return lstData.get(rowIndex).getSubjectId();
+        }else if (columnIndex == 5) {
+            return lstData.get(rowIndex).getStaffId();
+        }
+        else {
             return "";
         }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+         if(rowIndex==0 )
+            return false;
+        return true;
     }
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -57,6 +71,12 @@ public class AssimentTableModel extends BaseTableModel<SubjectAssignment>{
                 lstData.get(rowIndex).setNumberOfLession(Short.parseShort( aValue.toString()));
             } else if (columnIndex == 2) {
                 lstData.get(rowIndex).setNumberOfAssignment(Short.parseShort(aValue.toString()));
+            }else if (columnIndex == 3) {
+                lstData.get(rowIndex).setClassOfferId(Integer.parseInt(aValue.toString()));
+            }else if (columnIndex == 4) {
+                lstData.get(rowIndex).setSubjectId(Integer.parseInt(aValue.toString()));
+            }else if (columnIndex == 5) {
+                lstData.get(rowIndex).setStaffId(Integer.parseInt(aValue.toString()));
             }
         }
     }

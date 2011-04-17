@@ -12,11 +12,12 @@ import java.io.IOException;
  */
 public class EditAss extends InputAssignment{
       public EditAss() throws IOException {
-        initComponentV2();
+       //initComponentV2();
      }
 
     protected void initAssToEdit() {
-        getBtnDelete().setVisible(true);
-        this.confirmSaveMessage=Constant.SURE_TO_UPDATE_ASS;
+       getBtnDelete().setVisible(true);
+       getlbltitle().setText("Edit Assignment");
+       this.confirmSaveMessage=Constant.SURE_TO_UPDATE_ASS;
     }
 }

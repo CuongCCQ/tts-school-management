@@ -62,6 +62,11 @@ public interface Constant {
     final String MINUTE_PER_LESSON = "Invalid Minute per Lesson";
     final String NUMBER_OF_LESSON = "Invalid number of lesson";
 
+    final String CLASS_CODE_INVALID = "Invalid class code";
+    final String MIN_STUDENT_CLASS = "Invalid min student";
+    final String MAX_STUDENT_CLASS = "Invalid max student";
+
+
     final String SURE_TO_SAVE_ASS = "are you sure to save the new ass to data base";
     final String NOTICE_TO_SAVE_ASS = "Save ASS successfully";
     final String SURE_TO_UPDATE_ASS = "are you sure to update ass to data base";

@@ -155,18 +155,18 @@ public class CourseDAO extends BaseHibernateDAO {
 
         // search by className
         if (st.getCourseName() != null && !st.getCourseName().isEmpty()) {
-            sqlBuider.append("and model.CourseName like ?");
+            sqlBuider.append("and model.courseName like ?");
             params.add("%" + st.getCourseName() + "%");
         }
 
         // search by Description
         if (st.getDescription() != null && !st.getDescription().isEmpty()) {
-            sqlBuider.append("and model.Description like ?");
+            sqlBuider.append("and model.description like ?");
             params.add("%" + st.getDescription() + "%");
         }
         // search by course code
         if (st.getCourseCode() != null && !st.getCourseCode().isEmpty()) {
-            sqlBuider.append("and model.CourseCode like ?");
+            sqlBuider.append("and model.courseCode like ?");
             params.add("%" + st.getCourseCode() + "%");
         }
 
