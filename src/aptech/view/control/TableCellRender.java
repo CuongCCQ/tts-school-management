@@ -41,7 +41,7 @@ public class TableCellRender extends JLabel
                             int row, int column) {
          if(row==0)
          {
-             this.setIcon(new ImageIcon(PathUtil.class.getResource("edit-icon.png")));
+             this.setIcon(new ImageIcon(PathUtil.class.getResource("tia.png")));
          }
         return this;
     }

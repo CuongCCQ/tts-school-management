@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 public class InputSemester extends javax.swing.JPanel {
     DateChooserCombo chooserCombomStart;
@@ -33,6 +34,7 @@ public class InputSemester extends javax.swing.JPanel {
     public InputSemester() throws Exception {
         initComponents();
         initCalendar();
+        this.lblTitle.setText("Add new semester");
     }
     protected Semester semester= new Semester();
     
@@ -45,9 +47,11 @@ public class InputSemester extends javax.swing.JPanel {
             this.semester = semesterFromModel;
             this.txtName.setText(semester.getName());
             this.txtDescription.setText(semester.getDescription());
-            
+                    Date dStart=semester.getStartDate();
+                    Date dEnd = semester.getEndDate();
+                    this.chooserCombomStart.setText(dStart.toString());
+                    this.chooserCombomEnd.setText(dEnd.toString());
         } catch (Exception ex) {
-            
         }
     }
 
@@ -189,9 +193,7 @@ public class InputSemester extends javax.swing.JPanel {
     //action add new,update semester
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
        try {
-             if (!IsSure.confirm(confirmSaveMessage)) {
-                return;
-                }
+             
             String errorMsg = initSemesterFromUI();
             if (errorMsg.isEmpty()) {
                 
@@ -228,7 +230,11 @@ public class InputSemester extends javax.swing.JPanel {
                     semester.setName(name);
                     semesterDao.save(semester);
                     semesterDao.getSession().getTransaction().commit();
-                    JOptionPane.showMessageDialog(this,"Save Data successfuly");
+                    if (!IsSure.confirm(confirmSaveMessage)) {
+                        return;
+                    }else{
+                        JOptionPane.showMessageDialog(this,"Save Data successfuly");
+                    }
                 }
             } else {
                 AppUtil.showErrMsg(errorMsg);
@@ -262,7 +268,10 @@ public class InputSemester extends javax.swing.JPanel {
         this.semesterB.setName(this.txtName.getText().trim());
         return errMsg;
     }
-     
+     public JLabel getLbltitle()
+     {
+         return this.lblTitle;
+     }
     protected  Semester semesterB;
     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;

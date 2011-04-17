@@ -248,15 +248,18 @@ public class InputAssignment extends javax.swing.JPanel {
         String minutePerLession = this.txtMinutePerLession.getText().trim();
         if (minutePerLession.isEmpty()) {
             AppUtil.showErrMsg(Constant.MINUTE_PER_LESSON);
+            txtMinutePerLession.requestFocus();
             return false;
         }
 
         if (this.txtNumberAss.getText().trim().isEmpty()) {
             AppUtil.showErrMsg(Constant.NUMBER_OF_LESSON);
+            txtNumberAss.requestFocus();
             return false;
         }
 
         if (this.txtNumberOflession.getText().trim().isEmpty()) {
+            txtNumberOflession.requestFocus();
             AppUtil.showErrMsg(Constant.NUMBER_OF_LESSON);
             return false;
         }
@@ -270,7 +273,8 @@ public class InputAssignment extends javax.swing.JPanel {
             this.txtMinutePerLession.setText(subjectAssiment.getMinutesPerLession().toString());
             this.txtNumberOflession.setText( subjectAssiment.getNumberOfLession().toString());
             this.txtNumberAss.setText(subjectAssiment.getNumberOfAssignment().toString());
-            
+
+            //load data classCode to JCOMBOBOX 
             classOffer = new ClassOffer();
             classOfferDAO = new ClassOfferDAO();
             classOffer =  classOfferDAO.findById(subjectAssiment.getClassOfferId());
@@ -280,6 +284,7 @@ public class InputAssignment extends javax.swing.JPanel {
             cbClassOffer.setSelectedItem(className);
             classOfferDAO.getSession().getTransaction().commit();
 
+            //load data SubjectName to JCOMBOBOX
             subject = new Subject();
             subjectDao = new SubjectDAO();
             subject = subjectDao.findById(subjectAssiment.getSubjectId());
@@ -288,6 +293,7 @@ public class InputAssignment extends javax.swing.JPanel {
             cbSubject.setSelectedItem(subjectName);
             subjectDao.getSession().getTransaction().commit();
 
+            //load data StaffCode to JCOMBOBOX
             Staff = new Staff();
             StaffDao = new StaffDAO();
             Staff = StaffDao.findById(subjectAssiment.getStaffId());
