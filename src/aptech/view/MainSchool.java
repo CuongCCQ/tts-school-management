@@ -273,7 +273,7 @@ public class MainSchool extends javax.swing.JFrame {
         JButton btnCource = new JButton();
         ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "course.png");
         btnCource.setIcon(studentIcon);
-        btnCource.setText("Cource");
+        btnCource.setText("Course");
         btnCource.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
