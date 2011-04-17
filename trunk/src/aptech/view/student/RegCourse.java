@@ -12,7 +12,6 @@ package aptech.view.student;
 
 import api.ClassOffer;
 import api.ClassOfferDAO;
-import api.Student;
 import api.StudentCourseRegistration;
 import api.StudentCourseRegistrationDAO;
 import api.StudentDAO;

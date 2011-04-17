@@ -20,6 +20,7 @@ import aptech.util.IsSure;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 /**
  *
@@ -32,6 +33,8 @@ public class InputSubject extends javax.swing.JPanel {
     /** Creates new form InputSubject */
     public InputSubject() {
         initComponents();
+        this.btnDelete.setVisible(false);
+        this.lblTitle.setText("Add new subject");
     }
      protected void initComponentV2() {
         initComponents();
@@ -39,6 +42,10 @@ public class InputSubject extends javax.swing.JPanel {
      public JButton getBtnDelete() {
         return btnDelete;
     }
+     public JLabel getLbtltitle()
+     {
+         return lblTitle;
+     }
     protected void initSubjectFromModel(Subject subjectFromModel){
         try {
             this.subject = subjectFromModel;

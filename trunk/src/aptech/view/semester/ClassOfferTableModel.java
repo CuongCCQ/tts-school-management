@@ -82,7 +82,7 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
     }
         @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {    
-        if(rowIndex!=0 || columnIndex==1 || columnIndex==2||columnIndex==3)
+        if(rowIndex!=0 || columnIndex==1 || columnIndex==2||columnIndex==3||columnIndex==4)
             return false;
         return true;
     }

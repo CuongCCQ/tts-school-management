@@ -9,103 +9,46 @@
  * Created on Apr 10, 2011, 8:29:45 PM
  */
 package aptech.view.semester;
-
+import api.ClassOffer;
+import api.ClassOfferDAO;
+import api.Staff;
+import api.StaffDAO;
+import api.Subject;
+import api.SubjectAssignment;
+import api.SubjectAssignmentDAO;
+import api.SubjectDAO;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
+import aptech.util.IsSure;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author anhson
  */
-import java.util.ArrayList;
-import java.util.List;
-import api.ClassOfferDAO;
-import api.ClassOffer;
-import api.StaffDAO;
-import api.StaffV2;
-import api.Subject;
-import api.SubjectDAO;
-import api.SubjectAssignment;
-import api.SubjectAssignmentDAO;
-import aptech.util.AppUtil;
-import aptech.util.Constant;
-import aptech.util.IsSure;
-
-import aptech.util.ValidateUtil;
-import java.text.ParseException;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 public class InputAssignment extends javax.swing.JPanel {
 
-    String confirmSaveMessage = Constant.SURE_TO_SAVE_ASS;
+    String confirmSaveMessage = Constant.SURE_TO_UPDATE_ASS;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
-    protected SubjectAssignment ass;
-    protected boolean ok;
-
     /** Creates new form InputAssignment */
     public InputAssignment() {
         initComponents();
-        initClassOffCombo();
-        initStaffCombo();
-        initSubjectCombo();
+        loadAll();
+        this.btnDelete.setVisible(false);
+        this.lblTitle.setText("Add new assignment");
     }
-
-    protected void initComponentV2() {
-        initComponents();
-    }
-
     public JButton getBtnDelete() {
         return btnDelete;
     }
-
-    protected void initAssFromModel(SubjectAssignment assFromModel) {
-        try {
-            this.ass = assFromModel;
-            this.txtMinutePerLession.setText(ass.getMinutesPerLession().toString());
-            this.txtNumberAss.setText(ass.getNumberOfAssignment().toString());
-            this.txtNumberOflession.setText(ass.getNumberOfLession().toString());
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
-        }
+    public JLabel getlbltitle()
+    {
+        return lblTitle;
     }
-
-    protected String initAssFromUI() throws ParseException {
-        String errMsg = "";
-        if (ass == null) {
-            this.ass = new SubjectAssignment();
-        }
-        try {
-            this.ass.setMinutesPerLession(Integer.parseInt(this.txtMinutePerLession.getText().trim()));
-            this.ass.setNumberOfAssignment(Short.parseShort(this.txtNumberAss.getText().trim()));
-            this.ass.setNumberOfLession(Short.parseShort(this.txtNumberOflession.getText().trim()));
-            ok = true;
-        } catch (NumberFormatException nEx) {
-
-            ok = false;
-        }
-        return errMsg;
-    }
-
-    private boolean isValidate() throws ParseException {
-
-        if (this.txtMinutePerLession.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Enter minute per lesson !");
-            txtMinutePerLession.requestFocus();
-            return false;
-        }
-
-        if (this.txtNumberAss.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Enter number ass !");
-            txtNumberAss.requestFocus();
-            return false;
-        }
-        if (this.txtNumberOflession.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Enter number of lession !");
-            txtNumberOflession.requestFocus();
-            return false;
-        }
-        return true;
-    }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -128,8 +71,8 @@ public class InputAssignment extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         lblStaff1 = new javax.swing.JLabel();
         cbSubject = new javax.swing.JComboBox();
-        txtNumberOflession = new javax.swing.JTextField();
         btnDelete = new javax.swing.JButton();
+        txtNumberOflession = new javax.swing.JTextField();
 
         lblClass.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblClass.setText("Class :");
@@ -160,6 +103,11 @@ public class InputAssignment extends javax.swing.JPanel {
         lblStaff1.setText("Subject :");
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -230,96 +178,173 @@ public class InputAssignment extends javax.swing.JPanel {
                 .addContainerGap(86, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    ClassOfferDAO offDao;
-    ClassOffer offer;
-    SubjectDAO subjectDao;
-    Subject subject;
-    StaffDAO staffDao;
-    StaffV2 staffV2;
-    SubjectAssignment subjectAss;
-    SubjectAssignmentDAO subjectAssDao;
-    List<Integer> listOfferId = new ArrayList<Integer>();
-    List<Integer> listSubjectId = new ArrayList<Integer>();
-    List<Integer> listStaffId = new ArrayList<Integer>();
-
+  
     @SuppressWarnings("static-access")
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        int idClassOffer = listOfferId.get(cbClassOffer.getSelectedIndex());
-        int idStaff = listStaffId.get(cbStaff.getSelectedIndex());
-        int idSubject = listSubjectId.get(cbSubject.getSelectedIndex());
-        String minute = txtMinutePerLession.getText();
-        String numberOffLession = txtNumberOflession.getText();
-        String numberOfAss = txtNumberAss.getText();
-        subjectAss = new SubjectAssignment();
-        subjectAssDao = new SubjectAssignmentDAO();
-        if (!ValidateUtil.isEmpty(minute)) {
-            txtMinutePerLession.requestFocus();
-        } else if (!ValidateUtil.isEmpty(numberOffLession)) {
-            txtNumberOflession.requestFocus();
-        } else if (!ValidateUtil.isEmpty(numberOfAss)) {
-            txtNumberAss.requestFocus();
-        } else {
             try {
-                int minuteLession = Integer.parseInt(minute);
-                short numberLession = Short.parseShort(numberOffLession);
-                short numberAss = Short.parseShort(numberOfAss);
-                subjectAssDao.getSession().beginTransaction();
-                subjectAss.setClassOfferId(idClassOffer);
-                subjectAss.setSubjectId(idSubject);
-                subjectAss.setStaffId(idStaff);
-                subjectAss.setMinutesPerLession(minuteLession);
-                subjectAss.setNumberOfAssignment(numberAss);
-                subjectAss.setNumberOfLession(numberLession);
-                if (subjectAssDao.findBySubjectAndClass(idSubject, idClassOffer).isEmpty()) {
-                    subjectAssDao.save(subjectAss);
-                    subjectAssDao.getSession().getTransaction().commit();
-                    JOptionPane.showMessageDialog(null, "Add new succefully !");
 
-                } else {
-                    
-                    String meString = cbSubject.getSelectedItem().toString();
-                    meString = meString + " in " + cbClassOffer.getSelectedItem().toString()+" have been register.";
-                    meString = meString + "\n" + "Please try again the information!";
-                    JOptionPane.showMessageDialog(this, meString, "", JOptionPane.WARNING_MESSAGE);
-                }
+            // validate
+            if (!isValidate()) {
+                return;
+            }
+            // confirm before save
+            if (!IsSure.confirm(confirmSaveMessage)) {
+                return;
+            }
 
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Must is a number !", "System saying", JOptionPane.WARNING_MESSAGE);
-                txtNumberOflession.requestFocus();              
+            String errorMsg = initAssimentFromUI();
+            if (errorMsg.isEmpty()) {
+                SubjectAssignmentDAO dao  = new SubjectAssignmentDAO();
+                dao.getSession().beginTransaction();
+                dao.save(this.subjectAssiment);
+                //dao.savePhoto(student);
+                dao.getSession().getTransaction().commit();
+
+                 JOptionPane.showMessageDialog(this,"Save Data successfuly");
+            } else {
+                AppUtil.showErrMsg(errorMsg);
+            }
+
+
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        }
 }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+       if (subjectAssiment != null) {
+            if (IsSure.confirm(this.confirmDeleteMessage)) {
+                SubjectAssignmentDAO dao  = new SubjectAssignmentDAO();
+                dao.getSession().beginTransaction();
+                dao.delete(subjectAssiment);
+               
+                dao.getSession().getTransaction().commit();
+                AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_ASS);
+                this.btnDelete.setEnabled(false);
+                this.btnAdd.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    protected String initAssimentFromUI() throws ParseException {
+        String errMsg = "";
+        if (subjectAssiment == null) {
+            this.subjectAssiment = new SubjectAssignment();
+        }
+        this.subjectAssiment.setMinutesPerLession(Integer.parseInt(this.txtMinutePerLession.getText().trim()));
+        this.subjectAssiment.setNumberOfLession(Short.parseShort(this.txtNumberOflession.getText().trim()));
+        this.subjectAssiment.setNumberOfAssignment(Short.parseShort( this.txtNumberAss.getText().trim()));
+        this.subjectAssiment.setClassOfferId(listClassOffID.get(cbClassOffer.getSelectedIndex()));
+        this.subjectAssiment.setSubjectId(listSubjectID.get( cbSubject.getSelectedIndex()));
+        this.subjectAssiment.setStaffId(ListStaffID.get( cbStaff.getSelectedIndex()));
+        return errMsg;
+    }
+
+
+
+    private boolean isValidate() throws ParseException {
+        String msg = null;
+        // validate staff code
+        String minutePerLession = this.txtMinutePerLession.getText().trim();
+        if (minutePerLession.isEmpty()) {
+            AppUtil.showErrMsg(Constant.MINUTE_PER_LESSON);
+            return false;
+        }
+
+        if (this.txtNumberAss.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.NUMBER_OF_LESSON);
+            return false;
+        }
+
+        if (this.txtNumberOflession.getText().trim().isEmpty()) {
+            AppUtil.showErrMsg(Constant.NUMBER_OF_LESSON);
+            return false;
+        }
+        
+        return true;
+    }
+     protected void initAssFromModel(SubjectAssignment assimentFromModel){
+
+        try {
+            this.subjectAssiment = assimentFromModel;
+            this.txtMinutePerLession.setText(subjectAssiment.getMinutesPerLession().toString());
+            this.txtNumberOflession.setText( subjectAssiment.getNumberOfLession().toString());
+            this.txtNumberAss.setText(subjectAssiment.getNumberOfAssignment().toString());
+            
+            classOffer = new ClassOffer();
+            classOfferDAO = new ClassOfferDAO();
+            classOffer =  classOfferDAO.findById(subjectAssiment.getClassOfferId());
+            classOfferDAO.getSession().beginTransaction();
+            String className =classOffer.getClassCode();
+            classOfferDAO.save(classOffer);
+            cbClassOffer.setSelectedItem(className);
+            classOfferDAO.getSession().getTransaction().commit();
+
+            subject = new Subject();
+            subjectDao = new SubjectDAO();
+            subject = subjectDao.findById(subjectAssiment.getSubjectId());
+            subjectDao.getSession().beginTransaction();
+            String subjectName = subject.getSubjectName();
+            cbSubject.setSelectedItem(subjectName);
+            subjectDao.getSession().getTransaction().commit();
+
+            Staff = new Staff();
+            StaffDao = new StaffDAO();
+            Staff = StaffDao.findById(subjectAssiment.getStaffId());
+            StaffDao.getSession().beginTransaction();
+            String staffCode = Staff.getStaffCode();
+            cbStaff.setSelectedItem(staffCode);
+            StaffDao.getSession().getTransaction().commit();
+        } catch (Exception ex) {
+
         }
     }
 
-       
-    public void initClassOffCombo() {
-        offDao = new ClassOfferDAO();
-        offer = new ClassOffer();
-        List listName = offDao.findAll();
-        for (Object object : listName) {
-            cbClassOffer.addItem(((ClassOffer) object).getClassCode());
-            listOfferId.add(((ClassOffer) object).getClassOfferId());
-        }
-    }
+    protected void loadAll()
+    {
+        classOffer = new ClassOffer();
+        classOfferDAO = new ClassOfferDAO();
+        List<ClassOffer> listClassOfferName = classOfferDAO.findAll();
+        listClassOffID = new ArrayList<Integer>();
 
-    public void initStaffCombo() {
-        staffDao = new StaffDAO();
-        staffV2 = new StaffV2();
-        List listName = staffDao.findAllStaffV2();
-        for (Object object : listName) {
-            cbStaff.addItem(((StaffV2) object).getName());
-            listStaffId.add(((StaffV2) object).getStaffId());
+        for(ClassOffer clOffer : listClassOfferName)
+        {
+            cbClassOffer.addItem(clOffer.getClassCode());
+            listClassOffID.add(clOffer.getClassOfferId());
         }
-    }
 
-    public void initSubjectCombo() {
-        subjectDao = new SubjectDAO();
+
         subject = new Subject();
-        List listName = subjectDao.findAll();
-        for (Object object : listName) {
-            cbSubject.addItem(((Subject) object).getSubjectName());
-            listSubjectId.add(((Subject) object).getSubjectId());
+        subjectDao = new SubjectDAO();
+        List<Subject> listSubjectName = subjectDao.findAll();
+        listSubjectID = new ArrayList<Integer>();
+        for(Subject lSubject : listSubjectName)
+        {
+            cbSubject.addItem(lSubject.getSubjectName());
+            listSubjectID.add(lSubject.getSubjectId());
+        }
+
+        Staff = new Staff();
+        StaffDao = new StaffDAO();
+        List<Staff> listStaffName = StaffDao.findAll();
+        ListStaffID = new ArrayList<Integer>();
+        for(Staff lStaff : listStaffName)
+        {
+            cbStaff.addItem(lStaff.getStaffCode());
+            ListStaffID.add(lStaff.getStaffId());
         }
     }
+    private  SubjectAssignment subjectAssiment = new SubjectAssignment();
+    private ClassOffer classOffer;
+    private ClassOfferDAO classOfferDAO;
+    private Subject subject;
+    private SubjectDAO subjectDao;
+    private Staff Staff;
+    private StaffDAO StaffDao;
+    private List<Integer> listClassOffID;
+    private List<Integer> listSubjectID;
+    private List<Integer> ListStaffID;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;

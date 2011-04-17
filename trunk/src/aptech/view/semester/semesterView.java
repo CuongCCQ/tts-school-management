@@ -273,6 +273,9 @@ public class semesterView extends BaseSubContentView {
         List<ClassOffer> lstClassOffer = dao.filterByObject(objSearch);
         ((ClassOfferTableModel) bottomModel).setLstData(lstClassOffer, objSearch);
         bottomModel.fireTableDataChanged();
+
+
+        
     }
 
     private void doTableSelectionChangeClassOffer() throws Exception {
@@ -281,9 +284,10 @@ public class semesterView extends BaseSubContentView {
             int offerId = ((ClassOfferTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getClassOfferId();
             ClassOfferDAO coDao = new ClassOfferDAO();
             ClassOffer classOffer = coDao.findById(offerId);
-            editOffer.initClassOfferModel(classOffer);
             createNewSubView(editOffer);
-            editOffer.getBtnDelete();
+            editOffer.initClassOffFromModel(classOffer);
+            editOffer.initClassOfferToEdit();
+            //editOffer.getBtnDelete();
         } catch (IOException ex) {
             //JOptionPane.showMessageDialog(btnNewStudent, ex);
         }
@@ -340,6 +344,7 @@ public class semesterView extends BaseSubContentView {
             CourseDAO dao = new CourseDAO();
             Course course = dao.findById(courseId);
             editCourse.initCourseFromModel(course);
+            editCourse.initCourceToEdit();
             createNewSubView(editCourse);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(btnNewCource, ex);
@@ -397,6 +402,7 @@ public class semesterView extends BaseSubContentView {
             SubjectDAO dao = new SubjectDAO();
             Subject subject = dao.findById(sujectId);
             editSubject.initSubjectFromModel(subject);
+            editSubject.initSubjectToEdit();
             createNewSubView(editSubject);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(btnNewSubject, ex);
@@ -455,6 +461,7 @@ public class semesterView extends BaseSubContentView {
             SubjectAssignment assSub = dao.findById(assId);
             editAss.initAssFromModel(assSub);
             createNewSubView(editAss);
+            editAss.initAssToEdit();
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(btnNewAssinment, ex);
         }

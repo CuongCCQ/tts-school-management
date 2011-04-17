@@ -155,18 +155,18 @@ public class SubjectDAO extends BaseHibernateDAO {
 
         // search by code
         if (st.getSubjectCode() != null && !st.getSubjectCode().isEmpty()) {
-            sqlBuider.append("and model.SubjectCode like ?");
+            sqlBuider.append("and model.subjectCode like ?");
             params.add("%" + st.getSubjectCode() + "%");
         }
 
         // search by name
         if (st.getSubjectName() != null && !st.getSubjectName().isEmpty()) {
-            sqlBuider.append("and model.SubjectName like ?");
+            sqlBuider.append("and model.subjectName like ?");
             params.add("%" + st.getSubjectName() + "%");
         }
         // search by Description
         if (st.getDescription() != null && !st.getDescription().isEmpty()) {
-            sqlBuider.append("and model.Description like ?");
+            sqlBuider.append("and model.description like ?");
             params.add("%" + st.getDescription() + "%");
         }
 

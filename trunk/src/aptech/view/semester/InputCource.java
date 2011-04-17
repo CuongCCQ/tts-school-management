@@ -23,6 +23,7 @@ import aptech.util.IsSure;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class InputCource extends javax.swing.JPanel {
 
@@ -33,6 +34,8 @@ public class InputCource extends javax.swing.JPanel {
     /** Creates new form InputCource */
     public InputCource() {
         initComponents();
+        this.btnDelete.setVisible(false);
+        this.lblTitle.setText("Add new cource");
     }
 
     protected void initComponentV2() {
@@ -42,7 +45,10 @@ public class InputCource extends javax.swing.JPanel {
     public JButton getBtnDelete() {
         return btnDelete;
     }
-
+public JLabel getLbltitle()
+{
+    return lblTitle;
+}
     protected void initCourseFromModel(Course courseFromModel) {
         try {
             this.course = courseFromModel;

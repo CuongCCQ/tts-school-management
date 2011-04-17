@@ -17,6 +17,7 @@ public class EditCource extends InputCource{
     }
     protected void initCourceToEdit() {
         getBtnDelete().setVisible(true);
+        getLbltitle().setText("Edit cource");
         this.confirmSaveMessage=Constant.SURE_TO_UPDATE_STUDENT;
     }
 }

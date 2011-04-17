@@ -19,6 +19,7 @@ public class EditSubject extends InputSubject{
 
     protected void initSubjectToEdit() {
         getBtnDelete().setVisible(true);
-        //this.confirmSaveMessage=Constant.SURE_TO_UPDATE_Subject;
+        getLbtltitle().setText("Edit subject");
+        this.confirmSaveMessage=Constant.SURE_TO_UPDATE_Subject;
     }
 }

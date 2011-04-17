@@ -14,6 +14,7 @@ public class EditClassOffer extends inputClassOffer{
         initComponentV2();
     }
     protected void initClassOfferToEdit() {
-        getBtnDelete().setVisible(true);
+        getBtndelete().setVisible(true);
+        getLbltitle().setText("Edit class offer");
     }
 }
