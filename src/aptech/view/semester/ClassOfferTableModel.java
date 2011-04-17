@@ -7,6 +7,7 @@
 package aptech.view.semester;
 
 import api.ClassOffer;
+import api.Semester;
 import aptech.view.control.BaseTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
 
    @Override
     public String[] initLabel() {
-        return new String[] {"Class code",  "Min students", "Max students","Semester"};
+        return new String[] {"Class code",  "Min students", "Max students","Semester","Course"};
     }
 
 
@@ -29,7 +30,6 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
         this.lstData.addAll(lstData);
         isCellEditable(0,3);
     }
-
     @Override
     public Class getColumnClass(int c) {
         if (lstData.size() > 1) {
@@ -51,6 +51,9 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
         }else if(columnIndex==3)
         {
             return lstData.get(rowIndex).getSemesterId();
+        }else if(columnIndex==4)
+        {
+            return lstData.get(rowIndex).getId();
         }
         else {
             return "";
@@ -71,6 +74,9 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
             } else if (columnIndex == 3)
             {
                 lstData.get(rowIndex).setSemesterId((Integer)aValue);
+            } else if (columnIndex == 4)
+            {
+                lstData.get(rowIndex).setId((Integer)aValue);
             }
         }
     }

@@ -25,7 +25,6 @@ public class TtsTable extends JTable {
     public TtsTable(BaseTableModel dm) {
         super(dm);
          this.setRowHeight(0,25);
-         getCellRenderer(0,0);
     }
 
     @Override
