@@ -348,7 +348,7 @@ public class MainSchool extends javax.swing.JFrame {
 
             public void run() {
                 MainSchool mainSchool = new MainSchool();
-                Account acc=new Account(1, "tuyuri", "123",72,new Date(),(short)2);
+                Account acc=new Account(1, "tuyuri", "123",74,new Date(),(short)2);
                 mainSchool.setUserToken(acc);
             }
         });
