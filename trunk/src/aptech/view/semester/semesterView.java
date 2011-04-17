@@ -180,6 +180,7 @@ public class semesterView extends BaseSubContentView {
             Semester semester = seDao.findById(semesterId);
             editSemester.initSemesterFromModel(semester);
             createNewSubView(editSemester);
+            editSemester.initSemesterToEdit();
             //editSemester.initSemesterToEdit();
         } catch (IOException ex) {
             //JOptionPane.showMessageDialog(btnNewStudent, ex);

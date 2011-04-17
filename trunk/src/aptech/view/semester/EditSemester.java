@@ -17,6 +17,6 @@ public class EditSemester extends InputSemester{
 
 
     protected void initSemesterToEdit() {
-       
+       getLbltitle().setText("Edit semester");
     }
 }

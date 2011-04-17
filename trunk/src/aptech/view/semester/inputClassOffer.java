@@ -226,7 +226,7 @@ public class inputClassOffer extends javax.swing.JPanel {
         this.classOffer.setMinStudent(Integer.parseInt(this.txtMinstudent.getText().trim()));
         this.classOffer.setMaxStudent(Integer.parseInt(this.txtMaxStudent.getText().trim()));
         this.classOffer.setSemesterId(listSemesterID.get(cbSemester.getSelectedIndex()));
-        this.classOffer.setId(listCourseID.get( cbCource.getSelectedIndex()));
+        this.classOffer.setId(listCourseID.get(cbCource.getSelectedIndex()));
         return errMsg;
     }
     private boolean isValidate() throws ParseException {
@@ -261,22 +261,24 @@ public class inputClassOffer extends javax.swing.JPanel {
             this.txtMaxStudent.setText( classOffer.getMaxStudent().toString());
             this.txtClassCode.setText(classOffer.getClassCode().toString());
 
+            //load data semesterName to JCOMBOBOX
             semester = new Semester();
             semesterDao = new SemesterDAO();
             semester = semesterDao.findById(classOffer.getSemesterId());
-            semesterDao.getSession().beginTransaction();
             String semesterName = semester.getName();
-            semesterDao.save(semester);
+            semesterDao.getSession().beginTransaction();
             this.cbSemester.setSelectedItem(semesterName);
+            semesterDao.save(semester);
             semesterDao.getSession().getTransaction().commit();
 
+            //load data courseCode to JCOMBOBOX
             course = new Course();
             courseDao = new CourseDAO();
             course = courseDao.findById(classOffer.getId());
-            courseDao.save(course);
-            courseDao.getSession().beginTransaction();
             String courseCode = course.getCourseCode();
+            courseDao.getSession().beginTransaction();
             this.cbCource.setSelectedItem(courseCode);
+            courseDao.save(course);
             courseDao.getSession().getTransaction().commit();
         } catch (Exception ex) {
 
