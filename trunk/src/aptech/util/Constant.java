@@ -80,6 +80,6 @@ public interface Constant {
     final String NOTICE_UPDATE_SCHEDULE_COMPLETED = "Update schedule completed";
     final int TIME_TO_BEGIN_SCHOOL=8;
     final int TIME_TO_END_SCHOOL=23;
-    final int TIME_LINE_WIDTH=50;
+    final int TIME_LINE_WIDTH=150;
 
   }
