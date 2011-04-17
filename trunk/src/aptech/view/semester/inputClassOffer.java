@@ -37,7 +37,7 @@ public class inputClassOffer extends javax.swing.JPanel {
     Course cource;
     ClassOfferDAO offDao;
     ClassOffer offer;
-    List<Integer> listId = new ArrayList<Integer>();
+    List<Integer> listSemesterId = new ArrayList<Integer>();
     List<Integer> listIdCource = new ArrayList<Integer>();
 
     /** Creates new form inputClassOffer */
@@ -183,7 +183,7 @@ public class inputClassOffer extends javax.swing.JPanel {
             } else {
                 offDao = new ClassOfferDAO();
                 offer = new ClassOffer();
-                int idSemester = listId.get(cbSemester.getSelectedIndex());
+                int idSemester = listSemesterId.get(cbSemester.getSelectedIndex());
                 int idCource = listIdCource.get(cbCource.getSelectedIndex());
                 String classOffCode = txtClassCode.getText();
                 String minStudent = txtMinstudent.getText();
@@ -241,7 +241,7 @@ public class inputClassOffer extends javax.swing.JPanel {
         List list = semesDao.findAll();
         for (Object object : list) {
             cbSemester.addItem(((Semester) object).getName());
-            listId.add(((Semester) object).getSemesterId());
+            listSemesterId.add(((Semester) object).getSemesterId());
         }
     }
 
@@ -264,7 +264,7 @@ public class inputClassOffer extends javax.swing.JPanel {
         this.cOffer.setClassCode(this.txtClassCode.getText());
         this.cOffer.setMinStudent(Integer.parseInt(this.txtMinstudent.getText()));
         this.cOffer.setMaxStudent(Integer.parseInt(this.txtMaxStudent.getText()));
-
+        
         return errMsg;
     }
 
@@ -272,9 +272,10 @@ public class inputClassOffer extends javax.swing.JPanel {
         try {
             this.cOffer = cOfferFromModel;
             this.txtClassCode.setText(cOffer.getClassCode());
-            txtClassCode.setEditable(false);
             this.txtMinstudent.setText(cOffer.getMinStudent().toString());
             this.txtMaxStudent.setText(cOffer.getMaxStudent().toString());
+   
+            this.cbCource.setSelectedIndex(cOffer.getId());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, Constant.ERROR_STRING);
         }
