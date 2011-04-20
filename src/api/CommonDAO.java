@@ -16,7 +16,7 @@ import org.hibernate.Query;
  */
 public class CommonDAO extends BaseHibernateDAO {
 
-    public Date getServerTime() {
+    public  Date getServerTime() {
         String queryString = "select dateadd(dd,0, datediff(dd,0, getDate()))";
         Query queryObject = getSession().createSQLQuery(queryString);
         java.sql.Timestamp date=null;

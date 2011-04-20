@@ -119,6 +119,7 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
             throw re;
         }
     }
+     //public List findByStaff
 
     public List findByClassOfferDetailId(Object classOfferDetailId) {
         return findByProperty(CLASS_OFFER_DETAIL_ID, classOfferDetailId);
