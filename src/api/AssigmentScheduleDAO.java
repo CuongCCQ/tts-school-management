@@ -1,5 +1,6 @@
 package api;
 
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -106,7 +107,7 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
         }
     }
 
-     public List findByClassOfferDetailIdTimeUnTeach(Object classOfferDetailId) {
+    public List findByClassOfferDetailIdTimeUnTeach(Object classOfferDetailId) {
 
         try {
             String queryString = "from AssigmentSchedule as model where model.classOfferDetailId=? and model.startTime<"
@@ -119,7 +120,20 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
             throw re;
         }
     }
-     //public List findByStaff
+
+    public List<AssigmentSchedule> getScheduleByDate(Date dateToGet) {
+        try {
+            String queryString = "from AssigmentSchedule as model where model.startTime>="
+                    + "dateadd(dd,0, datediff(dd,0, ?)) and model.startTime<dateadd(dd,1, datediff(dd,0, ?)) ";
+            Query queryObject = getSession().createQuery(queryString);
+            queryObject.setParameter(0, dateToGet);
+            queryObject.setParameter(1, dateToGet);
+            return queryObject.list();
+        } catch (RuntimeException re) {
+            log.error("find by property name failed", re);
+            throw re;
+        }
+    }
 
     public List findByClassOfferDetailId(Object classOfferDetailId) {
         return findByProperty(CLASS_OFFER_DETAIL_ID, classOfferDetailId);
