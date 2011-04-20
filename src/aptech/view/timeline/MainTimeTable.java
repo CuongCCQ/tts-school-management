@@ -11,6 +11,14 @@
 package aptech.view.timeline;
 
 import api.AssigmentSchedule;
+import api.ClassOffer;
+import api.ClassOfferDAO;
+import api.Staff;
+import api.StaffDAO;
+import api.Subject;
+import api.SubjectAssignment;
+import api.SubjectAssignmentDAO;
+import api.SubjectDAO;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import java.awt.Color;
@@ -31,10 +39,18 @@ public class MainTimeTable extends javax.swing.JPanel {
     private PanelImage pnImg;
     List<AssigmentSchedule> lstData=new ArrayList<AssigmentSchedule>();
 
+    public List<AssigmentSchedule> getLstData() {
+        return lstData;
+    }
+
+    public void setLstData(List<AssigmentSchedule> lstData) {
+        this.lstData = lstData;
+    }
+
+
+
     public MainTimeTable() {
         initComponents();
-        initData();
-        init();
     }
 
     private void initData() {
@@ -52,13 +68,25 @@ public class MainTimeTable extends javax.swing.JPanel {
         lstData.add(as1);
     }
 
-    private void init() {
+    public void init() {
         try {
             setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
             pnImg = new PanelImage();
             add(pnImg);
             for (AssigmentSchedule ass : lstData) {
-                PanelClass pnClass=new PanelClass(ass.getDate(), ass.getMinuteToTeach(), "tunguyen", "c0904", "test");
+                SubjectAssignment subjectAss = new SubjectAssignmentDAO().findById(ass.getClassOfferDetailId());
+
+                // staff name
+                Staff staff = new StaffDAO().findById(subjectAss.getStaffId());
+                String staffName=staff.getName();
+                //subject
+                Subject subject = new SubjectDAO().findById(subjectAss.getSubjectId());
+                String subjectName=subject.getSubjectName();
+                // course
+                ClassOffer classOffer = new ClassOfferDAO().findById(subjectAss.getClassOfferId());
+                String courseName=classOffer.getClassCode();
+
+                PanelClass pnClass=new PanelClass(ass.getDate(), ass.getMinuteToTeach(), staffName, courseName, subjectName);
                 add(pnClass);
             }
         } catch (IOException ex) {

@@ -8,10 +8,15 @@
  *
  * Created on Apr 25, 2011, 4:07:38 PM
  */
-
 package aptech.view.timeline;
 
+import api.AssigmentSchedule;
+import api.AssigmentScheduleDAO;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,18 +28,53 @@ import javax.swing.JScrollPane;
  */
 public class MainTimeForm extends javax.swing.JPanel {
 
+    Calendar currentCal = Calendar.getInstance();
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
     /** Creates new form MainTimeForm */
     public MainTimeForm() {
+        initDate();
         initComponents();
         init();
     }
+    // get data from db
 
-    private void init()
-    {
-        setLayout(new FlowLayout(FlowLayout.CENTER));
-        prMain=new MainTimeTable();
-        mainPn=new JScrollPane(prMain);
+    private void initDate() {
+        currentCal.set(Calendar.HOUR, 0);
+        currentCal.set(Calendar.MINUTE, 0);
+        currentCal.set(Calendar.MILLISECOND, 0);
+    }
+
+    private void init() {
+        removeAll();
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        JPanel pn = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pn.setPreferredSize(new Dimension(1000, 30));
+        this.lbTitle = new JLabel();
+        pn.add(lbTitle);
+        add(pn);
+        prMain = new MainTimeTable();
+        prMain.setPreferredSize(new Dimension(600, 600));
+        mainPn = new JScrollPane(prMain);
+        mainPn.setPreferredSize(new Dimension(1000, 400));
+        // get list assignment schedule
+        AssigmentScheduleDAO dao = new AssigmentScheduleDAO();
+        List<AssigmentSchedule> lstScheduleByDate = dao.getScheduleByDate(this.currentCal.getTime());
+        if (lstScheduleByDate.size() > 0) {
+            prMain.setLstData(lstScheduleByDate);
+            this.lbTitle.setText("ALL CLASS SCHEDULE " + formatter.format(currentCal.getTime()));
+            prMain.init();
+            add(mainPn);
+        }
+        else
+        {
+            this.lbTitle.setText("There is no classes on "+formatter.format(currentCal.getTime()));
+        }
         
+        
+        revalidate();
+        repaint();
+
     }
 
     /** This method is called from within the constructor to
@@ -52,8 +92,6 @@ public class MainTimeForm extends javax.swing.JPanel {
     private JButton btnPre;
     private JButton btnNext;
     private MainTimeTable prMain;
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
 }
