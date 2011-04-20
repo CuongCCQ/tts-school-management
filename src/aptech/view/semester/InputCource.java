@@ -14,6 +14,8 @@ package aptech.view.semester;
  *
  * @author anhson
  */
+import api.ClassOffer;
+import api.ClassOfferDAO;
 import javax.swing.JOptionPane;
 import api.CourseDAO;
 import api.Course;
@@ -29,6 +31,8 @@ public class InputCource extends javax.swing.JPanel {
 
     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
+     private ClassOffer classOffer= new ClassOffer();
+    private  ClassOfferDAO classOfferDAO= new ClassOfferDAO();
     protected Course course;
 
     /** Creates new form InputCource */
@@ -253,8 +257,12 @@ public JLabel getLbltitle()
             if (IsSure.confirm(this.confirmDeleteMessage)) {
                 CourseDAO dao = new CourseDAO();
                 dao.getSession().beginTransaction();
+                
+                classOfferDAO.deleteByCourseID(course.getId());
                 dao.delete(course);
-                dao.getSession().getTransaction().commit();
+                
+                
+                classOfferDAO.getSession().getTransaction().commit();
                 AppUtil.showNoticeMessage(Constant.NOTICE_TO_DELETE_STUDENT);
                 this.btnDelete.setEnabled(false);
                 this.btnAdd.setEnabled(false);
