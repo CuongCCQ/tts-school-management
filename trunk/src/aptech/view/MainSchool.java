@@ -16,6 +16,7 @@ import aptech.util.Constant;
 import aptech.view.semester.semesterView;
 import aptech.view.staff.StaffView;
 import aptech.view.student.StudentView;
+import aptech.view.timeline.TimeLineView;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -234,7 +235,7 @@ public class MainSchool extends javax.swing.JFrame {
         btnStudent.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                loadStudentView(e);
+                loadTimeLineView(e);
             }
         });
         toolBar.add(btnStudent);
@@ -242,7 +243,8 @@ public class MainSchool extends javax.swing.JFrame {
 
     private void initStudentButton() {
         JButton btnStudent = new JButton();
-        ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "student.png");
+        URL resource = PathUtil.class.getResource("student.png");
+        ImageIcon studentIcon = new ImageIcon(resource);
         btnStudent.setIcon(studentIcon);
         btnStudent.setText("Student");
         btnStudent.addActionListener(new ActionListener() {
@@ -256,7 +258,8 @@ public class MainSchool extends javax.swing.JFrame {
 
     private void initTeacherButton() {
         JButton btnTeacher = new JButton();
-        ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "teacher.png");
+        URL resource = PathUtil.class.getResource("teacher.png");
+        ImageIcon studentIcon = new ImageIcon(resource);
         btnTeacher.setIcon(studentIcon);
         btnTeacher.setText("Staff");
         btnTeacher.addActionListener(new ActionListener() {
@@ -271,7 +274,8 @@ public class MainSchool extends javax.swing.JFrame {
 
     private void initCourceButton() {
         JButton btnCource = new JButton();
-        ImageIcon studentIcon = new ImageIcon(AppUtil.getAppPath() + Constant.RESOURCE_PATH + "course.png");
+        URL resource = PathUtil.class.getResource("course.png");
+        ImageIcon studentIcon = new ImageIcon(resource);
         btnCource.setIcon(studentIcon);
         btnCource.setText("Course");
         btnCource.addActionListener(new ActionListener() {
@@ -334,6 +338,14 @@ public class MainSchool extends javax.swing.JFrame {
     }
 
 // </editor-fold>
+     private void loadTimeLineView(ActionEvent eventData) {
+        //this.getContentPane().setBackground(new Color(240,240,240));
+        TimeLineView timeLineView = new TimeLineView(this);
+        timeLineView.initSubView();
+        this.rootWindow.setVisible(true);
+    }
+
+
     private void loadStudentView(ActionEvent eventData) {
         //this.getContentPane().setBackground(new Color(240,240,240));
         StudentView studentView = new StudentView(this);
@@ -371,8 +383,6 @@ public class MainSchool extends javax.swing.JFrame {
                 mainSchool.setUserToken(acc);
             }
         });
-
-
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

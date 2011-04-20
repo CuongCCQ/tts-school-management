@@ -206,8 +206,8 @@ public class ClassScheduleMain extends javax.swing.JPanel {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(tDateModel.getDate());
                     if (tDateModel.getDayOfWeek() == get) {
-                        calendar.set(Calendar.HOUR, tDateModel.getDate().getHours());
-                        calendar.set(Calendar.MINUTE, tDateModel.getDate().getMinutes());
+                        calendar.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+                        calendar.set(Calendar.MINUTE, cal.get(Calendar.MINUTE));
                         AssigmentSchedule assigmentSchedule = new AssigmentSchedule();
                         assigmentSchedule.setClassOfferDetailId(this.subjectAssignment.getClassOfferDetailId());
                         assigmentSchedule.setMinuteToTeach(subjectAssignment.getMinutesPerLession());
