@@ -7,7 +7,7 @@
   <class catalog="tts" name="api.Attendance" schema="dbo" table="Attendance">
     <id name="attendanceId" type="java.lang.Integer">
       <column name="AttendanceId"/>
-      <generator class="assigned"/>
+      <generator class="identity"/>
     </id>
     <property name="absenceStatus" type="java.lang.Short">
       <column name="AbsenceStatus" not-null="true"/>
