@@ -108,16 +108,29 @@ public class SubjectAssignmentDAO extends BaseHibernateDAO {
 		}
 	}
 
-        public List findBySubClassAndStaff(Integer subjectId, int classId, int staffId) {
+        public List findByClassAndStaff(int classId, int staffId) {
 		log.debug("finding SubjectAssignment instance with property Subject, class and staff");
 		try {
 			String queryString = "from SubjectAssignment as model where model."
-					+SUBJECT_ID+ "= ? and model."+CLASS_OFFER_ID+"=? and model."
-                                        +STAFF_ID+"=?";
+					+CLASS_OFFER_ID+ "= ? and model."+STAFF_ID+"=?";
 			Query queryObject = getSession().createQuery(queryString);
-			queryObject.setParameter(0,subjectId);
-                        queryObject.setParameter(1, classId);
-                        queryObject.setParameter(2, staffId);
+			queryObject.setParameter(0, classId);
+                        queryObject.setParameter(1, staffId);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+              public List findByClassStaffAndSubject(int classId, int staffId,int subjectId) {
+		log.debug("finding SubjectAssignment instance with property Subject, class and staff");
+		try {
+			String queryString = "from SubjectAssignment as model where model."
+					+CLASS_OFFER_ID+ "= ? and model."+STAFF_ID+"=? and model."+SUBJECT_ID+"=?";
+			Query queryObject = getSession().createQuery(queryString);
+			queryObject.setParameter(0, classId);
+                        queryObject.setParameter(1, staffId);
+                        queryObject.setParameter(2, subjectId);
 			return queryObject.list();
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
