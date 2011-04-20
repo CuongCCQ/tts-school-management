@@ -105,6 +105,19 @@ public class ClassOfferDAO extends BaseHibernateDAO {
 			throw re;
 		}
 	}
+        public void deleteByCourseID(int  ID) {
+		log.debug("delete ClassOffer by with Semester ");
+		try {
+			String queryString = "delete from ClassOffer as model where model."
+					+ID+"= ?";
+			Query queryObject = getSession().createQuery(queryString);
+			queryObject.setParameter(0,ID);
+                        queryObject.executeUpdate();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
 
 	public List findByClassCode(Object classCode) {
 		return findByProperty(CLASS_CODE, classCode);
