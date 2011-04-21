@@ -11,6 +11,8 @@
 
 package aptech.view.semester;
 
+import api.ClassOffer;
+import api.ClassOfferDAO;
 import api.SubjectDAO;
 import aptech.util.ValidateUtil;
 import api.Subject;
@@ -30,6 +32,8 @@ public class InputSubject extends javax.swing.JPanel {
     String confirmSaveMessage = Constant.SURE_TO_SAVE_SUBJECT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_Subject;
     protected Subject subject;
+   
+
     /** Creates new form InputSubject */
     public InputSubject() {
         initComponents();
