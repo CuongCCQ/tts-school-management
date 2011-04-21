@@ -12,18 +12,32 @@ package aptech.view.staff;
 
 import api.AssigmentSchedule;
 import api.AssigmentScheduleDAO;
+import api.Attendance;
+import api.AttendanceDAO;
 import api.ClassOffer;
 import api.ClassOfferDAO;
+import api.CommonDAO;
 import api.Student;
 import api.StudentCourseRegistration;
 import api.StudentCourseRegistrationDAO;
 import api.StudentDAO;
 import api.StudentV2;
+import api.Subject;
 import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
+import api.SubjectDAO;
+import aptech.util.IsSure;
+import aptech.view.control.CmbObject;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TimeZone;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import sun.misc.Cleaner;
 
 /**
  *
@@ -35,6 +49,7 @@ public class ResulPanel extends javax.swing.JPanel {
     public ResulPanel() {
         initComponents();
         initClass();
+        //initSubject();
 
 
     }
@@ -53,11 +68,15 @@ public class ResulPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         cbxStudent = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbxSubject = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        txtDescription = new javax.swing.JTextArea();
+        bttSave = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        cbxStatus = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        cbxDate = new javax.swing.JComboBox();
 
         jLabel1.setText("Class Name");
 
@@ -69,18 +88,43 @@ public class ResulPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Student Code");
 
+        cbxStudent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxStudentActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Subject");
+
+        cbxSubject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSubjectActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Description");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDescription.setColumns(20);
+        txtDescription.setRows(5);
+        jScrollPane1.setViewportView(txtDescription);
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bttSave.setText("Save");
+        bttSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bttSaveActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Status");
+
+        cbxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "P", "A" }));
+
+        jLabel6.setText("Date");
+
+        cbxDate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SelectDate" }));
+        cbxDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxDateActionPerformed(evt);
             }
         });
 
@@ -89,46 +133,69 @@ public class ResulPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cbxStudent, 0, 166, Short.MAX_VALUE)
-                        .addComponent(cbxClassName, 0, 166, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, 0, 166, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(75, 75, 75))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bttSave)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbxClassName, 0, 103, Short.MAX_VALUE)
+                                .addComponent(cbxSubject, 0, 103, Short.MAX_VALUE)))
+                        .addGap(141, 141, 141))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbxStudent, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbxStatus, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbxDate, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addGap(171, 171, 171)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addComponent(jLabel4)
+                        .addGap(73, 73, 73)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cbxDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                        .addComponent(bttSave))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
                         .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -148,33 +215,90 @@ public class ResulPanel extends javax.swing.JPanel {
             }
             for (Integer integer : lstStudentID) {
                 studentV2 = studentDAO.findByIdV2(integer);
-                cbxStudent.addItem(studentV2.getName());
+                cbxStudent.addItem(studentV2.getStudentCode() + "_" + studentV2.getName());
             }
+            initSubject();
         } catch (Exception e) {
             return;
         }
     }//GEN-LAST:event_cbxClassNameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bttSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttSaveActionPerformed
+
         // TODO add your handling code here:
-        initSchedu();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void initSchedu() {
+        int assCheIDTemp = lstAssigmentSchedules.get(cbxDate.getSelectedIndex()).getAssigmentScheduleId();
+        deString = txtDescription.getText();
+        int temp = cbxStatus.getSelectedIndex();
+        if (temp == 0) {
+            statusAttendance = 0;
+        }
+        if (temp == 1) {
+            statusAttendance = 1;
+        }
+        if(deString.isEmpty()){
+        JOptionPane.showMessageDialog(this,"Description is not null!");}
+        else{
+        attendance.setAbsenceStatus(statusAttendance);
+        attendance.setAssigmentScheduleId(assCheIDTemp);
+        attendance.setDescription(deString);
+        attendance.setStudentId(studentIDTemp);
+        attendanceDAO.getSession().beginTransaction();
+        attendanceDAO.save(attendance);
+        attendanceDAO.getSession().getTransaction().commit();
+        JOptionPane.showMessageDialog(this, "Add Ok");
+        this.bttSave.setEnabled(false);
+        }
+        
+        
+
+
+        
+
+    }//GEN-LAST:event_bttSaveActionPerformed
+
+    private void cbxStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStudentActionPerformed
+        // TODO add your handling code here:
+        studentIDTemp = lstStudentID.get(cbxStudent.getSelectedIndex());
+    }//GEN-LAST:event_cbxStudentActionPerformed
+
+    private void cbxDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxDateActionPerformed
+
+    private void cbxSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSubjectActionPerformed
+        initSchedule();
+        // TODO add your handling code here:
+}//GEN-LAST:event_cbxSubjectActionPerformed
+
+    public void initSubject() {
         int id = lstIDClass.get(cbxClassName.getSelectedIndex());
-
-
-        System.out.println(classOfferDAO.findById(id).getClassCode());
-
-
+        List<SubjectAssignment> lstTemp = subjectAssignmentDAO.findByClassAndStaff(id, a);
+        if (hsSubjects.size() > 0) {
+            hsSubjects.clear();
+        }
+        for (SubjectAssignment subjectAssignment : lstTemp) {
+            int idSubjectTemp = subjectAssignment.getSubjectId();
+            subject = subjectDAO.findById(idSubjectTemp);
+            hsSubjects.add(subject);
+            idSubject.add(idSubjectTemp);
+        }
+        if (cbxSubject.getItemCount() > 0) {
+            cbxSubject.removeAllItems();
+        }
+        for (Subject subTemp : hsSubjects) {
+            cbxSubject.addItem(subTemp.getSubjectName());
+        }
     }
 
     void initClass() {
         hsIDClass = new HashSet<Integer>();
+
         for (SubjectAssignment subjectTemp : test) {
             hsIDClass.add(subjectTemp.getClassOfferId());
         }
         for (Integer integer : hsIDClass) {
+
             cbxClassName.addItem(classOfferDAO.findById(integer).getClassCode());
             lstIDClass.add(integer);
         }
@@ -183,11 +307,20 @@ public class ResulPanel extends javax.swing.JPanel {
 
     }
 
-    void initStudent() {
-        for (Integer integer : lstIDClass) {
-            System.out.println(integer);
+    void initSchedule() {
+        int classID = lstIDClass.get(cbxClassName.getSelectedIndex());
+        int subjectID = idSubject.get(cbxSubject.getSelectedIndex());
+        List<SubjectAssignment> lstList = subjectAssignmentDAO.findByClassStaffAndSubject(classID, a, subjectID);
+        int classOfferID = lstList.get(0).getClassOfferDetailId();
+        lstAssigmentSchedules = assigmentScheduleDAO.findByClassOfferDetailId(classOfferID);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE/MM/dd/yyyy");
+        if (cbxDate.getItemCount() > 0) {
+            cbxDate.removeAllItems();
         }
-
+        for (AssigmentSchedule assSchedule : lstAssigmentSchedules) {
+            String temp = dateFormat.format(assSchedule.getDate());
+            cbxDate.addItem(temp);
+        }
 
     }
     private ClassOffer classOffer = new ClassOffer();
@@ -198,26 +331,39 @@ public class ResulPanel extends javax.swing.JPanel {
     private StudentDAO studentDAO = new StudentDAO();
     private StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
     private StudentCourseRegistrationDAO studentCourseRegistrationDAO = new StudentCourseRegistrationDAO();
-    int a = 70;
-    HashSet<Integer> hsIDClass;
-    List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
-    List<Integer> lstIDClass = new ArrayList<Integer>();
-    List<Student> lstStudent = new ArrayList<Student>();
-    List<Integer> lstClassOfferDetail = new ArrayList<Integer>();
-    List<Integer> lstClassID = new ArrayList<Integer>();
-    List<AssigmentSchedule> lstAssigmentSchedules = new ArrayList<AssigmentSchedule>();
-    AssigmentScheduleDAO assigmentScheduleDAO = new AssigmentScheduleDAO();
-    List<Integer> lstStudentID = new ArrayList<Integer>();
+    int a = 74;
+    private Subject subject = new Subject();
+    private SubjectDAO subjectDAO = new SubjectDAO();
+    private HashSet<Integer> hsIDClass;
+    private List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
+    private List<Integer> lstIDClass = new ArrayList<Integer>();
+    private List<Student> lstStudent = new ArrayList<Student>();
+    private List<Integer> lstClassOfferDetail = new ArrayList<Integer>();
+    private List<AssigmentSchedule> lstAssigmentSchedules = new ArrayList<AssigmentSchedule>();
+    private AssigmentScheduleDAO assigmentScheduleDAO = new AssigmentScheduleDAO();
+    private List<Integer> lstStudentID = new ArrayList<Integer>();
+    private HashSet<Subject> hsSubjects = new HashSet<Subject>();
+    private List<Integer> idSubject = new ArrayList<Integer>();
+    private int studentIDTemp;
+    private int scheduleId;
+    private String deString;
+    private Short statusAttendance;
+    private Attendance attendance = new Attendance();
+    private AttendanceDAO attendanceDAO = new AttendanceDAO();
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bttSave;
     private javax.swing.JComboBox cbxClassName;
+    private javax.swing.JComboBox cbxDate;
+    private javax.swing.JComboBox cbxStatus;
     private javax.swing.JComboBox cbxStudent;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cbxSubject;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
 }
