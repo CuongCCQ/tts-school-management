@@ -39,7 +39,7 @@ public class StudentView extends BaseSubContentView {
     
     private JButton btnStudentCourseReg;
 
-    private JButton btnClassSchedule;
+    
 
     public StudentView(MainSchool ms) {
         super(ms);
@@ -72,14 +72,8 @@ public class StudentView extends BaseSubContentView {
             }
         });
 
-         btnClassSchedule = new JButton("Class Schedule");
-        this.lstButtons.add(btnClassSchedule);
-        btnClassSchedule.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                createNewSubView(new ClassSchedule(mainSchool.getUserToken().getStaffId()));
-            }
-        });
+         
+      
 
 
         

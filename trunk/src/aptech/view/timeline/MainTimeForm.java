@@ -12,15 +12,22 @@ package aptech.view.timeline;
 
 import api.AssigmentSchedule;
 import api.AssigmentScheduleDAO;
+import datechooser.beans.DateChooserCombo;
+import datechooser.beans.DateChooserDialog;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import resources.images.PathUtil;
 
 /**
  *
@@ -52,9 +59,34 @@ public class MainTimeForm extends javax.swing.JPanel {
         pn.setPreferredSize(new Dimension(1000, 30));
         this.lbTitle = new JLabel();
         pn.add(lbTitle);
+        
+        JPanel pn1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pn1.setPreferredSize(new Dimension(1000, 40));
+        java.net.URL imgURL = PathUtil.class.getResource("date.png");
+        lbDate=new JLabel(new ImageIcon(imgURL));
+        lbDate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        lbDate.setText("");
+        lbDate.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dia=new DateChooserDialog();
+                dia.setSelectedDate(currentCal);
+                dia.showDialog(null);
+                currentCal=dia.getSelectedDate();
+                init();
+            }
+
+
+        });
+        pn1.add(lbDate);
+
+        
         add(pn);
+        add(pn1);
+
         prMain = new MainTimeTable();
-        prMain.setPreferredSize(new Dimension(600, 600));
+        prMain.setPreferredSize(new Dimension(600, 538));
         mainPn = new JScrollPane(prMain);
         mainPn.setPreferredSize(new Dimension(1000, 400));
         // get list assignment schedule
@@ -88,10 +120,9 @@ public class MainTimeForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private JScrollPane mainPn;
     private JLabel lbTitle;
-    private JPanel pnButtons;
-    private JButton btnPre;
-    private JButton btnNext;
+    private JLabel lbDate;
     private MainTimeTable prMain;
+    private DateChooserDialog dia;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

@@ -8,8 +8,11 @@ import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.view.BaseSubContentView;
 import aptech.view.MainSchool;
+import aptech.view.staff.ClassSchedule;
 import aptech.view.student.InputStudent;
 import aptech.view.student.StudentView;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -38,7 +41,19 @@ public class TimeLineView extends BaseSubContentView {
         btnUpdateTimeTable = new JButton("Update class schedule");
         this.lstButtons.add(btnUpdateTimeTable);
 
-        
+        btnViewTimeLine.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                createNewSubView(new MainTimeForm());
+            }
+        });
+
+        btnUpdateTimeTable.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                createNewSubView(new ClassSchedule(mainSchool.getUserToken().getStaffId()));
+            }
+        });
     }
 
     @Override
