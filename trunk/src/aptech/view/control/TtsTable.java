@@ -41,6 +41,14 @@ public class TtsTable extends JTable {
         return render;
     }
 
+    @Override
+    public int getRowHeight(int row) {
+//        if(row==0)
+//            return 25;
+        return super.getRowHeight(row);
+    }
+
+
    
     
 }

@@ -26,7 +26,9 @@ public abstract class BaseTableModel<E> extends AbstractTableModel {
 
 
     public abstract  String[] initLabel();
-    
+
+
+
     public BaseTableModel() {
         this.label=initLabel();
     }
@@ -78,16 +80,5 @@ public abstract class BaseTableModel<E> extends AbstractTableModel {
     }
 
 
-}
-class ImageRenderer extends DefaultTableCellRenderer {
-    JLabel lbl = new JLabel();
-
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-        boolean hasFocus, int row, int column) {
-        lbl.setText((String) value);
-        lbl.setIcon(new ImageIcon("/resources/images/home.png"));
-        return lbl;
-    }
 }
 
