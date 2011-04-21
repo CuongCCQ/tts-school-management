@@ -77,7 +77,7 @@ public class PanelClass extends JPanel {
         
         //lbTitle.setPreferredSize(new Dimension(Constant.TIME_LINE_WIDTH-20,20));
         schedultePn.add(lbTitle);
-        Font font = new Font("Dialog", 1, 11);
+        Font font = new Font("Dialog", 1, 8);
         // class start time
         JLabel lbStart=new JLabel("  Start:"+formatTer.format(startTime));
         lbStart.setFont(font);
@@ -92,7 +92,7 @@ public class PanelClass extends JPanel {
         schedultePn.add(lbEndTime);
 
         // class tutor
-        JLabel lbTutor=new JLabel("  Tutor:"+this.teacher);
+        JLabel lbTutor=new JLabel("  Subject:"+this.subjectTitle);
         lbTutor.setFont(font);
         lbTutor.setPreferredSize(new Dimension(Constant.TIME_LINE_WIDTH-20,11));
         schedultePn.add(lbTutor);
