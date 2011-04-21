@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package aptech.view.control;
 
 /**
@@ -11,9 +10,6 @@ package aptech.view.control;
  * @date Apr 10, 2011
  * @
  */
-
-
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -25,7 +21,8 @@ import javax.swing.ImageIcon;
 import resources.images.PathUtil;
 
 public class TableCellRender extends JLabel
-                           implements TableCellRenderer {
+        implements TableCellRenderer {
+
     Border unselectedBorder = null;
     Border selectedBorder = null;
     boolean isBordered = true;
@@ -36,13 +33,16 @@ public class TableCellRender extends JLabel
     }
 
     public Component getTableCellRendererComponent(
-                            JTable table, Object color,
-                            boolean isSelected, boolean hasFocus,
-                            int row, int column) {
-         if(row==0)
-         {
-             this.setIcon(new ImageIcon(PathUtil.class.getResource("tia.png")));
-         }
+            JTable table, Object value,
+            boolean isSelected, boolean hasFocus,
+            int row, int column) {
+
+        if (row == 0) {
+            this.setIcon(new ImageIcon(PathUtil.class.getResource("tia.png")));
+            if (value != null) {
+                setText(value.toString());
+            }
+        }
         return this;
     }
 }

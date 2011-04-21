@@ -82,10 +82,11 @@ public abstract class BaseSubContentView {
         if (bottomModel != null && bottomTable != null) {
             JScrollPane pane = new JScrollPane(bottomTable);
             bottomTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            bottomTable.setRowHeight(0,25);
             pane.setPreferredSize(mainSchool.getBottomPanel().getSize());
             bottomTable.setFillsViewportHeight(true);
             mainSchool.getBottomPanel().add(pane);
-
+            
         }
     }
     // reload bottom view
