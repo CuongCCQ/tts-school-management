@@ -6,8 +6,8 @@
 -->
 <hibernate-mapping>
     <class name="api.VStudentAtt" table="V_STUDENT_ATT" schema="dbo" catalog="tts">
-        <id name="studentId" type="java.lang.Integer">
-            <column name="studentId"/>
+        <id name="attendanceId" type="java.lang.Integer">
+            <column name="AttendanceId"/>
             <generator class="identity"/>
         </id>
         <property name="name" type="java.lang.String">
@@ -19,8 +19,8 @@
         <property name="absenceStatus" type="java.lang.Boolean">
             <column name="AbsenceStatus" />
         </property>
-        <property name="attendanceId" type="java.lang.Integer">
-            <column name="AttendanceId" />
+        <property name="studentId" type="java.lang.Integer">
+            <column name="studentId" />
         </property>
         <property name="assigmentScheduleId" type="java.lang.Integer">
             <column name="AssigmentScheduleId"/>

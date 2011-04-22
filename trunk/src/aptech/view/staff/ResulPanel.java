@@ -16,10 +16,7 @@ import api.Attendance;
 import api.AttendanceDAO;
 import api.ClassOffer;
 import api.ClassOfferDAO;
-import api.Student;
 import api.StudentAttendance;
-import api.StudentCourseRegistration;
-import api.StudentCourseRegistrationDAO;
 import api.StudentDAO;
 import api.StudentV2;
 import api.Subject;
@@ -34,7 +31,6 @@ import aptech.view.control.CmbObject;
 import aptech.view.control.TtsCmbModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import javax.swing.JTable;
 
@@ -58,7 +54,8 @@ public class ResulPanel extends javax.swing.JPanel {
         tblAttendance = new JTable();
         scrlPn.setViewportView(tblAttendance);
         tblAttendance.setFillsViewportHeight(true);
-
+        revalidate();
+        repaint();
     }
 
     /** This method is called from within the constructor to
@@ -165,9 +162,9 @@ public class ResulPanel extends javax.swing.JPanel {
                     .addComponent(cbxDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                        .addGap(26, 26, 26)
                         .addComponent(scrlPn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGap(31, 31, 31)
                         .addComponent(bttSave))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(91, 91, 91)
@@ -178,7 +175,7 @@ public class ResulPanel extends javax.swing.JPanel {
 
     private void cbxClassNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClassNameActionPerformed
         // TODO add your handling code here:
-
+        initGui();
         CmbObject selectedObj = (CmbObject) cbxClassName.getSelectedItem();
         if (selectedObj.getValue().equals("-1")) {
             cbxSubject.removeAllItems();
@@ -201,12 +198,16 @@ public class ResulPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cbxClassNameActionPerformed
 
     private void cbxDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDateActionPerformed
+        scheduleChange();
+    }
+
+    private void scheduleChange() throws NumberFormatException {
+        initGui();
         if (cbxDate.getSelectedIndex() > 0) {
             CmbObject cmbObjDate = (CmbObject) cbxDate.getSelectedItem();
             int assScheduleId = Integer.valueOf(cmbObjDate.getValue());
             CmbObject cmbObjClass = (CmbObject) cbxClassName.getSelectedItem();
             int classOfferId = Integer.valueOf(cmbObjClass.getValue());
-
             VStudentAttDAO dao = new VStudentAttDAO();
             List<VStudentAtt> lstStudenAtt = new ArrayList<VStudentAtt>();
             lstStudenAtt = dao.findByOfferAndAssScheduleId(classOfferId, assScheduleId);
@@ -219,13 +220,12 @@ public class ResulPanel extends javax.swing.JPanel {
             for (VStudentAtt att : lstStudenAtt) {
                 StudentDAO studentDAO = new StudentDAO();
                 StudentV2 student = studentDAO.findByIdV2(att.getStudentId());
-
                 StudentAttendance attendance = new StudentAttendance();
                 attendance.setStudentId(att.getStudentId());
                 attendance.setAssigmentScheduleId(assScheduleId);
                 attendance.setStudentCode(student.getStudentCode());
                 attendance.setStudentName(student.getName());
-                attendance.setAttendanceId(scheduleId);
+                attendance.setAttendanceId(assScheduleId);
                 attendance.setAbsenceStatus(att.getAbsenceStatus());
                 attendance.setDescription(att.getDescription());
                 attendance.setAttendanceId(att.getAttendanceId());
@@ -235,12 +235,15 @@ public class ResulPanel extends javax.swing.JPanel {
                 tblModel = new AttendanceTableModel();
                 tblModel.setLstData(lstAttendances);
                 this.tblAttendance.setModel(tblModel);
+                this.tblAttendance.revalidate();
+                this.tblAttendance.repaint();
             }
-
         }
     }//GEN-LAST:event_cbxDateActionPerformed
 
     private void cbxSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSubjectActionPerformed
+        
+        initGui();
         if (cbxSubject.getSelectedIndex() == 0) {
             cbxDate.removeAllItems();
         } else {
@@ -261,12 +264,16 @@ public class ResulPanel extends javax.swing.JPanel {
             dao.attachDirty(att);
         }
         dao.getSession().getTransaction().commit();
+        AppUtil.showNoticeMessage("Update Successfull");
 }//GEN-LAST:event_bttSaveActionPerformed
 
     void initSchedule() {
         List<CmbObject> lstData = new ArrayList<CmbObject>();
         int classID = Integer.valueOf(((CmbObject) cbxClassName.getSelectedItem()).getValue());
         int subjectID = Integer.valueOf(((CmbObject) cbxSubject.getSelectedItem()).getValue());
+        SubjectAssignmentDAO subjectAssignmentDAO=new SubjectAssignmentDAO();
+        AssigmentScheduleDAO assigmentScheduleDAO =new AssigmentScheduleDAO();
+        List<AssigmentSchedule> lstAssigmentSchedules=new ArrayList<AssigmentSchedule>();
         List<SubjectAssignment> lstList = subjectAssignmentDAO.findByClassStaffAndSubject(classID, AppUtil.UserToken.getStaffId(), subjectID);
         if (lstList.size() > 0) {
 
@@ -304,33 +311,10 @@ public class ResulPanel extends javax.swing.JPanel {
         cbxClassName.setSelectedIndex(0);
 
     }
-    private ClassOffer classOffer = new ClassOffer();
-    private ClassOfferDAO classOfferDAO = new ClassOfferDAO();
-    private SubjectAssignment assignment = new SubjectAssignment();
-    private SubjectAssignmentDAO subjectAssignmentDAO = new SubjectAssignmentDAO();
-    private StudentV2 studentV2 = new StudentV2();
-    private StudentDAO studentDAO = new StudentDAO();
-    private StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
-    private StudentCourseRegistrationDAO studentCourseRegistrationDAO = new StudentCourseRegistrationDAO();
+    
     int a = 74;
-    private Subject subject = new Subject();
-    private SubjectDAO subjectDAO = new SubjectDAO();
-    private HashSet<Integer> hsIDClass;
-    private List<SubjectAssignment> test = subjectAssignmentDAO.findByStaffId(a);
-    private List<Integer> lstIDClass = new ArrayList<Integer>();
-    private List<Student> lstStudent = new ArrayList<Student>();
-    private List<Integer> lstClassOfferDetail = new ArrayList<Integer>();
-    private List<AssigmentSchedule> lstAssigmentSchedules = new ArrayList<AssigmentSchedule>();
-    private AssigmentScheduleDAO assigmentScheduleDAO = new AssigmentScheduleDAO();
-    private List<Integer> lstStudentID = new ArrayList<Integer>();
-    private HashSet<Subject> hsSubjects = new HashSet<Subject>();
-    private List<Integer> idSubject = new ArrayList<Integer>();
-    private int studentIDTemp;
-    private int scheduleId;
-    private String deString;
-    private Short statusAttendance;
-    private Attendance attendance = new Attendance();
-    private AttendanceDAO attendanceDAO = new AttendanceDAO();
+    
+    
     private JTable tblAttendance;
     private AttendanceTableModel tblModel;
     // Variables declaration - do not modify//GEN-BEGIN:variables
