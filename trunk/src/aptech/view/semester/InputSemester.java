@@ -10,6 +10,8 @@
  */
 
 package aptech.view.semester;
+import api.ClassOffer;
+import api.ClassOfferDAO;
 import datechooser.beans.DateChooserCombo;
 import java.io.IOException;
 import api.SemesterDAO;
@@ -21,6 +23,8 @@ import aptech.util.Constant;
 import aptech.util.IsSure;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -35,11 +39,15 @@ public class InputSemester extends javax.swing.JPanel {
         initComponents();
         initCalendar();
         this.lblTitle.setText("Add new semester");
+        this.bntShow.setVisible(false);
     }
     protected Semester semester= new Semester();
     
     protected void initComponentV2(){
         initComponents();
+    }
+    public   JButton getBntShow(){
+       return this.bntShow;
     }
     protected void initSemesterFromModel(Semester semesterFromModel){
        
@@ -71,6 +79,7 @@ public class InputSemester extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
+        bntShow = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -128,6 +137,13 @@ public class InputSemester extends javax.swing.JPanel {
         lblName.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblName.setText("Name :");
 
+        bntShow.setText("Show");
+        bntShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntShowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,7 +164,10 @@ public class InputSemester extends javax.swing.JPanel {
                                 .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(panelDateStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(panelDateEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(bntShow, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addComponent(lblTitle)))
@@ -176,7 +195,9 @@ public class InputSemester extends javax.swing.JPanel {
                     .addComponent(lblDesc)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnAdd)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(bntShow))
                 .addContainerGap(99, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -246,6 +267,16 @@ public class InputSemester extends javax.swing.JPanel {
             
        
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void bntShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntShowActionPerformed
+        // TODO add your handling code here:
+        List<ClassOffer> lstClassOffers= new ArrayList<ClassOffer>();
+        lstClassOffers.clear();
+        lstClassOffers= classOfferDAO.findBySemesterId(semester.getSemesterId());
+        LoadAllClass loadAllClass= new LoadAllClass(lstClassOffers);
+        loadAllClass.setVisible(true);
+        //classOfferDAO.countClassOfferBySemesterID(semester.getSemesterId());
+    }//GEN-LAST:event_bntShowActionPerformed
 //Action update semesterDAO//method fill calendar
     public  void initCalendar() throws IOException
     {
@@ -275,7 +306,9 @@ public class InputSemester extends javax.swing.JPanel {
     protected  Semester semesterB;
     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
+    private  ClassOfferDAO classOfferDAO= new ClassOfferDAO();
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bntShow;
     private javax.swing.JButton btnAdd;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
