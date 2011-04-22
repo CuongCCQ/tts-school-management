@@ -164,7 +164,7 @@ public class RegCourse extends javax.swing.JPanel {
         listClassID = new ArrayList<Integer>();
 
         for (StudentV2 stud : listStudent) {
-            cbxStudent.addItem(stud.getName());
+            cbxStudent.addItem(stud.getName()+"_"+stud.getStudentCode());
             listStudentID.add(stud.getStudentId());
         }
         for (ClassOffer clOffer : listClassName) {
