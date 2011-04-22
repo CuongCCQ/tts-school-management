@@ -14,6 +14,7 @@ package aptech.view.semester;
 import api.StudentDAO;
 import api.StudentV2;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JScrollPane;
@@ -34,10 +35,11 @@ public class AllStudent extends javax.swing.JFrame {
     }
      private void initTable(List<StudentV2> lstStudent) {
         JTable jTable = new JTable();
-        StudentDAO dao = new StudentDAO();
-        aptech.view.semester.StudentTableModel model = new aptech.view.semester.StudentTableModel(lstStudent);
+            aptech.view.semester.StudentTableModel model = new aptech.view.semester.StudentTableModel(lstStudent);
+
         jTable.setModel(model);
-         JScrollPane pane = new JScrollPane(jTable);
+        jTable.setForeground(Color.BLUE);
+        JScrollPane pane = new JScrollPane(jTable);
         pane.setPreferredSize(new Dimension(300, 300));
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(pane,BorderLayout.CENTER);
