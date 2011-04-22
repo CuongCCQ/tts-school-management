@@ -275,6 +275,7 @@ public class InputStudent extends javax.swing.JPanel {
                 dao.save(this.student);
                 //dao.savePhoto(student);
                 dao.getSession().getTransaction().commit();
+                dao.getSession().evict(this.student);
 
 
             } else {
