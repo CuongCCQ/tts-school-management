@@ -4,6 +4,7 @@
  */
 package aptech.util;
 
+import api.Account;
 import aptech.view.MainSchool;
 import javax.swing.JOptionPane;
 
@@ -26,4 +27,6 @@ public class AppUtil {
     {
         JOptionPane.showMessageDialog(null, msg, "notice", JOptionPane.INFORMATION_MESSAGE);
     }
+     public static Account UserToken;
+
 }

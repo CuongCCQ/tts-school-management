@@ -180,9 +180,9 @@ public class SubjectDAO extends BaseHibernateDAO {
 
     public List<Subject> getAllSubjectByClassOfferId(int classOfferId) {
         try {
-            String queryString = "SELECT distinct s FROM Subject_Assignment sa,SUBJECT s"
-                    + "WHERE sa.subjectId=s.subjectId"
-                    + "AND sa.classOfferId=?";
+            String queryString = "SELECT distinct s FROM SubjectAssignment sa,Subject s"
+                    + " WHERE sa.subjectId=s.subjectId"
+                    + " AND sa.classOfferId=?";
             Query queryObject = getSession().createQuery(queryString);
             queryObject.setParameter(0, classOfferId);
             List list = queryObject.list();

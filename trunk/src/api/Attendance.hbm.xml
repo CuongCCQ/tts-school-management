@@ -9,7 +9,7 @@
       <column name="AttendanceId"/>
       <generator class="identity"/>
     </id>
-    <property name="absenceStatus" type="java.lang.Short">
+    <property name="absenceStatus" type="java.lang.Boolean">
       <column name="AbsenceStatus" not-null="true"/>
     </property>
     <property name="description" type="java.lang.String">
