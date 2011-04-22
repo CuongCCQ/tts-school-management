@@ -5,6 +5,8 @@
 
 package aptech.view.semester;
 
+import api.Staff;
+import api.StaffDAO;
 import api.SubjectAssignment;
 import aptech.view.control.BaseTableModel;
 import java.util.ArrayList;
@@ -49,7 +51,15 @@ public class AssimentTableModel extends BaseTableModel<SubjectAssignment>{
         }else if (columnIndex == 4) {
             return lstData.get(rowIndex).getSubjectId();
         }else if (columnIndex == 5) {
-            return lstData.get(rowIndex).getStaffId();
+            int temp= 0;
+            lstData.get(rowIndex).getStaffId();
+            //System.out.println(lstData.get(5).getStaffId());
+            if(lstData.get(rowIndex).getStaffId()!=null){
+               temp=lstData.get(rowIndex).getStaffId();
+               return staffDAO.findById(temp).getStaffCode()+"_"+staffDAO.findById(temp).getName();
+            }
+            return "";
+            
         }
         else {
             return "";
@@ -79,6 +89,9 @@ public class AssimentTableModel extends BaseTableModel<SubjectAssignment>{
                 lstData.get(rowIndex).setStaffId(Integer.parseInt(aValue.toString()));
             }
         }
+
     }
+    private  Staff staff = new Staff();
+    private  StaffDAO staffDAO= new StaffDAO();
 
 }
