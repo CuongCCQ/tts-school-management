@@ -266,6 +266,11 @@ public class ResulPanel extends javax.swing.JPanel {
 
         }
         dao.getSession().getTransaction().commit();
+        for(Attendance att:lstData)
+        {
+            dao.getSession().evict(att);
+        }
+
         AppUtil.showNoticeMessage("Update Successfull");
 }//GEN-LAST:event_bttSaveActionPerformed
 
