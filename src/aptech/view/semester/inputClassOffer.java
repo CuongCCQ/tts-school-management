@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import api.CourseDAO;
 import api.Course;
+import api.Student;
+import api.StudentCourseRegistration;
+import api.StudentCourseRegistrationDAO;
+import api.StudentDAO;
+import api.StudentV2;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.IsSure;
@@ -39,11 +44,15 @@ public class inputClassOffer extends javax.swing.JPanel {
         initComponents();
        loadAll();
        this.Btndelete.setVisible(false);
+       this.bttShow.setVisible(false);
        this.lblTitle.setText("Add new class offer");
     }
     public JButton getBtndelete()
     {
         return this.Btndelete;
+    }
+    public JButton getBtnShow(){
+        return this.bttShow;
     }
     public JLabel getLbltitle()
     {
@@ -70,6 +79,7 @@ public class inputClassOffer extends javax.swing.JPanel {
         cbCource = new javax.swing.JComboBox();
         btnAdd = new javax.swing.JButton();
         Btndelete = new javax.swing.JButton();
+        bttShow = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Class Offer  Manager");
@@ -104,6 +114,16 @@ public class inputClassOffer extends javax.swing.JPanel {
             }
         });
 
+        bttShow.setText("Show");
+        bttShow.setMaximumSize(new java.awt.Dimension(63, 23));
+        bttShow.setMinimumSize(new java.awt.Dimension(63, 23));
+        bttShow.setPreferredSize(new java.awt.Dimension(57, 23));
+        bttShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttShowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,31 +131,31 @@ public class inputClassOffer extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(lblTitle))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(160, 160, 160)
-                                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblMinStudent)
-                                    .addComponent(lblCode)
-                                    .addComponent(lblMaxStudent)
-                                    .addComponent(lblSemester)
-                                    .addComponent(lblCource))
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblMinStudent)
+                            .addComponent(lblCode)
+                            .addComponent(lblMaxStudent)
+                            .addComponent(lblSemester)
+                            .addComponent(lblCource))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtMaxStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMinstudent, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbSemester, 0, 186, Short.MAX_VALUE)
-                                    .addComponent(txtClassCode)
-                                    .addComponent(cbCource, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(26, 26, 26)
-                        .addComponent(Btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(59, Short.MAX_VALUE))
+                                .addComponent(Btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bttShow, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtMaxStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtMinstudent, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbSemester, 0, 186, Short.MAX_VALUE)
+                                .addComponent(txtClassCode)
+                                .addComponent(cbCource, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(lblTitle)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,7 +185,8 @@ public class inputClassOffer extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Btndelete, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bttShow, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -217,6 +238,29 @@ public class inputClassOffer extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_BtndeleteActionPerformed
+
+    private void bttShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttShowActionPerformed
+        // TODO add your handling code here:
+        //AllStudent allStudent= new AllStudent(classOffer.get);
+
+            List<StudentCourseRegistration> lstReg = new ArrayList<StudentCourseRegistration>();
+            lstReg = studentCourseRegistrationDAO.findByClassOfferId(classOffer.getClassOfferId());
+            lstStudentID.clear();
+            List<StudentV2> lsStudent= new ArrayList<StudentV2>();
+            for (StudentCourseRegistration studentCourseRegistration : lstReg) {
+                int a=studentCourseRegistration.getStudentId();
+                studentV2=studentDAO.findByIdV2(a);
+                lsStudent.add(studentV2);
+            }
+            System.out.println(lsStudent.get(0).getName());
+            AllStudent allStudent= new AllStudent(lsStudent);
+            allStudent.setSize(800,200);
+            allStudent.setLocation(300, 200);
+            allStudent.setTitle("All student in "+classOffer.getClassCode().toUpperCase());
+            allStudent.setVisible(true);
+
+            
+    }//GEN-LAST:event_bttShowActionPerformed
    protected String initClassOfferUI() throws ParseException {
         String errMsg = "";
         if (classOffer == null) {
@@ -318,11 +362,15 @@ public class inputClassOffer extends javax.swing.JPanel {
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
     private List<Integer> listSemesterID;
     private List<Integer> listCourseID;
-   
+   private  StudentCourseRegistrationDAO studentCourseRegistrationDAO= new StudentCourseRegistrationDAO();
+   private List<Integer> lstStudentID = new ArrayList<Integer>();
+   private  StudentV2 studentV2= new StudentV2();
+   private  StudentDAO studentDAO= new StudentDAO();
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Btndelete;
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton bttShow;
     private javax.swing.JComboBox cbCource;
     private javax.swing.JComboBox cbSemester;
     private javax.swing.JLabel lblCode;
