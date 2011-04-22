@@ -230,6 +230,7 @@ public class ResulPanel extends javax.swing.JPanel {
                 attendance.setDescription(att.getDescription());
                 attendance.setAttendanceId(att.getAttendanceId());
                 lstAttendances.add(attendance);
+                studentDAO.getSession().evict(att);
             }
             if (lstAttendances.size() > 0) {
                 tblModel = new AttendanceTableModel();
@@ -262,6 +263,7 @@ public class ResulPanel extends javax.swing.JPanel {
         for(Attendance att:lstData)
         {
             dao.attachDirty(att);
+
         }
         dao.getSession().getTransaction().commit();
         AppUtil.showNoticeMessage("Update Successfull");
