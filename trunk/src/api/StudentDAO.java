@@ -88,11 +88,25 @@ public class StudentDAO extends BaseHibernateDAO {
             throw re;
         }
     }
-        public StudentV2 findByIdV2(java.lang.Integer id) {
+
+    public StudentV2 findByIdV2(java.lang.Integer id) {
         log.debug("getting Student instance with id: " + id);
         try {
             StudentV2 instance = (StudentV2) getSession().get("api.StudentV2", id);
             return instance;
+        } catch (RuntimeException re) {
+            log.error("get failed", re);
+            throw re;
+        }
+    }
+
+    public List<StudentAttendance> getAllStudentByClassOfferId(Long classOfferId)
+    {
+         log.debug("getting Student ");
+        try {
+            String sql="from StudentV2";
+            Query queryObject = getSession().createQuery(sql);
+            return queryObject.list();
         } catch (RuntimeException re) {
             log.error("get failed", re);
             throw re;
@@ -188,7 +202,7 @@ public class StudentDAO extends BaseHibernateDAO {
         }
     }
 
-       public List findAllStudentV2() {
+    public List findAllStudentV2() {
         log.debug("finding all StudentV2 instances");
         try {
             String queryString = "from StudentV2";
