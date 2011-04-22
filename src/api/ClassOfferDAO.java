@@ -62,6 +62,20 @@ public class ClassOfferDAO extends BaseHibernateDAO {
             throw re;
         }
     }
+    public int countClassOfferBySemesterID(int semesterID){
+         log.debug("delete ClassOffer by with Semester ");
+        try {
+            String queryString = "select count (*) from ClassOffer as model where model."
+                    + SEMESTER_ID + "= ?";
+            Query queryObject = getSession().createQuery(queryString);
+            queryObject.setParameter(0,semesterID);
+            List lst=queryObject.list();
+            return  (Integer)lst.get(0);
+        } catch (RuntimeException re) {
+            log.error("find by property name failed", re);
+            throw re;
+        }
+    }
 
     public List findByExample(ClassOffer instance) {
         log.debug("finding ClassOffer instance by example");
