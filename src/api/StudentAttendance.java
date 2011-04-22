@@ -22,6 +22,11 @@ public class StudentAttendance extends Attendance {
         this.setStudentId(att.getStudentId());
     }
 
+    public StudentAttendance() {
+    }
+
+
+
 
 
     private String studentName;

@@ -73,8 +73,6 @@ public class MainSchool extends javax.swing.JFrame {
     public void setUserToken(Account userToken) {
         this.userToken = userToken;
     }
-    
-
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -225,8 +223,7 @@ public class MainSchool extends javax.swing.JFrame {
     }
 
     // <editor-fold defaultstate="collapsed" desc="init toolbar buttons">
-
-      private void initTimeLineButton() {
+    private void initTimeLineButton() {
         JButton btnStudent = new JButton();
         URL resource = PathUtil.class.getResource("calender.png");
         ImageIcon studentIcon = new ImageIcon(resource);
@@ -330,7 +327,7 @@ public class MainSchool extends javax.swing.JFrame {
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                  new About().setVisible(true);
+                new About().setVisible(true);
             }
         });
         helpMenu.add(aboutMenuItem);
@@ -338,13 +335,12 @@ public class MainSchool extends javax.swing.JFrame {
     }
 
 // </editor-fold>
-     private void loadTimeLineView(ActionEvent eventData) {
+    private void loadTimeLineView(ActionEvent eventData) {
         //this.getContentPane().setBackground(new Color(240,240,240));
         TimeLineView timeLineView = new TimeLineView(this);
         timeLineView.initSubView();
         this.rootWindow.setVisible(true);
     }
-
 
     private void loadStudentView(ActionEvent eventData) {
         //this.getContentPane().setBackground(new Color(240,240,240));
@@ -379,8 +375,9 @@ public class MainSchool extends javax.swing.JFrame {
 
             public void run() {
                 MainSchool mainSchool = new MainSchool();
-                Account acc=new Account(1, "tuyuri", "123",74,new Date(),(short)2);
+                Account acc = new Account(1, "tuyuri", "123", 74, new Date(), (short) 2);
                 mainSchool.setUserToken(acc);
+                AppUtil.UserToken = acc;
             }
         });
     }

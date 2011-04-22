@@ -154,7 +154,7 @@ public class AttendanceDAO extends BaseHibernateDAO {
     public void attachDirty(Attendance instance) {
         log.debug("attaching dirty Attendance instance");
         try {
-            getSession().saveOrUpdate(instance);
+            getSession().saveOrUpdate("api.Attendance",instance);
             log.debug("attach successful");
         } catch (RuntimeException re) {
             log.error("attach failed", re);
@@ -171,5 +171,20 @@ public class AttendanceDAO extends BaseHibernateDAO {
             log.error("attach failed", re);
             throw re;
         }
+    }
+    public void autoFillAttendaceForClass(int classOfferId,int assScheduleId)
+    {
+        List<StudentV2> allStudentByClassOfferId = new StudentDAO().getAllStudentByClassOfferId(classOfferId);
+        getSession().beginTransaction();
+        for(StudentV2 student :allStudentByClassOfferId)
+        {
+            Attendance attendance=new Attendance();
+            attendance.setAssigmentScheduleId(assScheduleId);
+            attendance.setAbsenceStatus(false);
+            attendance.setStudentId(student.getStudentId());
+            attendance.setDescription("");
+            getSession().save(attendance);
+        }
+        getSession().getTransaction().commit();
     }
 }

@@ -10,7 +10,7 @@ public abstract class AbstractAttendance implements java.io.Serializable {
 	// Fields
 
 	private Integer attendanceId;
-	private Short absenceStatus;
+	private Boolean absenceStatus;
 	private String description;
 	private Integer studentId;
 	private Integer assigmentScheduleId;
@@ -22,7 +22,7 @@ public abstract class AbstractAttendance implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public AbstractAttendance(Integer attendanceId, Short absenceStatus,
+	public AbstractAttendance(Integer attendanceId, Boolean absenceStatus,
 			Integer studentId, Integer assigmentScheduleId) {
 		this.attendanceId = attendanceId;
 		this.absenceStatus = absenceStatus;
@@ -31,7 +31,7 @@ public abstract class AbstractAttendance implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public AbstractAttendance(Integer attendanceId, Short absenceStatus,
+	public AbstractAttendance(Integer attendanceId, Boolean absenceStatus,
 			String description, Integer studentId, Integer assigmentScheduleId) {
 		this.attendanceId = attendanceId;
 		this.absenceStatus = absenceStatus;
@@ -50,11 +50,11 @@ public abstract class AbstractAttendance implements java.io.Serializable {
 		this.attendanceId = attendanceId;
 	}
 
-	public Short getAbsenceStatus() {
+	public Boolean getAbsenceStatus() {
 		return this.absenceStatus;
 	}
 
-	public void setAbsenceStatus(Short absenceStatus) {
+	public void setAbsenceStatus(Boolean absenceStatus) {
 		this.absenceStatus = absenceStatus;
 	}
 

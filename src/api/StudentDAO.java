@@ -100,15 +100,19 @@ public class StudentDAO extends BaseHibernateDAO {
         }
     }
 
-    public List<StudentAttendance> getAllStudentByClassOfferId(Long classOfferId)
-    {
-         log.debug("getting Student ");
+    public List<StudentV2> getAllStudentByClassOfferId(int classOfferId) {
         try {
-            String sql="from StudentV2";
-            Query queryObject = getSession().createQuery(sql);
-            return queryObject.list();
+            String queryString = "SELECT DISTINCT sa FROM StudentV2 sa"
+                    + " , StudentCourseRegistration co"
+                    + " Where co.studentId = sa.studentId"
+                    + " and co.classOfferId=?";
+
+            Query queryObject = getSession().createQuery(queryString);
+            queryObject.setParameter(0, classOfferId);
+            List list = queryObject.list();
+            return list;
         } catch (RuntimeException re) {
-            log.error("get failed", re);
+            log.error("find by property name failed", re);
             throw re;
         }
     }
@@ -296,4 +300,6 @@ public class StudentDAO extends BaseHibernateDAO {
 
         return result;
     }
+
+   
 }

@@ -41,5 +41,14 @@ public class CmbObject {
         return getKey();
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof CmbObject) {
+            CmbObject obj1 = (CmbObject) obj;
+            if (this.key.equals(obj1.getKey()) && this.value.equals(obj1.getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

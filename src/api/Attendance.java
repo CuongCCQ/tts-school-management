@@ -13,13 +13,13 @@ public class Attendance extends AbstractAttendance implements
 	}
 
 	/** minimal constructor */
-	public Attendance(Integer attendanceId, Short absenceStatus,
+	public Attendance(Integer attendanceId, Boolean absenceStatus,
 			Integer studentId, Integer assigmentScheduleId) {
 		super(attendanceId, absenceStatus, studentId, assigmentScheduleId);
 	}
 
 	/** full constructor */
-	public Attendance(Integer attendanceId, Short absenceStatus,
+	public Attendance(Integer attendanceId, Boolean absenceStatus,
 			String description, Integer studentId, Integer assigmentScheduleId) {
 		super(attendanceId, absenceStatus, description, studentId,
 				assigmentScheduleId);

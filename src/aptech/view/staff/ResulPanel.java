@@ -16,8 +16,8 @@ import api.Attendance;
 import api.AttendanceDAO;
 import api.ClassOffer;
 import api.ClassOfferDAO;
-import api.CommonDAO;
 import api.Student;
+import api.StudentAttendance;
 import api.StudentCourseRegistration;
 import api.StudentCourseRegistrationDAO;
 import api.StudentDAO;
@@ -26,18 +26,17 @@ import api.Subject;
 import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
 import api.SubjectDAO;
-import aptech.util.IsSure;
+import api.VStudentAtt;
+import api.VStudentAttDAO;
+import aptech.util.AppUtil;
+import aptech.view.control.AttendanceTableModel;
 import aptech.view.control.CmbObject;
+import aptech.view.control.TtsCmbModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TimeZone;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import sun.misc.Cleaner;
+import javax.swing.JTable;
 
 /**
  *
@@ -48,9 +47,17 @@ public class ResulPanel extends javax.swing.JPanel {
     /** Creates new form ResulPanel */
     public ResulPanel() {
         initComponents();
-        initClass();
+        initGui();
+        initClassCmbBox();
         //initSubject();
 
+
+    }
+
+    private void initGui() {
+        tblAttendance = new JTable();
+        scrlPn.setViewportView(tblAttendance);
+        tblAttendance.setFillsViewportHeight(true);
 
     }
 
@@ -65,32 +72,24 @@ public class ResulPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         cbxClassName = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        cbxStudent = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         cbxSubject = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtDescription = new javax.swing.JTextArea();
         bttSave = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        cbxStatus = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         cbxDate = new javax.swing.JComboBox();
+        scrlPn = new javax.swing.JScrollPane();
 
         jLabel1.setText("Class Name");
 
+        cbxClassName.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxClassNameItemStateChanged(evt);
+            }
+        });
         cbxClassName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxClassNameActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Student Code");
-
-        cbxStudent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxStudentActionPerformed(evt);
             }
         });
 
@@ -102,11 +101,7 @@ public class ResulPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setText("Description");
-
-        txtDescription.setColumns(20);
-        txtDescription.setRows(5);
-        jScrollPane1.setViewportView(txtDescription);
+        jLabel4.setText("Class Student");
 
         bttSave.setText("Save");
         bttSave.addActionListener(new java.awt.event.ActionListener() {
@@ -114,10 +109,6 @@ public class ResulPanel extends javax.swing.JPanel {
                 bttSaveActionPerformed(evt);
             }
         });
-
-        jLabel5.setText("Status");
-
-        cbxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "P", "A" }));
 
         jLabel6.setText("Date");
 
@@ -133,191 +124,184 @@ public class ResulPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(78, 78, 78)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel6)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cbxStatus, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbxDate, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbxClassName, javax.swing.GroupLayout.Alignment.LEADING, 0, 103, Short.MAX_VALUE)
-                            .addComponent(cbxStudent, javax.swing.GroupLayout.Alignment.LEADING, 0, 103, Short.MAX_VALUE)
-                            .addComponent(bttSave, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxSubject, javax.swing.GroupLayout.Alignment.LEADING, 0, 103, Short.MAX_VALUE))
-                        .addGap(141, 141, 141))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
+                                .addGap(45, 45, 45))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(cbxSubject, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbxClassName, javax.swing.GroupLayout.Alignment.LEADING, 0, 146, Short.MAX_VALUE)
+                                .addComponent(cbxDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bttSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(scrlPn, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(155, 155, 155))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbxSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbxStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel3)
+                    .addComponent(cbxSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6)
+                    .addComponent(cbxDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbxDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                        .addGap(29, 29, 29)
+                        .addComponent(scrlPn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
                         .addComponent(bttSave))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addContainerGap())))
+                        .addGap(91, 91, 91)
+                        .addComponent(jLabel4)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbxClassNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClassNameActionPerformed
         // TODO add your handling code here:
-        try {
-            int clsOfferID = lstIDClass.get(cbxClassName.getSelectedIndex());
-            List<StudentCourseRegistration> lstReg = new ArrayList<StudentCourseRegistration>();
-            lstReg = studentCourseRegistrationDAO.findByClassOfferId(clsOfferID);
-            lstStudentID.clear();
-            if (cbxStudent.getItemCount() > 0) {
-                cbxStudent.removeAllItems();
+
+        CmbObject selectedObj = (CmbObject) cbxClassName.getSelectedItem();
+        if (selectedObj.getValue().equals("-1")) {
+            cbxSubject.removeAllItems();
+        } else {
+            int classOfferId = Integer.valueOf(selectedObj.getValue());
+            List<CmbObject> lstCmb = new ArrayList<CmbObject>();
+            List<Subject> lstSubject = new SubjectDAO().getAllSubjectByClassOfferId(classOfferId);
+            if (lstSubject.size() > 0) {
+                for (Subject subject : lstSubject) {
+                    CmbObject cmbObj = new CmbObject(subject.getSubjectName(), subject.getSubjectId().toString());
+                    lstCmb.add(cmbObj);
+                }
+                TtsCmbModel model = new TtsCmbModel(lstCmb);
+                model.setFirstItemLabel("select subject");
+                cbxSubject.setModel(model);
+                cbxSubject.setSelectedIndex(0);
             }
-            for (StudentCourseRegistration stuIdTemp : lstReg) {
-                lstStudentID.add(stuIdTemp.getStudentId());
-            }
-            for (Integer integer : lstStudentID) {
-                studentV2 = studentDAO.findByIdV2(integer);
-                cbxStudent.addItem(studentV2.getStudentCode() + "_" + studentV2.getName());
-            }
-            initSubject();
-        } catch (Exception e) {
-            return;
         }
+
     }//GEN-LAST:event_cbxClassNameActionPerformed
 
-    private void bttSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttSaveActionPerformed
-
-        // TODO add your handling code here:
-
-        int assCheIDTemp = lstAssigmentSchedules.get(cbxDate.getSelectedIndex()).getAssigmentScheduleId();
-        deString = txtDescription.getText();
-        int temp = cbxStatus.getSelectedIndex();
-        if (temp == 0) {
-            statusAttendance = 0;
-        }
-        if (temp == 1) {
-            statusAttendance = 1;
-        }
-        if(deString.isEmpty()){
-        JOptionPane.showMessageDialog(this, "Description is not null", "Eros", JOptionPane.WARNING_MESSAGE);}
-        else{
-        attendance.setAbsenceStatus(statusAttendance);
-        attendance.setAssigmentScheduleId(assCheIDTemp);
-        attendance.setDescription(deString);
-        attendance.setStudentId(studentIDTemp);
-        attendanceDAO.getSession().beginTransaction();
-        attendanceDAO.save(attendance);
-        attendanceDAO.getSession().getTransaction().commit();
-        JOptionPane.showMessageDialog(this, "Add Ok");
-        this.bttSave.setEnabled(false);
-        }
-        
-        
-
-
-        
-
-    }//GEN-LAST:event_bttSaveActionPerformed
-
-    private void cbxStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStudentActionPerformed
-        // TODO add your handling code here:
-        studentIDTemp = lstStudentID.get(cbxStudent.getSelectedIndex());
-    }//GEN-LAST:event_cbxStudentActionPerformed
-
     private void cbxDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDateActionPerformed
-        // TODO add your handling code here:
+        if (cbxDate.getSelectedIndex() > 0) {
+            CmbObject cmbObjDate = (CmbObject) cbxDate.getSelectedItem();
+            int assScheduleId = Integer.valueOf(cmbObjDate.getValue());
+            CmbObject cmbObjClass = (CmbObject) cbxClassName.getSelectedItem();
+            int classOfferId = Integer.valueOf(cmbObjClass.getValue());
+
+            VStudentAttDAO dao = new VStudentAttDAO();
+            List<VStudentAtt> lstStudenAtt = new ArrayList<VStudentAtt>();
+            lstStudenAtt = dao.findByOfferAndAssScheduleId(classOfferId, assScheduleId);
+            if (lstStudenAtt.size() < 1) {
+                AttendanceDAO attendanceDAO = new AttendanceDAO();
+                attendanceDAO.autoFillAttendaceForClass(classOfferId, assScheduleId);
+                lstStudenAtt = dao.findByOfferAndAssScheduleId(classOfferId, assScheduleId);
+            }
+            List<StudentAttendance> lstAttendances = new ArrayList<StudentAttendance>();
+            for (VStudentAtt att : lstStudenAtt) {
+                StudentDAO studentDAO = new StudentDAO();
+                StudentV2 student = studentDAO.findByIdV2(att.getStudentId());
+
+                StudentAttendance attendance = new StudentAttendance();
+                attendance.setStudentId(att.getStudentId());
+                attendance.setAssigmentScheduleId(assScheduleId);
+                attendance.setStudentCode(student.getStudentCode());
+                attendance.setStudentName(student.getName());
+                attendance.setAttendanceId(scheduleId);
+                attendance.setAbsenceStatus(att.getAbsenceStatus());
+                attendance.setDescription(att.getDescription());
+                attendance.setAttendanceId(att.getAttendanceId());
+                lstAttendances.add(attendance);
+            }
+            if (lstAttendances.size() > 0) {
+                tblModel = new AttendanceTableModel();
+                tblModel.setLstData(lstAttendances);
+                this.tblAttendance.setModel(tblModel);
+            }
+
+        }
     }//GEN-LAST:event_cbxDateActionPerformed
 
     private void cbxSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSubjectActionPerformed
-        initSchedule();
+        if (cbxSubject.getSelectedIndex() == 0) {
+            cbxDate.removeAllItems();
+        } else {
+            initSchedule();
+        }
         // TODO add your handling code here:
 }//GEN-LAST:event_cbxSubjectActionPerformed
 
-    public void initSubject() {
-        int id = lstIDClass.get(cbxClassName.getSelectedIndex());
-        List<SubjectAssignment> lstTemp = subjectAssignmentDAO.findByClassAndStaff(id, a);
-        if (hsSubjects.size() > 0) {
-            hsSubjects.clear();
-        }
-        for (SubjectAssignment subjectAssignment : lstTemp) {
-            int idSubjectTemp = subjectAssignment.getSubjectId();
-            subject = subjectDAO.findById(idSubjectTemp);
-            hsSubjects.add(subject);
-            idSubject.add(idSubjectTemp);
-        }
-        if (cbxSubject.getItemCount() > 0) {
-            cbxSubject.removeAllItems();
-        }
-        for (Subject subTemp : hsSubjects) {
-            cbxSubject.addItem(subTemp.getSubjectName());
-        }
-    }
+    private void cbxClassNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxClassNameItemStateChanged
+    }//GEN-LAST:event_cbxClassNameItemStateChanged
 
-    void initClass() {
-        hsIDClass = new HashSet<Integer>();
-
-        for (SubjectAssignment subjectTemp : test) {
-            hsIDClass.add(subjectTemp.getClassOfferId());
+    private void bttSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttSaveActionPerformed
+        List<StudentAttendance> lstData = this.tblModel.getLstData();
+        AttendanceDAO dao = new AttendanceDAO();
+        dao.getSession().beginTransaction();
+        for(Attendance att:lstData)
+        {
+            dao.attachDirty(att);
         }
-        for (Integer integer : hsIDClass) {
-
-            cbxClassName.addItem(classOfferDAO.findById(integer).getClassCode());
-            lstIDClass.add(integer);
-        }
-
-
-
-    }
+        dao.getSession().getTransaction().commit();
+}//GEN-LAST:event_bttSaveActionPerformed
 
     void initSchedule() {
-        int classID = lstIDClass.get(cbxClassName.getSelectedIndex());
-        int subjectID = idSubject.get(cbxSubject.getSelectedIndex());
-        List<SubjectAssignment> lstList = subjectAssignmentDAO.findByClassStaffAndSubject(classID, a, subjectID);
-        int classOfferID = lstList.get(0).getClassOfferDetailId();
-        lstAssigmentSchedules = assigmentScheduleDAO.findByClassOfferDetailId(classOfferID);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE/MM/dd/yyyy");
-        if (cbxDate.getItemCount() > 0) {
-            cbxDate.removeAllItems();
+        List<CmbObject> lstData = new ArrayList<CmbObject>();
+        int classID = Integer.valueOf(((CmbObject) cbxClassName.getSelectedItem()).getValue());
+        int subjectID = Integer.valueOf(((CmbObject) cbxSubject.getSelectedItem()).getValue());
+        List<SubjectAssignment> lstList = subjectAssignmentDAO.findByClassStaffAndSubject(classID, AppUtil.UserToken.getStaffId(), subjectID);
+        if (lstList.size() > 0) {
+
+            int classOfferID = lstList.get(0).getClassOfferDetailId();
+            lstAssigmentSchedules = assigmentScheduleDAO.findByClassOfferDetailId(classOfferID);
+
+            if (lstAssigmentSchedules.size() > 0) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MM/dd/yyyy");
+
+                for (AssigmentSchedule assSchedule : lstAssigmentSchedules) {
+                    String key = dateFormat.format(assSchedule.getDate());
+                    CmbObject cmbObject = new CmbObject(key, assSchedule.getAssigmentScheduleId().toString());
+                    lstData.add(cmbObject);
+                }
+            }
         }
-        for (AssigmentSchedule assSchedule : lstAssigmentSchedules) {
-            String temp = dateFormat.format(assSchedule.getDate());
-            cbxDate.addItem(temp);
+        TtsCmbModel cmbModel = new TtsCmbModel(lstData);
+        cmbModel.setFirstItemLabel("select class date");
+        cbxDate.setModel(cmbModel);
+        cbxDate.setSelectedIndex(0);
+
+    }
+
+    private void initClassCmbBox() {
+        TtsCmbModel cmbModel = new TtsCmbModel();
+        List<CmbObject> lstModel = new ArrayList<CmbObject>();
+        List<ClassOffer> classTeachByStaffid = new ClassOfferDAO().getClassTeachByStaffid(AppUtil.UserToken.getStaffId());
+        for (ClassOffer offer : classTeachByStaffid) {
+            CmbObject cmb = new CmbObject(offer.getClassCode(), offer.getClassOfferId().toString());
+            lstModel.add(cmb);
         }
+        cmbModel.setLstData(lstModel);
+        cmbModel.setFirstItemLabel("select your class");
+        this.cbxClassName.setModel(cmbModel);
+        cbxClassName.setSelectedIndex(0);
 
     }
     private ClassOffer classOffer = new ClassOffer();
@@ -347,20 +331,17 @@ public class ResulPanel extends javax.swing.JPanel {
     private Short statusAttendance;
     private Attendance attendance = new Attendance();
     private AttendanceDAO attendanceDAO = new AttendanceDAO();
+    private JTable tblAttendance;
+    private AttendanceTableModel tblModel;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bttSave;
     private javax.swing.JComboBox cbxClassName;
     private javax.swing.JComboBox cbxDate;
-    private javax.swing.JComboBox cbxStatus;
-    private javax.swing.JComboBox cbxStudent;
     private javax.swing.JComboBox cbxSubject;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtDescription;
+    private javax.swing.JScrollPane scrlPn;
     // End of variables declaration//GEN-END:variables
 }
