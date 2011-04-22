@@ -237,7 +237,7 @@ public class ResulPanel extends javax.swing.JPanel {
             statusAttendance = 1;
         }
         if(deString.isEmpty()){
-        JOptionPane.showMessageDialog(this,"Description is not null!");}
+        JOptionPane.showMessageDialog(this, "Description is not null", "Eros", JOptionPane.WARNING_MESSAGE);}
         else{
         attendance.setAbsenceStatus(statusAttendance);
         attendance.setAssigmentScheduleId(assCheIDTemp);
