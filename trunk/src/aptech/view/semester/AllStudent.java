@@ -35,7 +35,7 @@ public class AllStudent extends javax.swing.JFrame {
      private void initTable(List<StudentV2> lstStudent) {
         JTable jTable = new JTable();
         StudentDAO dao = new StudentDAO();
-        aptech.view.staff.StudentTableModel model = new aptech.view.staff.StudentTableModel(lstStudent);
+        aptech.view.semester.StudentTableModel model = new aptech.view.semester.StudentTableModel(lstStudent);
         jTable.setModel(model);
          JScrollPane pane = new JScrollPane(jTable);
         pane.setPreferredSize(new Dimension(300, 300));
