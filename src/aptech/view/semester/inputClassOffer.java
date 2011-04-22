@@ -252,7 +252,6 @@ public class inputClassOffer extends javax.swing.JPanel {
                 studentV2=studentDAO.findByIdV2(a);
                 lsStudent.add(studentV2);
             }
-            System.out.println(lsStudent.get(0).getName());
             AllStudent allStudent= new AllStudent(lsStudent);
             allStudent.setSize(800,200);
             allStudent.setLocation(300, 200);
