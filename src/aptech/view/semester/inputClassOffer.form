@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -19,39 +19,38 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="lblMinStudent" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCode" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblMaxStudent" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblSemester" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCource" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="btnAdd" min="-2" pref="137" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="Btndelete" min="-2" pref="135" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="bttShow" min="-2" pref="118" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtMaxStudent" min="-2" pref="77" max="-2" attributes="0"/>
+                              <Component id="txtMinstudent" min="-2" pref="77" max="-2" attributes="0"/>
+                              <Component id="cbSemester" alignment="0" pref="186" max="32767" attributes="1"/>
+                              <Component id="txtClassCode" alignment="0" max="32767" attributes="1"/>
+                              <Component id="cbCource" alignment="0" max="32767" attributes="1"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
                       <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="1">
-                              <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
-                              <Component id="btnAdd" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="lblMinStudent" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCode" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblMaxStudent" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblSemester" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCource" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtMaxStudent" min="-2" pref="77" max="-2" attributes="0"/>
-                                  <Component id="txtMinstudent" min="-2" pref="77" max="-2" attributes="0"/>
-                                  <Component id="cbSemester" alignment="0" pref="186" max="32767" attributes="1"/>
-                                  <Component id="txtClassCode" alignment="0" max="32767" attributes="1"/>
-                                  <Component id="cbCource" alignment="0" max="32767" attributes="1"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="Btndelete" min="-2" pref="135" max="-2" attributes="0"/>
-                  </Group>
               </Group>
-              <EmptySpace pref="59" max="32767" attributes="0"/>
+              <EmptySpace pref="34" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -89,6 +88,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAdd" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="Btndelete" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
+                  <Component id="bttShow" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
@@ -181,6 +181,23 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtndeleteActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bttShow">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show"/>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[63, 23]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[63, 23]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[57, 23]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bttShowActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
