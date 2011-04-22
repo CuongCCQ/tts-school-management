@@ -252,11 +252,13 @@ public class inputClassOffer extends javax.swing.JPanel {
                 studentV2=studentDAO.findByIdV2(a);
                 lsStudent.add(studentV2);
             }
+            
             AllStudent allStudent= new AllStudent(lsStudent);
             allStudent.setSize(800,200);
             allStudent.setLocation(300, 200);
             allStudent.setTitle("All student in "+classOffer.getClassCode().toUpperCase());
             allStudent.setVisible(true);
+
 
             
     }//GEN-LAST:event_bttShowActionPerformed
