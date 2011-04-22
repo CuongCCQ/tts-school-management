@@ -19,17 +19,14 @@ public class StudentTableModel extends BaseTableModel<StudentV2> {
 
     //List<StudentV2> lstData;
     //String[] label = {"Student Roll Number", "Name", "Address", "Phone Number", "Email", "Sex"};
-
     @Override
     public String[] initLabel() {
-        return new String[] {"Student Roll Number", "Name", "Address", "Phone Number", "Email", "Sex"};
+        return new String[]{"Student Roll Number", "Name", "Address", "Phone Number", "Email", "Sex"};
     }
-
 
     public StudentTableModel(List<StudentV2> lstData) {
         super();
         this.lstData = new ArrayList<StudentV2>();
-        this.lstData.add(new StudentV2());
         this.lstData.addAll(lstData);
 
     }
@@ -43,7 +40,7 @@ public class StudentTableModel extends BaseTableModel<StudentV2> {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-                String value = "";
+        String value = "";
 
 //        if (rowIndex > 0) {
         if (columnIndex == 0) {
@@ -66,16 +63,10 @@ public class StudentTableModel extends BaseTableModel<StudentV2> {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        
-         
-        
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return  false;
+        return false;
     }
-    
-
-
 }

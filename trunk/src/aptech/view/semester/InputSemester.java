@@ -274,6 +274,9 @@ public class InputSemester extends javax.swing.JPanel {
         lstClassOffers.clear();
         lstClassOffers= classOfferDAO.findBySemesterId(semester.getSemesterId());
         LoadAllClass loadAllClass= new LoadAllClass(lstClassOffers);
+        loadAllClass.setTitle("All class in "+semester.getName());
+        loadAllClass.setSize(600, 200);
+        loadAllClass.setLocation(300, 300);
         loadAllClass.setVisible(true);
         //classOfferDAO.countClassOfferBySemesterID(semester.getSemesterId());
     }//GEN-LAST:event_bntShowActionPerformed
