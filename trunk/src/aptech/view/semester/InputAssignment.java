@@ -336,7 +336,7 @@ public class InputAssignment extends javax.swing.JPanel {
         ListStaffID = new ArrayList<Integer>();
         for(Staff lStaff : listStaffName)
         {
-            cbStaff.addItem(lStaff.getStaffCode());
+            cbStaff.addItem(lStaff.getStaffCode()+"_"+lStaff.getName());
             ListStaffID.add(lStaff.getStaffId());
         }
     }
