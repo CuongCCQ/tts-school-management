@@ -8,8 +8,8 @@
  *
  * Created on Apr 7, 2011, 3:03:27 AM
  */
-
 package aptech.view.semester;
+
 import api.ClassOffer;
 import api.ClassOfferDAO;
 import datechooser.beans.DateChooserCombo;
@@ -21,6 +21,10 @@ import api.Semester;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.IsSure;
+import aptech.util.ValidateUtil;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,35 +34,63 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 public class InputSemester extends javax.swing.JPanel {
+
     DateChooserCombo chooserCombomStart;
     DateChooserCombo chooserCombomEnd;
     DateFormat df;
     //Method creat calender for java
+
     public InputSemester() throws Exception {
         initComponents();
         initCalendar();
         this.lblTitle.setText("Add new semester");
         this.bntShow.setVisible(false);
     }
-    protected Semester semester= new Semester();
-    
-    protected void initComponentV2(){
+    protected Semester semester = new Semester();
+
+    protected void initComponentV2() {
         initComponents();
     }
-    public   JButton getBntShow(){
-       return this.bntShow;
+
+    public JButton getBntShow() {
+        return this.bntShow;
     }
-    protected void initSemesterFromModel(Semester semesterFromModel){
-       
+     public JButton getBntAdd() {
+        return this.btnAdd;
+    }
+
+
+    protected void initSemesterFromModel(Semester semesterFromModel) {
+
         try {
             this.semester = semesterFromModel;
             this.txtName.setText(semester.getName());
             this.txtDescription.setText(semester.getDescription());
-                    Date dStart=semester.getStartDate();
-                    Date dEnd = semester.getEndDate();
-                    this.chooserCombomStart.setText(dStart.toString());
-                    this.chooserCombomEnd.setText(dEnd.toString());
+            JLabel startDateLabel = new JLabel();
+            df = new SimpleDateFormat("dd-MM-yyyy");
+            String key = df.format(semester.getStartDate());
+            startDateLabel.setText(key);
+
+            JLabel endDateLabel = new JLabel();
+            df = new SimpleDateFormat("dd-MM-yyyy");
+            key = df.format(semester.getEndDate());
+            endDateLabel.setText(key);
+
+            startDateLabel.setPreferredSize(this.panelDateStart.getPreferredSize());
+            this.panelDateStart.setLayout(new BorderLayout());
+            this.panelDateStart.add(startDateLabel, BorderLayout.CENTER);
+
+            endDateLabel.setPreferredSize(this.panelDateEnd.getPreferredSize());
+            this.panelDateEnd.setLayout(new BorderLayout());
+            this.panelDateEnd.add(endDateLabel, BorderLayout.CENTER);
+
+
+            Date dStart = semester.getStartDate();
+            Date dEnd = semester.getEndDate();
+            this.chooserCombomStart.setText(dStart.toString());
+            this.chooserCombomEnd.setText(dEnd.toString());
         } catch (Exception ex) {
         }
     }
@@ -127,7 +159,7 @@ public class InputSemester extends javax.swing.JPanel {
             .addGap(0, 25, Short.MAX_VALUE)
         );
 
-        btnAdd.setText("Save");
+        btnAdd.setText("Add New");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -137,7 +169,7 @@ public class InputSemester extends javax.swing.JPanel {
         lblName.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblName.setText("Name :");
 
-        bntShow.setText("Show");
+        bntShow.setText("Show All Class");
         bntShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntShowActionPerformed(evt);
@@ -202,98 +234,104 @@ public class InputSemester extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     //validate from
-    public boolean validateForm()
-    {
-        if(txtDescription.getText().isEmpty() && txtName.getText().isEmpty()){
+
+    public boolean validateForm() {
+        if (txtDescription.getText().isEmpty() && txtName.getText().isEmpty()) {
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
     //action add new,update semester
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-       try {
-             
+        try {
+
             String errorMsg = initSemesterFromUI();
             if (errorMsg.isEmpty()) {
-                
-                if(txtName.getText().isEmpty())
-                {
-                    JOptionPane.showMessageDialog(null, "Enter name!","System saying",JOptionPane.WARNING_MESSAGE);
+
+                if (txtName.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Enter name!", "System saying", JOptionPane.WARNING_MESSAGE);
                     txtName.requestFocus();
-                }else if (txtDescription.getText().isEmpty())
-                {
-                    JOptionPane.showMessageDialog(null, "Enter Description!","System saying",JOptionPane.WARNING_MESSAGE);
+                } else if (txtDescription.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Enter Description!", "System saying", JOptionPane.WARNING_MESSAGE);
                     txtDescription.requestFocus();
-                }
-                else
-                {
+                } else {
                     SemesterDAO semesterDao = new SemesterDAO();
                     df = new SimpleDateFormat("MM/dd/yyyy");
 
                     String dateStart = chooserCombomStart.getText();
                     String dateEnd = chooserCombomEnd.getText();
                     String name = txtName.getText();
-                    Date dStart=null;
+                    Date dStart = null;
                     Date dEnd = null;
                     try {
                         dStart = df.parse(dateStart);
                         dEnd = df.parse(dateEnd);
                     } catch (ParseException ex) {
                         Logger.getLogger(InputSemester.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("t");
                     }
                     String description = txtDescription.getText();
-                    semesterDao.getSession().beginTransaction();
                     semester.setDescription(description);
                     semester.setStartDate(dStart);
+
                     semester.setEndDate(dEnd);
                     semester.setName(name);
-                    semesterDao.save(semester);
-                    semesterDao.getSession().getTransaction().commit();
-                    if (!IsSure.confirm(confirmSaveMessage)) {
-                        return;
-                    }else{
-                        JOptionPane.showMessageDialog(this,"Save Data successfuly");
+                    System.out.println(semester);
+                    if (ValidateUtil.checkDate(semester.getStartDate(), semester.getEndDate())) {
+                        semesterDao.getSession().beginTransaction();
+
+                        semesterDao.save(semester);
+                        semesterDao.getSession().getTransaction().commit();
+                        if (!IsSure.confirm(confirmSaveMessage)) {
+                            return;
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Save Data successfuly");
+                            this.bntShow.setEnabled(false);
+                            this.btnAdd.setEnabled(false);
+
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Begin date must be after end date", "Eros", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             } else {
                 AppUtil.showErrMsg(errorMsg);
             }
-        } catch (ParseException ex)
-        {
+        } catch (ParseException ex) {
             System.out.println(ex);
         }
-            
-       
+
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void bntShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntShowActionPerformed
         // TODO add your handling code here:
-        List<ClassOffer> lstClassOffers= new ArrayList<ClassOffer>();
+        List<ClassOffer> lstClassOffers = new ArrayList<ClassOffer>();
         lstClassOffers.clear();
-        lstClassOffers= classOfferDAO.findBySemesterId(semester.getSemesterId());
-        LoadAllClass loadAllClass= new LoadAllClass(lstClassOffers);
-        loadAllClass.setTitle("All class in "+semester.getName());
+        lstClassOffers = classOfferDAO.findBySemesterId(semester.getSemesterId());
+        LoadAllClass loadAllClass = new LoadAllClass(lstClassOffers);
+        loadAllClass.setTitle("All class in " + semester.getName());
         loadAllClass.setSize(600, 200);
         loadAllClass.setLocation(300, 300);
         loadAllClass.setVisible(true);
-        //classOfferDAO.countClassOfferBySemesterID(semester.getSemesterId());
+       
     }//GEN-LAST:event_bntShowActionPerformed
 //Action update semesterDAO//method fill calendar
-    public  void initCalendar() throws IOException
-    {
+
+    public void initCalendar() throws IOException {
         chooserCombomStart = new DateChooserCombo();
         chooserCombomStart.setDateFormat(new SimpleDateFormat("MM/dd/yyyy"));
         chooserCombomStart.setSize(196, 27);
         chooserCombomEnd = new DateChooserCombo();
         chooserCombomEnd.setDateFormat(new SimpleDateFormat("MM/dd/yyyy"));
         chooserCombomEnd.setSize(196, 27);
-        
+
         this.panelDateStart.add(chooserCombomStart);
         this.panelDateEnd.add(chooserCombomEnd);
     }
-     protected String initSemesterFromUI() throws ParseException {
+
+    protected String initSemesterFromUI() throws ParseException {
         String errMsg = "";
         if (semesterB == null) {
             this.semesterB = new Semester();
@@ -302,14 +340,14 @@ public class InputSemester extends javax.swing.JPanel {
         this.semesterB.setName(this.txtName.getText().trim());
         return errMsg;
     }
-     public JLabel getLbltitle()
-     {
-         return this.lblTitle;
-     }
-    protected  Semester semesterB;
+
+    public JLabel getLbltitle() {
+        return this.lblTitle;
+    }
+    protected Semester semesterB;
     String confirmSaveMessage = Constant.SURE_TO_SAVE_STUDENT;
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_STUDENT;
-    private  ClassOfferDAO classOfferDAO= new ClassOfferDAO();
+    private ClassOfferDAO classOfferDAO = new ClassOfferDAO();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntShow;
     private javax.swing.JButton btnAdd;
@@ -325,5 +363,4 @@ public class InputSemester extends javax.swing.JPanel {
     private javax.swing.JTextArea txtDescription;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
-
 }

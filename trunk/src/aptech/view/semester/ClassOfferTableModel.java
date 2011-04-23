@@ -7,7 +7,9 @@
 package aptech.view.semester;
 
 import api.ClassOffer;
+import api.CourseDAO;
 import api.Semester;
+import api.SemesterDAO;
 import aptech.view.control.BaseTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,17 +45,29 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
 
 //        if (rowIndex > 0) {
         if (columnIndex == 0) {
-            return lstData.get(rowIndex).getClassCode();
+            if(lstData.get(rowIndex).getClassCode()!=null){
+            return lstData.get(rowIndex).getClassCode().toUpperCase();}
+            return "";
+            
         } else if (columnIndex == 1) {
             return lstData.get(rowIndex).getMinStudent();
         } else if (columnIndex == 2) {
             return lstData.get(rowIndex).getMaxStudent();
         }else if(columnIndex==3)
-        {
-            return lstData.get(rowIndex).getSemesterId();
+        {   int temp=0;
+            if(lstData.get(rowIndex).getSemesterId()!=null){
+                temp=lstData.get(rowIndex).getSemesterId();
+                return (semesterDAO.findById(temp).getName());
+            }
+            return "";
         }else if(columnIndex==4)
         {
-            return lstData.get(rowIndex).getId();
+            int temp=0;
+            if(lstData.get(rowIndex).getId()!=null){
+                temp=lstData.get(rowIndex).getId();
+                return (courseDAO.findById(temp).getCourseCode()+""+courseDAO.findById(temp).getCourseName());
+            }
+            return "";
         }
         else {
             return "";
@@ -86,5 +100,7 @@ public class ClassOfferTableModel extends BaseTableModel<ClassOffer>{
             return false;
         return true;
     }
+        private SemesterDAO semesterDAO= new SemesterDAO();
+        private CourseDAO courseDAO = new CourseDAO();
     
 }
