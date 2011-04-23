@@ -62,6 +62,7 @@ public class TimeLineView extends BaseSubContentView {
             return new MainTimeForm();
         } catch (Exception ex) {
             AppUtil.showErrMsg(Constant.ERROR_STRING);
+            ex.printStackTrace();
         }
         return null;
     }

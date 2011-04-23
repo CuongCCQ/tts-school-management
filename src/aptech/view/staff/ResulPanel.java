@@ -319,7 +319,7 @@ public class ResulPanel extends javax.swing.JPanel {
 
     }
     
-    int a = 74;
+    
     
     
     private JTable tblAttendance;

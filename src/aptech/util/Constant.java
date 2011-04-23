@@ -81,5 +81,8 @@ public interface Constant {
     final int TIME_TO_BEGIN_SCHOOL=8;
     final int TIME_TO_END_SCHOOL=23;
     final int TIME_LINE_WIDTH=150;
+    final String EGILIBILITY_FINAL_EXAM="ELIGIBLE ";
+    final String NOT_EGILIBILITY_FINAL_EXAM="NOT INELIGIBLE ";
+    final String MUSTPAY_EGILIBILITY_FINAL_EXAM="MUST PAY FINE ";
 
   }

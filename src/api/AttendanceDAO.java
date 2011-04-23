@@ -122,6 +122,33 @@ public class AttendanceDAO extends BaseHibernateDAO {
         return findByProperty(STUDENT_ID, studentId);
     }
 
+    //public list
+    public List<FineObject> generateFineLevy(int classOfferId, int studentId) {
+        try {
+            String queryString = "EXEC sp_generate_fine_levy "
+                    + " @studentId =? ,"
+                    + " @classOfferId = ? ";
+            Query queryObject = getSession().createSQLQuery(queryString);
+
+            queryObject.setParameter(0, studentId);
+            queryObject.setParameter(1, classOfferId);
+            List<Object[]> lst = queryObject.list();
+            List<FineObject> lstFineObj = new ArrayList<FineObject>();
+            for (Object[] objArr : lst) {
+                FineObject fObj = new FineObject();
+                fObj.setNumberConduct(Integer.valueOf(objArr[1].toString()));
+                fObj.setSubjectName(objArr[0].toString());
+                fObj.setNumberOfAttendace(Integer.valueOf(objArr[2].toString()));
+                fObj.setSubjectId(Integer.valueOf(objArr[3].toString()));
+                lstFineObj.add(fObj);
+            }
+            return lstFineObj;
+        } catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+    }
+
     public List findByAssigmentScheduleId(Object assigmentScheduleId) {
         return findByProperty(ASSIGMENT_SCHEDULE_ID, assigmentScheduleId);
     }
@@ -154,7 +181,7 @@ public class AttendanceDAO extends BaseHibernateDAO {
     public void attachDirty(Attendance instance) {
         log.debug("attaching dirty Attendance instance");
         try {
-            getSession().saveOrUpdate("api.Attendance",instance);
+            getSession().saveOrUpdate("api.Attendance", instance);
             log.debug("attach successful");
         } catch (RuntimeException re) {
             log.error("attach failed", re);
@@ -172,13 +199,12 @@ public class AttendanceDAO extends BaseHibernateDAO {
             throw re;
         }
     }
-    public void autoFillAttendaceForClass(int classOfferId,int assScheduleId)
-    {
+
+    public void autoFillAttendaceForClass(int classOfferId, int assScheduleId) {
         List<StudentV2> allStudentByClassOfferId = new StudentDAO().getAllStudentByClassOfferId(classOfferId);
         getSession().beginTransaction();
-        for(StudentV2 student :allStudentByClassOfferId)
-        {
-            Attendance attendance=new Attendance();
+        for (StudentV2 student : allStudentByClassOfferId) {
+            Attendance attendance = new Attendance();
             attendance.setAssigmentScheduleId(assScheduleId);
             attendance.setAbsenceStatus(false);
             attendance.setStudentId(student.getStudentId());
