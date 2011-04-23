@@ -202,6 +202,7 @@ public class AttendanceDAO extends BaseHibernateDAO {
 
     public void autoFillAttendaceForClass(int classOfferId, int assScheduleId) {
         List<StudentV2> allStudentByClassOfferId = new StudentDAO().getAllStudentByClassOfferId(classOfferId);
+        List<Attendance> lstAtt = new ArrayList<Attendance>();
         getSession().beginTransaction();
         for (StudentV2 student : allStudentByClassOfferId) {
             Attendance attendance = new Attendance();
@@ -209,8 +210,12 @@ public class AttendanceDAO extends BaseHibernateDAO {
             attendance.setAbsenceStatus(false);
             attendance.setStudentId(student.getStudentId());
             attendance.setDescription("");
+            lstAtt.add(attendance);
             getSession().save(attendance);
         }
         getSession().getTransaction().commit();
+        for (Attendance att : lstAtt) {
+            getSession().evict(att);
+        }
     }
 }
