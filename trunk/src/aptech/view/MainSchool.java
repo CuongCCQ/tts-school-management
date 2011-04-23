@@ -13,6 +13,7 @@ package aptech.view;
 import api.Account;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
+import aptech.view.attendace.AttendanceView;
 import aptech.view.semester.semesterView;
 import aptech.view.staff.StaffView;
 import aptech.view.student.StudentView;
@@ -219,6 +220,7 @@ public class MainSchool extends javax.swing.JFrame {
         initStudentButton();
         initTeacherButton();
         initCourceButton();
+        initAttendanceButton();
         this.toolbarJPanel.add(toolBar);
     }
 
@@ -285,6 +287,21 @@ public class MainSchool extends javax.swing.JFrame {
         toolBar.add(btnCource);
     }
 
+    private void initAttendanceButton() {
+        JButton btnStudent = new JButton();
+        URL resource = PathUtil.class.getResource("attendance.png");
+        ImageIcon studentIcon = new ImageIcon(resource);
+        btnStudent.setIcon(studentIcon);
+        btnStudent.setText("Attendance");
+        btnStudent.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                loadAttendanceView(e);
+            }
+        });
+        toolBar.add(btnStudent);
+    }
+
     private void clearAllListView() {
         this.leftPanel.removeAll();
     }
@@ -346,6 +363,13 @@ public class MainSchool extends javax.swing.JFrame {
         //this.getContentPane().setBackground(new Color(240,240,240));
         StudentView studentView = new StudentView(this);
         studentView.initSubView();
+        this.rootWindow.setVisible(true);
+    }
+
+    private void loadAttendanceView(ActionEvent eventData) {
+        //this.getContentPane().setBackground(new Color(240,240,240));
+        AttendanceView attendaceView = new AttendanceView(this);
+        attendaceView.initSubView();
         this.rootWindow.setVisible(true);
     }
 
