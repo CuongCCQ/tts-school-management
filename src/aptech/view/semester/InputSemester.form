@@ -191,7 +191,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnAdd">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Save"/>
+        <Property name="text" type="java.lang.String" value="Add New"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
@@ -209,7 +209,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="bntShow">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Show"/>
+        <Property name="text" type="java.lang.String" value="Show All Class"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntShowActionPerformed"/>
