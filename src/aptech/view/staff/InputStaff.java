@@ -28,6 +28,7 @@ import aptech.view.control.image.ImageFileChooser;
 import aptech.view.student.InputStudent;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -348,7 +349,7 @@ public class InputStaff extends javax.swing.JPanel {
         if (IsSure.confirm()) {
             staffDAO.getSession().beginTransaction();
             staffDAO.delete(staff);
-            List<SubjectAssignment> lstSubjectAssignments= subjectAssignmentDAO.findByStaffId(staff.getStaffId());
+            List<SubjectAssignment> lstSubjectAssignments = subjectAssignmentDAO.findByStaffId(staff.getStaffId());
             for (SubjectAssignment subjectAssignment : lstSubjectAssignments) {
                 attendanceDAO.deleteByStaffID(assigmentScheduleDAO.findByClassOfferDetailId(subjectAssignment.getClassOfferDetailId()));
             }
@@ -388,8 +389,8 @@ public class InputStaff extends javax.swing.JPanel {
     }
 
     private void initImage() throws IOException {
-        URL resource = PathUtil.class.getResource(Constant.DEFAULT_IMG_NAME);
-        imageControl = new ImageControl(resource.getPath());
+        InputStream resourceAsStream = PathUtil.class.getResourceAsStream(Constant.DEFAULT_IMG_NAME);
+        imageControl = new ImageControl(resourceAsStream);
         this.pnImg.add(imageControl);
         dateChooserCombo = new TtsDateChooser();
     }
@@ -434,9 +435,9 @@ public class InputStaff extends javax.swing.JPanel {
     private ImageControl imageControl;
     TtsDateChooser dateChooserCombo;
     private Staff staff;
-    private SubjectAssignmentDAO subjectAssignmentDAO= new SubjectAssignmentDAO();
-    private  AssigmentScheduleDAO assigmentScheduleDAO= new AssigmentScheduleDAO();
-    private  AttendanceDAO attendanceDAO = new AttendanceDAO();
+    private SubjectAssignmentDAO subjectAssignmentDAO = new SubjectAssignmentDAO();
+    private AssigmentScheduleDAO assigmentScheduleDAO = new AssigmentScheduleDAO();
+    private AttendanceDAO attendanceDAO = new AttendanceDAO();
     //private  JButton btnDelete;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;

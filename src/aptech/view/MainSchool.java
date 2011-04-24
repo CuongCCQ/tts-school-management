@@ -12,7 +12,6 @@ package aptech.view;
 
 import api.Account;
 import aptech.util.AppUtil;
-import aptech.util.Constant;
 import aptech.view.attendace.AttendanceView;
 import aptech.view.semester.semesterView;
 import aptech.view.staff.StaffView;
@@ -361,9 +360,15 @@ public class MainSchool extends javax.swing.JFrame {
 
     private void loadStudentView(ActionEvent eventData) {
         //this.getContentPane().setBackground(new Color(240,240,240));
-        StudentView studentView = new StudentView(this);
-        studentView.initSubView();
-        this.rootWindow.setVisible(true);
+        try {
+            StudentView studentView = new StudentView(this);
+            studentView.initSubView();
+            this.rootWindow.setVisible(true);
+        } catch (Exception ex) {
+            AppUtil.showErrMsg(AppUtil.getStackTrace(ex));
+
+        }
+
     }
 
     private void loadAttendanceView(ActionEvent eventData) {
@@ -398,6 +403,9 @@ public class MainSchool extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
+//                frmConfig cfgForm = new frmConfig();
+//                cfgForm.setVisible(true);
+
                 MainSchool mainSchool = new MainSchool();
                 Account acc = new Account(1, "tuyuri", "123", 74, new Date(), (short) 2);
                 mainSchool.setUserToken(acc);

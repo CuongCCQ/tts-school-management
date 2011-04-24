@@ -13,6 +13,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -36,12 +37,27 @@ public class ImageControl extends JPanel {
         this.imgData = imgData;
     }
 
-    public ImageControl(String filePath) throws IOException {
-        image = ImageIO.read(new File(filePath));
+    public ImageControl(InputStream st) throws IOException {
+        //AppUtil.showErrMsg(filePath);
+        image = ImageIO.read(st);
         setSize(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT);
+//        AppUtil.showErrMsg("start convert");
         imgData = ImageUtil.convertImageToByteArray(image);
         image = ImageUtil.convertByteArrayToImg(imgData);
-        this.imageThumb=image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
+        this.imageThumb = image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
+                image.SCALE_SMOOTH);
+        this.validate();
+        this.repaint();
+    }
+
+    public ImageControl(String filePath) throws IOException {
+        //AppUtil.showErrMsg(filePath);
+        image = ImageIO.read(new File(filePath));
+        setSize(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT);
+//        AppUtil.showErrMsg("start convert");
+        imgData = ImageUtil.convertImageToByteArray(image);
+        image = ImageUtil.convertByteArrayToImg(imgData);
+        this.imageThumb = image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
                 image.SCALE_SMOOTH);
         this.validate();
         this.repaint();
@@ -51,12 +67,12 @@ public class ImageControl extends JPanel {
         image = ImageUtil.convertByteArrayToImg(data);
         setSize(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT);
         imgData = ImageUtil.convertImageToByteArray(image);
-        this.imageThumb=image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
+        this.imageThumb = image.getScaledInstance(Constant.IMAGE_SIZE_WIDTH, Constant.IMAGE_SIZE_HEIGHT,
                 image.SCALE_SMOOTH);
         this.validate();
         this.repaint();
     }
-    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

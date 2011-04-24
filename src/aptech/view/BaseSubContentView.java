@@ -46,7 +46,7 @@ public abstract class BaseSubContentView {
             btn.setIconTextGap(10);
             btn.setFocusPainted(false);
             btn.setContentAreaFilled(false);
-            ImageIcon icon = new ImageIcon(PathUtil.class.getResource("setting.png"));
+            ImageIcon icon = new ImageIcon(PathUtil.class.getResource("Setting.png"));
             btn.setIcon(icon);
             btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
             mainSchool.getLeftPanel().add(btn);

@@ -84,7 +84,7 @@ public class StudentView extends BaseSubContentView {
         try {
             return new InputStudent();
         } catch (Exception ex) {
-            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+            AppUtil.showErrMsg(ex.getMessage());
         }
         return null;
     }
@@ -93,6 +93,7 @@ public class StudentView extends BaseSubContentView {
     protected void initStartBottomTableModel() {
         StudentDAO dao = new StudentDAO();
         List lstStudent = dao.findAllStudentV2();
+//        AppUtil.showErrMsg("lstStudent"+lstStudent.size());
         bottomModel = new StudentTableModel(lstStudent);
         bottomTable = new TtsTable((StudentTableModel)bottomModel);
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
