@@ -51,7 +51,7 @@ public class TimeLineView extends BaseSubContentView {
         btnUpdateTimeTable.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                createNewSubView(new ClassSchedule(mainSchool.getUserToken().getStaffId()));
+                createNewSubView(new ClassSchedule(AppUtil.UserToken.getStaffId()));
             }
         });
     }

@@ -10,10 +10,23 @@
  */
 package aptech.util;
 
+import api.Account;
+import api.Staff;
+import api.StaffDAO;
+import aptech.view.MainSchool;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -26,6 +39,19 @@ public class frmLogin extends javax.swing.JFrame {
     public frmLogin() throws ClassNotFoundException, SQLException {
 //        ConnectDB.ConnectDatabase();
 //        DataInteraction.getConnect();
+
+
+        try {
+            setIconImage(Toolkit.getDefaultToolkit().getImage(new File("src//Image//login.png").getCanonicalPath()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        ;
+
+        initComponents();
+        getRootPane().setDefaultButton(_btnlogin);
+        //read to combo box
+
     }
 
     /** This method is called from within the constructor to
@@ -46,7 +72,7 @@ public class frmLogin extends javax.swing.JFrame {
         _btnlogin = new javax.swing.JButton();
         _btnexit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("AITSM - Login System");
@@ -55,7 +81,6 @@ public class frmLogin extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -83,10 +108,8 @@ public class frmLogin extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24));
         jLabel1.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/login.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login.png"))); // NOI18N
         jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/login.png"))); // NOI18N
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -95,41 +118,40 @@ public class frmLogin extends javax.swing.JFrame {
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(103, 103, 103)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jLabel4)
-                                    .add(jLabel3))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(_pwfpassword)
-                                    .add(_txtusername, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 195, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(39, 39, 39)
-                                .add(_btnlogin)
-                                .add(18, 18, 18)
-                                .add(_btnexit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, _lblerr)))
+                        .add(116, 116, 116)
+                        .add(_lblerr))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(163, 163, 163)
+                        .add(jLabel1))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(99, 99, 99)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel4)
+                            .add(jLabel3))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createSequentialGroup()
-                                .add(10, 10, 10)
-                                .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 196, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(jLabel1))))
-                .addContainerGap(94, Short.MAX_VALUE))
+                                .add(_btnlogin)
+                                .add(21, 21, 21)
+                                .add(_btnexit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(_pwfpassword)
+                                .add(_txtusername, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 195, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel1)
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 106, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(11, 11, 11)
+                .add(jLabel1)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(16, 16, 16)
                 .add(_lblerr)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(_txtusername, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel3))
@@ -137,14 +159,23 @@ public class frmLogin extends javax.swing.JFrame {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(_pwfpassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel4))
-                .add(18, 18, 18)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(26, 26, 26)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(_btnexit)
                     .add(_btnlogin))
-                .add(27, 27, 27))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1);
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -164,15 +195,46 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event__btnexitActionPerformed
 
     private void _btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnloginActionPerformed
+
+        if (!check()) {
+            return;
+        }
+
+
+        String _username = _txtusername.getText();
+        char[] _chrpass = _pwfpassword.getPassword();
+        String _password = new String(_chrpass);
+        StaffDAO dao = new StaffDAO();
+        List<Staff> lstStaff = dao.findByStaffCode(_username.trim());
+        if (lstStaff.size() < 1) {
+            _lblerr.setText("Invalid UserName or Password");
+            _lblerr.setForeground(Color.red);
+            _lblerr.setFont(new Font("Times New Romal", 1, 11));
+            _txtusername.requestFocus();
+        } else {
+            Staff staffLogin = lstStaff.get(0);
+            if (staffLogin.getPassWord().equals(_password)) {
+                Account acc = new Account();
+                acc.setStaffId(staffLogin.getStaffId());
+                acc.setUserName(staffLogin.getStaffCode());
+                acc.setType((short) staffLogin.getAdminType().longValue());
+                AppUtil.UserToken=acc;
+                MainSchool mainSchool=new MainSchool();
+
+            } else {
+                _lblerr.setText("Invalid UserName or Password");
+                _lblerr.setForeground(Color.red);
+                _lblerr.setFont(new Font("Times New Romal", 1, 11));
+                _txtusername.requestFocus();
+            }
+        }
+
     }//GEN-LAST:event__btnloginActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
-        frmLogin _frmlogin = new frmLogin();
-        _frmlogin.setLocationRelativeTo(null);
-        _frmlogin.setVisible(true);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton _btnexit;
@@ -181,24 +243,24 @@ public class frmLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField _pwfpassword;
     private javax.swing.JTextField _txtusername;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
     private boolean check() {
         String _username = _txtusername.getText();
         char[] _chrpass = _pwfpassword.getPassword();
         String _password = new String(_chrpass);
-        if (true) {
+        if (ValidateUtil.isEmpty(_username)) {
             _lblerr.setText("Please Enter Username");
             _lblerr.setForeground(Color.red);
             _lblerr.setFont(new Font("Times New Romal", 1, 11));
             _txtusername.requestFocus();
             return false;
         }
-        if (false) {
+        if (ValidateUtil.isEmpty(_password)) {
             _lblerr.setText("Please Enter Password");
             _lblerr.setForeground(Color.red);
             _lblerr.setFont(new Font("Times New Romal", 1, 11));

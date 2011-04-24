@@ -35,14 +35,17 @@ public class ValidateUtil {
     }
 
     public static boolean isEmpty(String input) {
-        return true;
+        if (input == null || input.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean checkDate(Date dateFirst, Date dateSecond) {
         if (dateFirst.after(dateSecond)) {
             return false;
         }
-        
+
         return true;
 
     }

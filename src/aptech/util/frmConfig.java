@@ -6,10 +6,9 @@
 package aptech.util;
 
 import api.HibernateSessionFactory;
+import java.awt.Dimension;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,6 +24,9 @@ public class frmConfig extends javax.swing.JFrame {
     public frmConfig() {
         initComponents();
         getRootPane().setDefaultButton(_btnconfig);
+        setSize(new Dimension(380,330));
+        this.jDesktopPane1.setPreferredSize(new Dimension(300, 300));
+        
     }
 
     /** This method is called from within the constructor to
@@ -52,30 +54,30 @@ public class frmConfig extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Configs");
-        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jDesktopPane1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("Server Name:");
-        jLabel1.setBounds(30, 80, 90, -1);
+        jLabel1.setBounds(30, 80, 90, 14);
         jDesktopPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel2.setText("Username:");
-        jLabel2.setBounds(30, 110, 90, -1);
+        jLabel2.setBounds(30, 110, 90, 14);
         jDesktopPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel3.setText("Password:");
-        jLabel3.setBounds(30, 140, 90, -1);
+        jLabel3.setBounds(30, 140, 90, 14);
         jDesktopPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setText("Port:");
-        jLabel4.setBounds(30, 170, 80, -1);
+        jLabel4.setBounds(30, 170, 100, 14);
         jDesktopPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _txtservername.setBounds(130, 80, 160, -1);
+        _txtservername.setBounds(140, 80, 160, 20);
         jDesktopPane1.add(_txtservername, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _txtusername.setBounds(130, 110, 160, -1);
+        _txtusername.setBounds(140, 110, 160, 20);
         jDesktopPane1.add(_txtusername, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _txtport.setBounds(130, 170, 160, -1);
+        _txtport.setBounds(140, 170, 160, 20);
         jDesktopPane1.add(_txtport, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24));
@@ -90,17 +92,17 @@ public class frmConfig extends javax.swing.JFrame {
                 _btnconfigActionPerformed(evt);
             }
         });
-        _btnconfig.setBounds(140, 240, 90, -1);
+        _btnconfig.setBounds(140, 240, 90, 23);
         jDesktopPane1.add(_btnconfig, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel6.setText("Database Name:");
-        jLabel6.setBounds(30, 200, 90, -1);
+        jLabel6.setBounds(30, 200, 100, 14);
         jDesktopPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         _txtdatabasename.setText("tts");
-        _txtdatabasename.setBounds(130, 200, 160, -1);
+        _txtdatabasename.setBounds(140, 200, 160, 20);
         jDesktopPane1.add(_txtdatabasename, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _pwfpassword.setBounds(130, 140, 160, -1);
+        _pwfpassword.setBounds(140, 140, 160, 20);
         jDesktopPane1.add(_pwfpassword, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         getContentPane().add(jDesktopPane1);
@@ -124,7 +126,8 @@ private void _btnconfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         AppUtil.changeConfig(connectionUrl, _username, _password);
         HibernateSessionFactory.getSession();
         AppUtil.showNoticeMessage("Configuration succesfully");
-        //File f=new File();
+        File f = new File(AppUtil.getAppPath() + Constant.FILE_CFG);
+        f.createNewFile();
     } catch (Exception e) {
         AppUtil.showErrMsg("config failed");
         e.printStackTrace();
@@ -135,6 +138,7 @@ private void _btnconfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     try {
         _frmlogin = new frmLogin();
         _frmlogin.setLocationRelativeTo(null);
+        _frmlogin.setSize(463, 284);
         _frmlogin.setVisible(true);
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(frmConfig.class.getName()).log(Level.SEVERE, null, ex);
