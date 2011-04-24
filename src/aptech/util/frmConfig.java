@@ -52,29 +52,30 @@ public class frmConfig extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Configs");
+        getContentPane().setLayout(new java.awt.GridLayout());
 
         jDesktopPane1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("Server Name:");
-        jLabel1.setBounds(30, 80, 70, 14);
+        jLabel1.setBounds(30, 80, 90, -1);
         jDesktopPane1.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel2.setText("Username:");
-        jLabel2.setBounds(30, 110, 60, 14);
+        jLabel2.setBounds(30, 110, 90, -1);
         jDesktopPane1.add(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel3.setText("Password:");
-        jLabel3.setBounds(30, 140, 60, 14);
+        jLabel3.setBounds(30, 140, 90, -1);
         jDesktopPane1.add(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setText("Port:");
-        jLabel4.setBounds(30, 170, 24, 14);
+        jLabel4.setBounds(30, 170, 80, -1);
         jDesktopPane1.add(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _txtservername.setBounds(120, 80, 160, 19);
+        _txtservername.setBounds(130, 80, 160, -1);
         jDesktopPane1.add(_txtservername, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _txtusername.setBounds(120, 110, 160, 19);
+        _txtusername.setBounds(130, 110, 160, -1);
         jDesktopPane1.add(_txtusername, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _txtport.setBounds(120, 170, 160, 19);
+        _txtport.setBounds(130, 170, 160, -1);
         jDesktopPane1.add(_txtport, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24));
@@ -89,29 +90,20 @@ public class frmConfig extends javax.swing.JFrame {
                 _btnconfigActionPerformed(evt);
             }
         });
-        _btnconfig.setBounds(120, 240, 73, 23);
+        _btnconfig.setBounds(140, 240, 90, -1);
         jDesktopPane1.add(_btnconfig, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel6.setText("Database Name:");
-        jLabel6.setBounds(30, 200, 80, 14);
+        jLabel6.setBounds(30, 200, 90, -1);
         jDesktopPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        _txtdatabasename.setText("AITSM");
-        _txtdatabasename.setBounds(120, 200, 160, 19);
+        _txtdatabasename.setText("tts");
+        _txtdatabasename.setBounds(130, 200, 160, -1);
         jDesktopPane1.add(_txtdatabasename, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        _pwfpassword.setBounds(120, 140, 160, 23);
+        _pwfpassword.setBounds(130, 140, 160, -1);
         jDesktopPane1.add(_pwfpassword, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jDesktopPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 322, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jDesktopPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-        );
+        getContentPane().add(jDesktopPane1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -131,6 +123,8 @@ private void _btnconfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String connectionUrl = "jdbc:sqlserver://" + _serverName + ":" + _port + ";databaseName=" + _databaseName;
         AppUtil.changeConfig(connectionUrl, _username, _password);
         HibernateSessionFactory.getSession();
+        AppUtil.showNoticeMessage("Configuration succesfully");
+        //File f=new File();
     } catch (Exception e) {
         AppUtil.showErrMsg("config failed");
         e.printStackTrace();
