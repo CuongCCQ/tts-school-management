@@ -33,5 +33,11 @@
     <property name="dateOfBirth" type="java.sql.Timestamp">
       <column length="23" name="DateOfBirth"/>
     </property>
+    <property name="adminType" type="java.lang.Integer">
+      <column name="adminType" not-null="false"/>
+    </property>
+     <property name="passWord" type="java.lang.String">
+      <column length="200" name="passWord" not-null="true"/>
+    </property>
   </class>
 </hibernate-mapping>

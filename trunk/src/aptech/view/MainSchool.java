@@ -12,6 +12,9 @@ package aptech.view;
 
 import api.Account;
 import aptech.util.AppUtil;
+import aptech.util.Constant;
+import aptech.util.frmConfig;
+import aptech.util.frmLogin;
 import aptech.view.attendace.AttendanceView;
 import aptech.view.semester.semesterView;
 import aptech.view.staff.StaffView;
@@ -24,8 +27,12 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -63,16 +70,7 @@ public class MainSchool extends javax.swing.JFrame {
     JPanel contentpanel;
     JMenuBar menuBar;
     JToolBar toolBar;
-    JList lstMenu;
-    Account userToken;
-
-    public Account getUserToken() {
-        return userToken;
-    }
-
-    public void setUserToken(Account userToken) {
-        this.userToken = userToken;
-    }
+    JList lstMenu;      
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -403,13 +401,27 @@ public class MainSchool extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-//                frmConfig cfgForm = new frmConfig();
-//                cfgForm.setVisible(true);
-
-                MainSchool mainSchool = new MainSchool();
-                Account acc = new Account(1, "tuyuri", "123", 74, new Date(), (short) 2);
-                mainSchool.setUserToken(acc);
-                AppUtil.UserToken = acc;
+                File f = new File(AppUtil.getAppPath() + Constant.FILE_CFG);
+                if (!f.exists()) {
+                    frmConfig cfgForm = new frmConfig();
+                    cfgForm.setVisible(true);
+                } else {
+                    frmLogin loginForm = null;
+                    try {
+                        loginForm = new frmLogin();
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainSchool.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainSchool.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    loginForm.setSize(463, 354);
+                    loginForm.setVisible(true);
+                    loginForm.setLocationRelativeTo(null);
+                }
+//                MainSchool mainSchool = new MainSchool();
+//                Account acc = new Account(1, "tuyuri", "123", 74, new Date(), (short) 2);
+//                mainSchool.setUserToken(acc);
+//                AppUtil.UserToken = acc;
             }
         });
     }

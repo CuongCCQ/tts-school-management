@@ -28,24 +28,21 @@ public class HibernateSessionFactory {
     private static Configuration configuration = new Configuration();
     private static org.hibernate.SessionFactory sessionFactory;
     private static String configFile = CONFIG_FILE_LOCATION;
+    private static File fConfig;
 
     static {
         try {
 //            AppUtil.showErrMsg(Main.class.getResource("").getPath());
             String filePath = getConfigPath();
 //            AppUtil.showErrMsg(filePath);
-            File file = new File(filePath);
-            configuration.configure(file);
+            fConfig = new File(filePath);
+            configuration.configure(fConfig);
 //            AppUtil.showErrMsg("begin generate session");
             sessionFactory = configuration.buildSessionFactory();
 //            AppUtil.showErrMsg("config completed "+sessionFactory.toString());
         } catch (MappingException mEx) {
             System.out.println("not well formed");
-            AppUtil.showErrMsg("ZZ"+mEx.getMessage());
-        } catch (Exception e) {
-            AppUtil.showErrMsg("XX"+e.getMessage());
-            System.err.println("%%%% Error Creating SessionFactory %%%%");
-            e.printStackTrace();
+//            AppUtil.showErrMsg("ZZ" + mEx.getMessage());
         }
     }
 
@@ -54,12 +51,12 @@ public class HibernateSessionFactory {
         if (!tempPath.startsWith("file")) {
             return CONFIG_FILE_LOCATION;
         } else {
-            StringBuilder builder = new StringBuilder(tempPath.substring(6,tempPath.length()-1));
+            StringBuilder builder = new StringBuilder(tempPath.substring(6, tempPath.length() - 1));
 //            AppUtil.showErrMsg(builder.toString());
             int idx = builder.lastIndexOf("/");
             builder.delete(idx, builder.length());
 //            AppUtil.showErrMsg(builder.toString());
-            int idx1 = builder.lastIndexOf("/")+1;
+            int idx1 = builder.lastIndexOf("/") + 1;
             builder.delete(idx1, builder.length());
 //            AppUtil.showErrMsg(builder.toString());
 //            builder = new StringBuilder(temp2.substring(10));
@@ -101,7 +98,7 @@ public class HibernateSessionFactory {
      */
     public static void rebuildSessionFactory() {
         try {
-            configuration.configure(configFile);
+            configuration.configure(fConfig);
             sessionFactory = configuration.buildSessionFactory();
         } catch (Exception e) {
             System.err.println("%%%% Error Creating SessionFactory %%%%");
