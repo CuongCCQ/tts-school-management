@@ -276,8 +276,8 @@ public class inputClassOffer extends javax.swing.JPanel {
         this.classOffer.setClassCode(this.txtClassCode.getText().trim());
         this.classOffer.setMinStudent(Integer.parseInt(this.txtMinstudent.getText().trim()));
         this.classOffer.setMaxStudent(Integer.parseInt(this.txtMaxStudent.getText().trim()));
-        this.classOffer.setSemesterId(listSemesterID.get(cbSemester.getSelectedIndex()));
-        this.classOffer.setId(listCourseID.get(cbCource.getSelectedIndex()));
+        //this.classOffer.setSemesterId(listSemesterID.get(cbSemester.getSelectedIndex()));
+        //this.classOffer.setId(listCourseID.get(cbCource.getSelectedIndex()));
         return errMsg;
     }
     private boolean isValidate() throws ParseException {
