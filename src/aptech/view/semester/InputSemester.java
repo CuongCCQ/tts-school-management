@@ -115,6 +115,8 @@ public class InputSemester extends javax.swing.JPanel {
 
         jTextField1.setText("jTextField1");
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         setPreferredSize(new java.awt.Dimension(700, 538));
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
@@ -159,6 +161,7 @@ public class InputSemester extends javax.swing.JPanel {
             .addGap(0, 25, Short.MAX_VALUE)
         );
 
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/save0002.png"))); // NOI18N
         btnAdd.setText("Add New");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +172,7 @@ public class InputSemester extends javax.swing.JPanel {
         lblName.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblName.setText("Name :");
 
+        bntShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/than.gif"))); // NOI18N
         bntShow.setText("Show All Class");
         bntShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,9 +201,10 @@ public class InputSemester extends javax.swing.JPanel {
                                 .addComponent(panelDateStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(panelDateEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)
+                                .addComponent(btnAdd)
                                 .addGap(18, 18, 18)
-                                .addComponent(bntShow, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(bntShow))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addComponent(lblTitle)))
@@ -228,9 +233,9 @@ public class InputSemester extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
-                    .addComponent(bntShow))
-                .addContainerGap(99, Short.MAX_VALUE))
+                    .addComponent(bntShow, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     //validate from

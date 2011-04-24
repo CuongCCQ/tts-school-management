@@ -133,6 +133,9 @@ public JLabel getLbltitle()
         txtDescription = new javax.swing.JTextArea();
         btnDelete = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Cource Manager");
 
@@ -145,6 +148,7 @@ public JLabel getLbltitle()
         lblDesc.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblDesc.setText("Description :");
 
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/save0002.png"))); // NOI18N
         btnAdd.setText("Save");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +160,7 @@ public JLabel getLbltitle()
         txtDescription.setRows(5);
         jScrollPane1.setViewportView(txtDescription);
 
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/window_close1.png"))); // NOI18N
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,11 +192,11 @@ public JLabel getLbltitle()
                                             .addGap(86, 86, 86)
                                             .addComponent(lblTitle)))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(260, 260, 260)
+                        .addGap(194, 194, 194)
                         .addComponent(btnAdd)
                         .addGap(18, 18, 18)
                         .addComponent(btnDelete)))
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,8 +220,8 @@ public JLabel getLbltitle()
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
-                    .addComponent(btnDelete))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

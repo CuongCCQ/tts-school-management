@@ -77,6 +77,8 @@ public class ResulPanel extends javax.swing.JPanel {
         cbxDate = new javax.swing.JComboBox();
         scrlPn = new javax.swing.JScrollPane();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setText("Class Name");
 
         cbxClassName.addItemListener(new java.awt.event.ItemListener() {
@@ -100,6 +102,7 @@ public class ResulPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Class Student");
 
+        bttSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/save0002.png"))); // NOI18N
         bttSave.setText("Save");
         bttSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,7 +172,7 @@ public class ResulPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(91, 91, 91)
                         .addComponent(jLabel4)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

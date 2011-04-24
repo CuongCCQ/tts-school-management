@@ -74,6 +74,9 @@ public class InputAssignment extends javax.swing.JPanel {
         btnDelete = new javax.swing.JButton();
         txtNumberOflession = new javax.swing.JTextField();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
         lblClass.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblClass.setText("Class :");
 
@@ -92,6 +95,7 @@ public class InputAssignment extends javax.swing.JPanel {
         lblTitle.setFont(new java.awt.Font("Tahoma", 1, 24));
         lblTitle.setText("Subject Assinmegt  Manager");
 
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/save0002.png"))); // NOI18N
         btnAdd.setText("Add new");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,6 +106,7 @@ public class InputAssignment extends javax.swing.JPanel {
         lblStaff1.setFont(new java.awt.Font("Tahoma", 1, 11));
         lblStaff1.setText("Subject :");
 
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/window_close1.png"))); // NOI18N
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,14 +138,14 @@ public class InputAssignment extends javax.swing.JPanel {
                             .addComponent(txtMinutePerLession, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                             .addComponent(txtNumberAss, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102)
+                        .addComponent(btnAdd)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(125, 125, 125)
                         .addComponent(lblTitle)))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,9 +178,9 @@ public class InputAssignment extends javax.swing.JPanel {
                     .addComponent(cbSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(86, Short.MAX_VALUE))
+                    .addComponent(btnAdd)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
   
