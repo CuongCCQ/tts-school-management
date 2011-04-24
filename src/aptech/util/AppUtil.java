@@ -19,6 +19,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.SAXException;
+import project.Main;
 
 /**
  *
@@ -59,9 +60,8 @@ public class AppUtil {
 
             TransformerFactory transfac = TransformerFactory.newInstance();
             Transformer trans = transfac.newTransformer();
-            //trans.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd");
-//            trans.setOutputProperty("te", "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd");
-            //create string from xml tree
+            trans.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//Hibernate/Hibernate Configuration DTD 3.0//EN");
+            trans.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd");
             StringWriter sw = new StringWriter();
             StreamResult result = new StreamResult(sw);
             DOMSource source = new DOMSource(doc);
@@ -69,7 +69,8 @@ public class AppUtil {
             String xmlString = sw.toString();
             OutputStream f0;
             byte[] buf = xmlString.getBytes();
-            f0 = new FileOutputStream("hibernate.cfg.xml");
+            File f = new File("hibernate.cfg.xml");
+            f0 = new FileOutputStream(f);
             for (int i = 0; i < buf.length; i++) {
                 f0.write(buf[i]);
             }
@@ -92,6 +93,20 @@ public class AppUtil {
 
         return MainSchool.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
+    }
+
+    private static String getConfigPath() {
+        String tempPath = Main.class.getResource("").getPath();
+        if (!tempPath.startsWith("file")) {
+            return "";
+        } else {
+            StringBuilder builder = new StringBuilder(tempPath.substring(6, tempPath.length() - 1));
+            int idx = builder.lastIndexOf("/");
+            builder.delete(idx, builder.length());
+            int idx1 = builder.lastIndexOf("/") + 1;
+            builder.delete(idx1, builder.length());
+            return builder.toString();
+        }
     }
 
     public static void showErrMsg(String errorMsg) {
