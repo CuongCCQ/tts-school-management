@@ -25,6 +25,7 @@ import aptech.view.control.TtsDateChooser;
 import aptech.view.control.image.ImageFileChooser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -305,9 +306,11 @@ public class InputStudent extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void initDefaultImage() throws IOException {
-        URL resource = PathUtil.class.getResource(Constant.DEFAULT_IMG_NAME);
-        imgControl = new ImageControl(resource.getPath());
-        this.pnImg.add(imgControl);
+        InputStream resourceAsStream = PathUtil.class.getResourceAsStream(Constant.DEFAULT_IMG_NAME);
+        if (resourceAsStream != null) {
+            imgControl = new ImageControl(resourceAsStream);
+            this.pnImg.add(imgControl);
+        }
 
     }
 
@@ -420,8 +423,8 @@ public class InputStudent extends javax.swing.JPanel {
     TtsDateChooser dateChooserCombo;
     protected Student student;
     private ImageControl imgControl;
-    private StudentCourseRegistration studentCourseRegistration=new StudentCourseRegistration();
-    private  StudentCourseRegistrationDAO studentCourseRegistrationDAO= new StudentCourseRegistrationDAO();
+    private StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
+    private StudentCourseRegistrationDAO studentCourseRegistrationDAO = new StudentCourseRegistrationDAO();
 
     public JButton getBtnDelete() {
         return btnDelete;

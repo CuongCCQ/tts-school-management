@@ -226,6 +226,7 @@ public class ClassScheduleMain extends javax.swing.JPanel {
             dao.save(schedule);
             dao.getSession().getTransaction().commit();
         }
+        
         AppUtil.showNoticeMessage(Constant.NOTICE_UPDATE_SCHEDULE_COMPLETED);
     }
     // validate input
