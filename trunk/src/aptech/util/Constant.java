@@ -85,5 +85,7 @@ public interface Constant {
     final String NOT_EGILIBILITY_FINAL_EXAM="NOT INELIGIBLE ";
     final String MUSTPAY_EGILIBILITY_FINAL_EXAM="MUST PAY FINE ";
     final String FILE_CFG="ttsCfg.z";
+    final short PERMISSION_ADMIN=0;
+    final short PERMISSION_STAFF=1;
 
   }

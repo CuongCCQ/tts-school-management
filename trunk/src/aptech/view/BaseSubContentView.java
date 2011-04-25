@@ -73,7 +73,9 @@ public abstract class BaseSubContentView {
         this.subContentPanel = initStartPanel();
         mainSchool.getRightPanel().removeAll();
         if (this.subContentPanel != null) {
-            mainSchool.getRightPanel().add(this.subContentPanel, BorderLayout.CENTER);
+            JScrollPane jas=new JScrollPane(this.subContentPanel);
+            mainSchool.getRightPanel().add(jas, BorderLayout.CENTER);
+            //mainSchool.getRightPanel().add(this.subContentPanel, BorderLayout.CENTER);
         }
     }
 

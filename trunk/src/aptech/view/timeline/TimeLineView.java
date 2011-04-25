@@ -59,7 +59,7 @@ public class TimeLineView extends BaseSubContentView {
     @Override
     protected JPanel initStartPanel() {
         try {
-            return new MainTimeForm();
+            return new ClassSchedule(AppUtil.UserToken.getStaffId());
         } catch (Exception ex) {
             AppUtil.showErrMsg(Constant.ERROR_STRING);
             ex.printStackTrace();
