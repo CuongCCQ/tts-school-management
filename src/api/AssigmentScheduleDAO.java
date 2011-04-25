@@ -1,5 +1,6 @@
 package api;
 
+import aptech.util.AppUtil;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.logging.Log;
@@ -123,11 +124,15 @@ public class AssigmentScheduleDAO extends BaseHibernateDAO {
 
     public List<AssigmentSchedule> getScheduleByDate(Date dateToGet) {
         try {
-            String queryString = "from AssigmentSchedule as model where model.startTime>="
-                    + "dateadd(dd,0, datediff(dd,0, ?)) and model.startTime<dateadd(dd,1, datediff(dd,0, ?)) ";
+            String queryString = "select distinct model from AssigmentSchedule as model,SubjectAssignment AS ta where model.startTime>="
+                    + " dateadd(dd,0, datediff(dd,0, ?)) and "
+                    + "model.startTime<dateadd(dd,1, datediff(dd,0, ?))"
+                    + " AND model.classOfferDetailId=ta.classOfferDetailId "
+                    + " AND ta.staffId=?";
             Query queryObject = getSession().createQuery(queryString);
             queryObject.setParameter(0, dateToGet);
             queryObject.setParameter(1, dateToGet);
+            queryObject.setParameter(2, AppUtil.UserToken.getStaffId());
             return queryObject.list();
         } catch (RuntimeException re) {
             log.error("find by property name failed", re);

@@ -10,7 +10,6 @@
  */
 package aptech.view;
 
-import api.Account;
 import aptech.util.AppUtil;
 import aptech.util.Constant;
 import aptech.util.frmConfig;
@@ -30,7 +29,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -70,7 +68,7 @@ public class MainSchool extends javax.swing.JFrame {
     JPanel contentpanel;
     JMenuBar menuBar;
     JToolBar toolBar;
-    JList lstMenu;      
+    JList lstMenu;
 
     public View getBottomPanel() {
         return bottomPanel;
@@ -213,11 +211,16 @@ public class MainSchool extends javax.swing.JFrame {
     // init tool bar
     private void initToolBar() {
         toolBar = new JToolBar(JToolBar.HORIZONTAL);
-        initTimeLineButton();
-        initStudentButton();
-        initTeacherButton();
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_STAFF) {
+            initTimeLineButton();
+            initAttendanceButton();
+        }
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_ADMIN) {
+            initStudentButton();
+            initTeacherButton();
+        }
         initCourceButton();
-        initAttendanceButton();
+
         this.toolbarJPanel.add(toolBar);
     }
 

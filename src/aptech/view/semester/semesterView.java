@@ -22,6 +22,8 @@ import api.Subject;
 import api.SubjectAssignment;
 import api.SubjectAssignmentDAO;
 import api.SubjectDAO;
+import aptech.util.AppUtil;
+import aptech.util.Constant;
 import aptech.view.control.TtsTable;
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +36,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 /**
  *
  * @author bo
@@ -56,7 +59,9 @@ public class semesterView extends BaseSubContentView {
 
     private void initButtons() {
         btnNewSemester = new JButton("Add new semester");
-        this.lstButtons.add(btnNewSemester);
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_ADMIN) {
+            this.lstButtons.add(btnNewSemester);
+        }
         btnNewSemester.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -70,7 +75,7 @@ public class semesterView extends BaseSubContentView {
         });
 
         //Action of class offer
-        btnNewClassOffer = new JButton("Add new input Class Offer");
+        btnNewClassOffer = new JButton("Class Manager");
         this.lstButtons.add(btnNewClassOffer);
         btnNewClassOffer.addActionListener(new ActionListener() {
 
@@ -80,18 +85,20 @@ public class semesterView extends BaseSubContentView {
             }
         });
 
-        btnNewCource = new JButton("Input new Cource");
-        this.lstButtons.add(btnNewCource);
+        btnNewCource = new JButton("Cource manager");
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_ADMIN) {
+            this.lstButtons.add(btnNewCource);
+        }
 
         btnNewCource.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 createNewSubView(new InputCource());
-                initStartBottomTableModelCourse() ;
+                initStartBottomTableModelCourse();
             }
         });
 
-        btnNewSubject = new JButton("Add new Subject");
+        btnNewSubject = new JButton("Subject manager");
         btnNewSubject.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -99,10 +106,14 @@ public class semesterView extends BaseSubContentView {
                 initStartBottomTableModelSubject();
             }
         });
-        this.lstButtons.add(btnNewSubject);
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_ADMIN) {
+            this.lstButtons.add(btnNewSubject);
+        }
+        btnNewAssinment = new JButton("Assingment manager");
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_ADMIN) {
+            this.lstButtons.add(btnNewAssinment);
+        }
 
-        btnNewAssinment = new JButton("Add new Assinment");
-        this.lstButtons.add(btnNewAssinment);
         btnNewAssinment.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -276,7 +287,7 @@ public class semesterView extends BaseSubContentView {
         bottomModel.fireTableDataChanged();
 
 
-        
+
     }
 
     private void doTableSelectionChangeClassOffer() throws Exception {
@@ -295,15 +306,15 @@ public class semesterView extends BaseSubContentView {
     }
 
     //Course
- protected void initStartBottomTableModelCourse() {
+    protected void initStartBottomTableModelCourse() {
         CourseDAO dao = new CourseDAO();
-        List lstCOurse= dao.findAll();
+        List lstCOurse = dao.findAll();
         bottomModel = new CourseTableModel(lstCOurse);
-        bottomTable = new TtsTable((CourseTableModel)bottomModel);
+        bottomTable = new TtsTable((CourseTableModel) bottomModel);
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
 
             public void editingStopped(ChangeEvent e) {
-               filterCourse();
+                filterCourse();
             }
 
             public void editingCanceled(ChangeEvent e) {
@@ -330,18 +341,19 @@ public class semesterView extends BaseSubContentView {
         });
         reloadBottomView();
     }
+
     protected void filterCourse() {
         CourseDAO dao = new CourseDAO();
-        Course objSearch =((CourseTableModel) this.bottomModel).getLstData().get(0);
+        Course objSearch = ((CourseTableModel) this.bottomModel).getLstData().get(0);
         List<Course> lstStudent = dao.filterByObject(objSearch);
-        ((CourseTableModel)bottomModel).setLstData(lstStudent, objSearch);
+        ((CourseTableModel) bottomModel).setLstData(lstStudent, objSearch);
         bottomModel.fireTableDataChanged();
     }
 
     private void doTableSelectionCourseChange() {
         try {
             EditCource editCourse = new EditCource();
-            int courseId =((CourseTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getId();
+            int courseId = ((CourseTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getId();
             CourseDAO dao = new CourseDAO();
             Course course = dao.findById(courseId);
             editCourse.initCourseFromModel(course);
@@ -352,17 +364,16 @@ public class semesterView extends BaseSubContentView {
         }
     }
 
-
     //Subject
-     protected void initStartBottomTableModelSubject() {
+    protected void initStartBottomTableModelSubject() {
         SubjectDAO dao = new SubjectDAO();
-        List lstSubject= dao.findAll();
+        List lstSubject = dao.findAll();
         bottomModel = new subjectTableModel(lstSubject);
-        bottomTable = new TtsTable((subjectTableModel)bottomModel);
+        bottomTable = new TtsTable((subjectTableModel) bottomModel);
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
 
             public void editingStopped(ChangeEvent e) {
-               filterSubject();
+                filterSubject();
             }
 
             public void editingCanceled(ChangeEvent e) {
@@ -389,17 +400,19 @@ public class semesterView extends BaseSubContentView {
         });
         reloadBottomView();
     }
-      protected void filterSubject() {
+
+    protected void filterSubject() {
         SubjectDAO dao = new SubjectDAO();
-        Subject objSearch =((subjectTableModel) this.bottomModel).getLstData().get(0);
+        Subject objSearch = ((subjectTableModel) this.bottomModel).getLstData().get(0);
         List<Subject> lstSubject = dao.filterByObject(objSearch);
-        ((subjectTableModel)bottomModel).setLstData(lstSubject, objSearch);
+        ((subjectTableModel) bottomModel).setLstData(lstSubject, objSearch);
         bottomModel.fireTableDataChanged();
     }
-     private void doTableSelectionSubjectChange() {
+
+    private void doTableSelectionSubjectChange() {
         try {
             EditSubject editSubject = new EditSubject();
-            int sujectId =((subjectTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSubjectId();
+            int sujectId = ((subjectTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getSubjectId();
             SubjectDAO dao = new SubjectDAO();
             Subject subject = dao.findById(sujectId);
             editSubject.initSubjectFromModel(subject);
@@ -410,17 +423,16 @@ public class semesterView extends BaseSubContentView {
         }
     }
 
-     //Assiment
-
-      protected void initStartBottomTableModelAss() {
+    //Assiment
+    protected void initStartBottomTableModelAss() {
         SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
-        List lstSubject= dao.findAll();
+        List lstSubject = dao.findAll();
         bottomModel = new AssimentTableModel(lstSubject);
-        bottomTable = new TtsTable((AssimentTableModel)bottomModel);
+        bottomTable = new TtsTable((AssimentTableModel) bottomModel);
         bottomTable.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
 
             public void editingStopped(ChangeEvent e) {
-               filterSubject();
+                filterSubject();
             }
 
             public void editingCanceled(ChangeEvent e) {
@@ -454,10 +466,11 @@ public class semesterView extends BaseSubContentView {
 //        ((subjectTableModel)bottomModel).setLstData(lstAss, objSearch);
 //        bottomModel.fireTableDataChanged();
 //    }
-     private void doTableSelectionAssChange() {
+
+    private void doTableSelectionAssChange() {
         try {
             EditAss editAss = new EditAss();
-            int assId =((AssimentTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getClassOfferDetailId();
+            int assId = ((AssimentTableModel) this.bottomModel).getLstData().get(bottomTable.getSelectedRow()).getClassOfferDetailId();
             SubjectAssignmentDAO dao = new SubjectAssignmentDAO();
             SubjectAssignment assSub = dao.findById(assId);
             editAss.initAssFromModel(assSub);

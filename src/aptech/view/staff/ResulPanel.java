@@ -51,6 +51,7 @@ public class ResulPanel extends javax.swing.JPanel {
     }
 
     private void initGui() {
+        this.bttSave.setEnabled(false);
         tblAttendance = new JTable();
         scrlPn.setViewportView(tblAttendance);
         tblAttendance.setFillsViewportHeight(true);
@@ -239,6 +240,7 @@ public class ResulPanel extends javax.swing.JPanel {
                 tblModel = new AttendanceTableModel();
                 tblModel.setLstData(lstAttendances);
                 this.tblAttendance.setModel(tblModel);
+                this.bttSave.setEnabled(true);
                 this.tblAttendance.revalidate();
                 this.tblAttendance.repaint();
             }

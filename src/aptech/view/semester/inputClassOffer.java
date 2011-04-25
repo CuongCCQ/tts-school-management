@@ -37,29 +37,41 @@ import javax.swing.JOptionPane;
  */
 public class inputClassOffer extends javax.swing.JPanel {
 
-  
-
     /** Creates new form inputClassOffer */
     public inputClassOffer() {
         initComponents();
-       loadAll();
-       this.Btndelete.setVisible(false);
-       this.bttShow.setVisible(false);
-       this.lblTitle.setText("Add new class offer");
+        loadAll();
+        this.Btndelete.setVisible(false);
+        this.bttShow.setVisible(false);
+        this.lblTitle.setText("Add new class ");
+        if (AppUtil.UserToken.getType().shortValue() == Constant.PERMISSION_STAFF) {
+            this.lblTitle.setText("Class Detail ");
+        }
     }
-    public JButton getBtndelete()
-    {
+
+
+    public JButton getBtndelete() {
         return this.Btndelete;
     }
-    public JButton getBtnShow(){
+
+    public JButton getBtnShow() {
         return this.bttShow;
     }
-    public JLabel getLbltitle()
-    {
+
+    public JLabel getLbltitle() {
         return this.lblTitle;
     }
+
     protected void initComponentV2() {
         initComponents();
+    }
+
+    public JButton getBtnAdd() {
+        return btnAdd;
+    }
+
+    public void setBtnAdd(JButton btnAdd) {
+        this.btnAdd = btnAdd;
     }
 
     @SuppressWarnings("unchecked")
@@ -198,7 +210,7 @@ public class inputClassOffer extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-           try {
+        try {
 
             // validate
             if (!isValidate()) {
@@ -211,13 +223,13 @@ public class inputClassOffer extends javax.swing.JPanel {
 
             String errorMsg = initClassOfferUI();
             if (errorMsg.isEmpty()) {
-                ClassOfferDAO dao  = new ClassOfferDAO();
+                ClassOfferDAO dao = new ClassOfferDAO();
                 dao.getSession().beginTransaction();
                 dao.save(this.classOffer);
                 //dao.savePhoto(student);
                 dao.getSession().getTransaction().commit();
 
-                 JOptionPane.showMessageDialog(this,"Save Data successfuly");
+                JOptionPane.showMessageDialog(this, "Save Data successfuly");
             } else {
                 AppUtil.showErrMsg(errorMsg);
             }
@@ -226,13 +238,13 @@ public class inputClassOffer extends javax.swing.JPanel {
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void BtndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtndeleteActionPerformed
-          if (classOffer != null) {
+        if (classOffer != null) {
             if (IsSure.confirm(this.confirmDeleteMessage)) {
-                ClassOfferDAO dao  = new ClassOfferDAO();
+                ClassOfferDAO dao = new ClassOfferDAO();
                 dao.getSession().beginTransaction();
                 dao.delete(classOffer);
 
@@ -242,33 +254,33 @@ public class inputClassOffer extends javax.swing.JPanel {
                 this.btnAdd.setEnabled(false);
             }
         }
-        
+
     }//GEN-LAST:event_BtndeleteActionPerformed
 
     private void bttShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttShowActionPerformed
         // TODO add your handling code here:
         //AllStudent allStudent= new AllStudent(classOffer.get);
 
-            List<StudentCourseRegistration> lstReg = new ArrayList<StudentCourseRegistration>();
-            lstReg = studentCourseRegistrationDAO.findByClassOfferId(classOffer.getClassOfferId());
-            lstStudentID.clear();
-            List<StudentV2> lsStudent= new ArrayList<StudentV2>();
-            for (StudentCourseRegistration studentCourseRegistration : lstReg) {
-                int a=studentCourseRegistration.getStudentId();
-                studentV2=studentDAO.findByIdV2(a);
-                lsStudent.add(studentV2);
-            }
-            
-            AllStudent allStudent= new AllStudent(lsStudent);
-            allStudent.setSize(800,200);
-            allStudent.setLocation(300, 200);
-            allStudent.setTitle("All student in "+classOffer.getClassCode().toUpperCase());
-            allStudent.setVisible(true);
+        List<StudentCourseRegistration> lstReg = new ArrayList<StudentCourseRegistration>();
+        lstReg = studentCourseRegistrationDAO.findByClassOfferId(classOffer.getClassOfferId());
+        lstStudentID.clear();
+        List<StudentV2> lsStudent = new ArrayList<StudentV2>();
+        for (StudentCourseRegistration studentCourseRegistration : lstReg) {
+            int a = studentCourseRegistration.getStudentId();
+            studentV2 = studentDAO.findByIdV2(a);
+            lsStudent.add(studentV2);
+        }
+
+        AllStudent allStudent = new AllStudent(lsStudent);
+        allStudent.setSize(800, 200);
+        allStudent.setLocation(300, 200);
+        allStudent.setTitle("All student in " + classOffer.getClassCode().toUpperCase());
+        allStudent.setVisible(true);
 
 
-            
+
     }//GEN-LAST:event_bttShowActionPerformed
-   protected String initClassOfferUI() throws ParseException {
+    protected String initClassOfferUI() throws ParseException {
         String errMsg = "";
         if (classOffer == null) {
             this.classOffer = new ClassOffer();
@@ -280,10 +292,11 @@ public class inputClassOffer extends javax.swing.JPanel {
         //this.classOffer.setId(listCourseID.get(cbCource.getSelectedIndex()));
         return errMsg;
     }
+
     private boolean isValidate() throws ParseException {
         String msg = null;
         // validate staff code
-        
+
         if (this.txtClassCode.getText().isEmpty()) {
             AppUtil.showErrMsg(Constant.CLASS_CODE_INVALID);
             txtClassCode.requestFocus();
@@ -301,15 +314,16 @@ public class inputClassOffer extends javax.swing.JPanel {
             txtMaxStudent.requestFocus();
             return false;
         }
-        
+
         return true;
     }
-    protected void initClassOffFromModel(ClassOffer classOffFromModel){
+
+    protected void initClassOffFromModel(ClassOffer classOffFromModel) {
 
         try {
             this.classOffer = classOffFromModel;
             this.txtMinstudent.setText(classOffer.getMinStudent().toString());
-            this.txtMaxStudent.setText( classOffer.getMaxStudent().toString());
+            this.txtMaxStudent.setText(classOffer.getMaxStudent().toString());
             this.txtClassCode.setText(classOffer.getClassCode().toString());
 
             //load data semesterName to JCOMBOBOX
@@ -332,18 +346,16 @@ public class inputClassOffer extends javax.swing.JPanel {
             courseDao.save(course);
             courseDao.getSession().getTransaction().commit();
         } catch (Exception ex) {
-
         }
     }
-    protected void loadAll()
-    {
+
+    protected void loadAll() {
         semester = new Semester();
         semesterDao = new SemesterDAO();
         List<Semester> listSmesterName = semesterDao.findAll();
         listSemesterID = new ArrayList<Integer>();
 
-        for(Semester clSemester : listSmesterName)
-        {
+        for (Semester clSemester : listSmesterName) {
             cbSemester.addItem(clSemester.getName());
             listSemesterID.add(clSemester.getSemesterId());
         }
@@ -353,13 +365,12 @@ public class inputClassOffer extends javax.swing.JPanel {
         courseDao = new CourseDAO();
         List<Course> listCourseCourse = courseDao.findAll();
         listCourseID = new ArrayList<Integer>();
-        for(Course lCourse : listCourseCourse)
-        {
+        for (Course lCourse : listCourseCourse) {
             cbCource.addItem(lCourse.getCourseCode());
             listCourseID.add(lCourse.getId());
         }
     }
- private  ClassOffer classOffer = new ClassOffer();
+    private ClassOffer classOffer = new ClassOffer();
     private Semester semester;
     private SemesterDAO semesterDao;
     private ClassOfferDAO classOfferDao;
@@ -369,11 +380,10 @@ public class inputClassOffer extends javax.swing.JPanel {
     String confirmDeleteMessage = Constant.SURE_TO_DELETE_ASS;
     private List<Integer> listSemesterID;
     private List<Integer> listCourseID;
-   private  StudentCourseRegistrationDAO studentCourseRegistrationDAO= new StudentCourseRegistrationDAO();
-   private List<Integer> lstStudentID = new ArrayList<Integer>();
-   private  StudentV2 studentV2= new StudentV2();
-   private  StudentDAO studentDAO= new StudentDAO();
- 
+    private StudentCourseRegistrationDAO studentCourseRegistrationDAO = new StudentCourseRegistrationDAO();
+    private List<Integer> lstStudentID = new ArrayList<Integer>();
+    private StudentV2 studentV2 = new StudentV2();
+    private StudentDAO studentDAO = new StudentDAO();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Btndelete;
     private javax.swing.JButton btnAdd;
