@@ -5,10 +5,13 @@
  */
 package aptech.util;
 
+import api.CommonDAO;
 import api.HibernateSessionFactory;
+import api.StaffDAO;
 import java.awt.Dimension;
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,9 +27,9 @@ public class frmConfig extends javax.swing.JFrame {
     public frmConfig() {
         initComponents();
         getRootPane().setDefaultButton(_btnconfig);
-        setSize(new Dimension(380,330));
+        setSize(new Dimension(380, 330));
         this.jDesktopPane1.setPreferredSize(new Dimension(300, 300));
-        
+
     }
 
     /** This method is called from within the constructor to
@@ -114,23 +117,31 @@ private void _btnconfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     if (!check()) {
         return;
     }
-    String _serverName = _txtservername.getText();
-    String _databaseName = _txtdatabasename.getText();
-    String _port = _txtport.getText();
-    String _username = _txtusername.getText();
+
+
+    String _serverName = _txtservername.getText().trim();
+    String _databaseName = _txtdatabasename.getText().trim();
+    String _port = _txtport.getText().trim();
+    String _username = _txtusername.getText().trim();
     char[] _chrpass = _pwfpassword.getPassword();
-    String _password = new String(_chrpass);
+    String _password = new String(_chrpass).trim();
 
     try {
         String connectionUrl = "jdbc:sqlserver://" + _serverName + ":" + _port + ";databaseName=" + _databaseName;
         AppUtil.changeConfig(connectionUrl, _username, _password);
-        HibernateSessionFactory.getSession();
+        CommonDAO dao = new CommonDAO();
+        Date serverTime = dao.testServerTime();
+        if (serverTime == null) {
+            throw new NullPointerException();
+        }
         AppUtil.showNoticeMessage("Configuration succesfully");
         File f = new File(AppUtil.getAppPath() + Constant.FILE_CFG);
         f.createNewFile();
     } catch (Exception e) {
         AppUtil.showErrMsg("config failed");
+        HibernateSessionFactory.resetFactory();
         e.printStackTrace();
+        return;
     }
     JOptionPane.showMessageDialog(null, "Configs have been saved", "Configs", JOptionPane.INFORMATION_MESSAGE);
     this.dispose();
@@ -165,26 +176,35 @@ private void _btnconfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     // End of variables declaration//GEN-END:variables
 
     public boolean check() {
+        String _serverName = _txtservername.getText().trim();
+        String _databaseName = _txtdatabasename.getText().trim();
+        String _port = _txtport.getText().trim();
+        String _username = _txtusername.getText().trim();
         char[] _chrpass = _pwfpassword.getPassword();
-        String _password = new String(_chrpass);
-        if (false) {
+        String _password = new String(_chrpass).trim();
+        if (ValidateUtil.isEmpty(_serverName)) {
             JOptionPane.showMessageDialog(null, "Please enter server name", "Warning", JOptionPane.WARNING_MESSAGE);
             _txtservername.requestFocus();
             return false;
         }
-        if (false) {
+        if (ValidateUtil.isEmpty(_username)) {
             JOptionPane.showMessageDialog(null, "Please enter username server", "Warning", JOptionPane.WARNING_MESSAGE);
             _txtusername.requestFocus();
             return false;
         }
-        if (false) {
+        if (ValidateUtil.isEmpty(_password)) {
             JOptionPane.showMessageDialog(null, "Please enter password server", "Warning", JOptionPane.WARNING_MESSAGE);
             _pwfpassword.requestFocus();
             return false;
         }
-        if (false) {
+        if (ValidateUtil.isEmpty(_port)) {
             JOptionPane.showMessageDialog(null, "Please enter server port", "Warning", JOptionPane.WARNING_MESSAGE);
             _txtport.requestFocus();
+            return false;
+        }
+        if (ValidateUtil.isEmpty(_databaseName)) {
+            JOptionPane.showMessageDialog(null, "Please enter database ame", "Warning", JOptionPane.WARNING_MESSAGE);
+            _txtservername.requestFocus();
             return false;
         }
         return true;

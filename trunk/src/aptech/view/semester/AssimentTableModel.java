@@ -78,9 +78,6 @@ public class AssimentTableModel extends BaseTableModel<SubjectAssignment> {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (rowIndex == 0) {
-            return true;
-        }
         return false;
     }
 

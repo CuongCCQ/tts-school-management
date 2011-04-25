@@ -24,7 +24,7 @@ public class HibernateSessionFactory {
      * the location of the configuration file for the current session.   
      */
     private static String CONFIG_FILE_LOCATION = "hibernate.cfg.xml";
-    private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
+    private static ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
     private static Configuration configuration = new Configuration();
     private static org.hibernate.SessionFactory sessionFactory;
     private static String configFile = CONFIG_FILE_LOCATION;
@@ -32,18 +32,16 @@ public class HibernateSessionFactory {
 
     static {
         try {
-//            AppUtil.showErrMsg(Main.class.getResource("").getPath());
-            String filePath = getConfigPath();
-//            AppUtil.showErrMsg(filePath);
-            fConfig = new File(filePath);
-            configuration.configure(fConfig);
-//            AppUtil.showErrMsg("begin generate session");
-            sessionFactory = configuration.buildSessionFactory();
-//            AppUtil.showErrMsg("config completed "+sessionFactory.toString());
+            reConfig();
         } catch (MappingException mEx) {
             System.out.println("not well formed");
 //            AppUtil.showErrMsg("ZZ" + mEx.getMessage());
         }
+    }
+
+    public static void resetFactory() {
+        sessionFactory = null;
+        threadLocal = new ThreadLocal<Session>();
     }
 
     private static String getConfigPath() {
@@ -65,6 +63,18 @@ public class HibernateSessionFactory {
             return builder.toString();
         }
 
+    }
+
+    private static void reConfig() throws HibernateException {
+        //            AppUtil.showErrMsg(Main.class.getResource("").getPath());
+        configuration = new Configuration();
+        String filePath = getConfigPath();
+        //            AppUtil.showErrMsg(filePath);
+        fConfig = new File(filePath);
+        configuration.configure(fConfig);
+        //            AppUtil.showErrMsg("begin generate session");
+        sessionFactory = configuration.buildSessionFactory();
+        //            AppUtil.showErrMsg("config completed "+sessionFactory.toString());
     }
 
     private HibernateSessionFactory() {
@@ -98,6 +108,7 @@ public class HibernateSessionFactory {
      */
     public static void rebuildSessionFactory() {
         try {
+            reConfig();
             configuration.configure(fConfig);
             sessionFactory = configuration.buildSessionFactory();
         } catch (Exception e) {

@@ -19,14 +19,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -220,7 +215,7 @@ public class frmLogin extends javax.swing.JFrame {
                 acc.setType((short) staffLogin.getAdminType().longValue());
                 AppUtil.UserToken=acc;
                 MainSchool mainSchool=new MainSchool();
-
+                this.dispose();
             } else {
                 _lblerr.setText("Invalid UserName or Password");
                 _lblerr.setForeground(Color.red);
