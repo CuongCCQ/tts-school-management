@@ -16,10 +16,10 @@ import org.hibernate.Query;
  */
 public class CommonDAO extends BaseHibernateDAO {
 
-    public  Date getServerTime() {
+    public Date getServerTime() {
         String queryString = "select dateadd(dd,0, datediff(dd,0, getDate()))";
         Query queryObject = getSession().createSQLQuery(queryString);
-        java.sql.Timestamp date=null;
+        java.sql.Timestamp date = null;
         List list = queryObject.list();
         if (list.size() > 0) {
             date = (java.sql.Timestamp) list.get(0);
@@ -27,4 +27,14 @@ public class CommonDAO extends BaseHibernateDAO {
         return new Date(date.getTime());
     }
 
+    public Date testServerTime() {
+        String queryString = "select dateadd(dd,0, datediff(dd,0, getDate()))";
+        Query queryObject = getSession().createSQLQuery(queryString);
+        java.sql.Timestamp date = null;
+        List list = queryObject.list();
+        if (list.size() > 0) {
+            return (java.sql.Timestamp) list.get(0);
+        }
+        return null;
+    }
 }
