@@ -17,6 +17,8 @@ import resources.images.PathUtil;
  */
 
 public class FileExtensionUtil {
+
+
     public final static String jpeg = "jpeg";
     public final static String jpg = "jpg";
     public final static String gif = "gif";
