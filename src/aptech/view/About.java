@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 public class About extends javax.swing.JFrame {
 
     /** Creates new form About */
+	
+	
     public About() {
         initComponents();
          setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
