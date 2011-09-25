@@ -9,11 +9,12 @@ package aptech.util;
  * @author bo
  */
 public interface Constant {
-
+	
+	final String RESOURCE_PATH_V1 = "/resources/images/";
     final String RESOURCE_PATH = "/resources/images/";
     final String DEFAULT_IMG_NAME = "default-photo.png";
     final String DEFAULT_PNIMG_NAME = "schedule.png";
-    final int IMAGE_SIZE_WIDTH = 200;
+    final int IMAGE_SIZE_WIDTH = 30430;
     final int IMAGE_SIZE_HEIGHT = 200;
     final int SCHEDULE_IMAGE_SIZE_WIDTH = 90;
     final int SCHEDULE_IMAGE_SIZE_HEIGHT = 540;
