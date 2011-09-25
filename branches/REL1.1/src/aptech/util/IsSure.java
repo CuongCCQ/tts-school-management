@@ -32,6 +32,10 @@ public class IsSure
     }
     public void static get()
 	{
+		boolean flag=false;
+	}
+	public void static getV1()
+	{
 	}
 
 }
