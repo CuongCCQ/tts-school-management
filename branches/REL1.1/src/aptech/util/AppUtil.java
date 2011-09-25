@@ -31,6 +31,7 @@ public class AppUtil {
 
     public static void changeConfig(String connectionUrl, String user, String pass) throws TransformerFactoryConfigurationError, DOMException {
         try {
+		
             File file = new File("hibernate.cfg.xml");
 
             //Create instance of DocumentBuilderFactory
