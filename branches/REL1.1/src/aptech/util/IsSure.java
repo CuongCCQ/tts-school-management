@@ -30,9 +30,8 @@ public class IsSure
         }
         return  flag;
     }
-    public static void main(String[] args) {
-        boolean f=confirm();
-        System.out.println(f);
-    }
+    public void static get()
+	{
+	}
 
 }
